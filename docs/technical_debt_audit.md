@@ -153,14 +153,15 @@ Recommendation:
 
 ### 5. Core Renderer Files Are Large And Highly Coupled
 
-Status: partially handled. The asset pack modal was extracted from `Home.hx` into `src/electron.renderer/ui/AssetPackBrowser.hx`, keeping Home responsible for page-level coordination while the browser owns preview rendering, search, and paging.
+Status: partially handled. The asset pack modal was extracted into `src/electron.renderer/ui/AssetPackBrowser.hx`, and the Home asset library pack list/filter/context-menu behavior was extracted into `src/electron.renderer/ui/AssetLibraryPanel.hx`. Home now keeps page-level coordination and sample navigation.
 
 Evidence from line counts:
 
 - `src/electron.renderer/page/Editor.hx`: `2458` lines.
 - `src/electron.renderer/misc/JsTools.hx`: `1346` lines.
 - `src/electron.renderer/data/Project.hx`: `1134` lines.
-- `src/electron.renderer/page/Home.hx`: `991` lines.
+- `src/electron.renderer/page/Home.hx`: `787` lines.
+- `src/electron.renderer/ui/AssetLibraryPanel.hx`: `225` lines.
 - `src/electron.renderer/ui/AssetPackBrowser.hx`: `139` lines.
 - `src/electron.renderer/ui/FieldInstancesForm.hx`: `870` lines.
 - `src/electron.renderer/ui/modal/panel/EditLayerDefs.hx`: `902` lines.
@@ -173,8 +174,8 @@ Impact:
 
 Recommendation:
 
-- Continue extracting Home asset-library list/filter rendering into dedicated helpers.
-- Keep asset-browser modal behavior in `ui.AssetPackBrowser`; keep Home responsible for page composition.
+- Keep asset-library list behavior in `ui.AssetLibraryPanel` and modal behavior in `ui.AssetPackBrowser`.
+- Continue extracting unrelated Home sample/recents rendering into focused helpers only when changing those areas.
 - Split `JsTools.hx` by domain over time: file/path helpers, DOM helpers, image helpers, Electron helpers.
 - Avoid large refactors in one commit; carve out one stable helper at a time with compile checks.
 
@@ -317,10 +318,10 @@ Recommendation:
 
 ## Suggested Next Implementation Slice
 
-The highest-value next slice is asset library list extraction:
+The highest-value next slice is asset import/normalization automation:
 
-- Move Home's asset library pack list/filter rendering into a focused helper.
-- Keep the existing search/filter behavior and pack context menu callbacks stable.
+- Add a small tool that scans `atlas/assetLibrary.json` packs and reports count drift, corrupt/missing thumbnails, and unsupported preview files.
+- Use that report before manually editing asset packs.
 - Leave broader `Editor.hx`/`JsTools.hx` decomposition for separate, testable slices.
 - Run:
 
