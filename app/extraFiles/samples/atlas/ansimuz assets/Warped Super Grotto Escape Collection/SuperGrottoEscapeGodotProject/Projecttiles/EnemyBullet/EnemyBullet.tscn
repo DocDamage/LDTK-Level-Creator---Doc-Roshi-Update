@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Projecttiles/EnemyBullet/EnemyBullet.gd" type="Script" id=2]
+[ext_resource path="res://Projecttiles/EnemyBullet/fireball2.png" type="Texture" id=6]
+[ext_resource path="res://Projecttiles/EnemyBullet/fireball3.png" type="Texture" id=7]
+[ext_resource path="res://Projecttiles/EnemyBullet/fireball4.png" type="Texture" id=8]
+[ext_resource path="res://Projecttiles/EnemyBullet/fireball1.png" type="Texture" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ) ],
+"loop": true,
+"name": "New Anim",
+"speed": 12.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 4.0
+
+[node name="EnemyBullet" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+modulate = Color( 0.843137, 0.866667, 0.0862745, 1 )
+frames = SubResource( 1 )
+animation = "New Anim"
+frame = 1
+playing = true
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

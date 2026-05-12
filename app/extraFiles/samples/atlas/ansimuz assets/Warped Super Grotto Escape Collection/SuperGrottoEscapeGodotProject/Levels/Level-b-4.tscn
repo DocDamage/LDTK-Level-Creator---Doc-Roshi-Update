@@ -1,0 +1,157 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Enemies/SteringEnemy/SteeringEnemy.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Levels/Layers/props/palm.png" type="Texture" id=6]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Comtraption/BanishBlocks/BanishBlocks.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Levels/Layers/props/plant.png" type="Texture" id=10]
+[ext_resource path="res://Levels/Layers/props/plant-big.png" type="Texture" id=11]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=12]
+
+[node name="Level-b-4" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 39, 0, 1, 20, 0, 2, 20, 0, 3, 20, 0, 4, 20, 0, 5, 20, 0, 6, 20, 0, 7, 20, 0, 8, 20, 0, 9, 29, 0, 10, 29, 0, 11, 20, 0, 12, 20, 0, 13, 20, 0, 14, 20, 0, 15, 20, 0, 16, 20, 0, 17, 20, 0, 18, 20, 0, 19, 20, 0, 20, 20, 0, 21, 37, 0, 65536, 39, 0, 65537, 20, 0, 65538, 20, 0, 65539, 20, 0, 65540, 20, 0, 65541, 20, 0, 65542, 20, 0, 65543, 20, 0, 65544, 29, 0, 65545, 29, 0, 65546, 29, 0, 65547, 20, 0, 65548, 20, 0, 65549, 20, 0, 65550, 20, 0, 65551, 20, 0, 65552, 20, 0, 65553, 29, 0, 65554, 20, 0, 65555, 20, 0, 65556, 20, 0, 65557, 37, 0, 131072, 39, 0, 131073, 20, 0, 131074, 20, 0, 131075, 20, 0, 131076, 20, 0, 131077, 19, 0, 131079, 29, 0, 131080, 29, 0, 131081, 20, 0, 131082, 20, 0, 131083, 20, 0, 131084, 20, 0, 131085, 20, 0, 131086, 19, 0, 131088, 29, 0, 131089, 29, 0, 131090, 29, 0, 131091, 29, 0, 131092, 20, 0, 131093, 37, 0, 196608, 39, 0, 196609, 20, 0, 196610, 20, 0, 196611, 20, 0, 196612, 20, 0, 196615, 20, 0, 196616, 20, 0, 196617, 20, 0, 196618, 20, 0, 196619, 20, 0, 196620, 20, 0, 196621, 20, 0, 196624, 20, 0, 196625, 20, 0, 196626, 29, 0, 196627, 29, 0, 196628, 20, 0, 196629, 37, 0, 262144, 39, 0, 262145, 20, 0, 262146, 29, 0, 262147, 20, 0, 262148, 20, 0, 262149, 20, 0, 262150, 20, 0, 262151, 20, 0, 262152, 20, 0, 262153, 20, 0, 262154, 20, 0, 262155, 20, 0, 262156, 20, 0, 262157, 20, 0, 262158, 20, 0, 262159, 20, 0, 262160, 20, 0, 262161, 20, 0, 262162, 20, 0, 262163, 20, 0, 262164, 20, 0, 262165, 37, 0, 327680, 39, 0, 327681, 20, 0, 327682, 20, 0, 327683, 20, 0, 327684, 20, 0, 327685, 20, 0, 327686, 20, 0, 327687, 20, 0, 327688, 20, 0, 327689, 20, 0, 327690, 20, 0, 327691, 20, 0, 327692, 20, 0, 327693, 20, 0, 327694, 20, 0, 327695, 20, 0, 327696, 20, 0, 327697, 20, 0, 327698, 20, 0, 327699, 29, 0, 327700, 20, 0, 327701, 37, 0, 393216, 39, 0, 393217, 20, 0, 393218, 29, 0, 393219, 20, 0, 393220, 29, 0, 393221, 20, 0, 393222, 20, 0, 393223, 20, 0, 393224, 20, 0, 393225, 20, 0, 393226, 20, 0, 393227, 20, 0, 393228, 20, 0, 393229, 20, 0, 393230, 20, 0, 393231, 20, 0, 393232, 20, 0, 393233, 20, 0, 393234, 20, 0, 393235, 20, 0, 393236, 20, 0, 393237, 37, 0, 458752, 39, 0, 458753, 29, 0, 458754, 20, 0, 458755, 20, 0, 458756, 20, 0, 458757, 20, 0, 458758, 20, 0, 458759, 20, 0, 458760, 20, 0, 458761, 20, 0, 458762, 20, 0, 458763, 20, 0, 458764, 30, 0, 458766, 20, 0, 458767, 20, 0, 458768, 20, 0, 458769, 20, 0, 458770, 29, 0, 458771, 20, 0, 458772, 20, 0, 458773, 37, 0, 524288, 39, 0, 524289, 20, 0, 524290, 20, 0, 524291, 20, 0, 524292, 20, 0, 524293, 20, 0, 524294, 20, 0, 524295, 20, 0, 524296, 20, 0, 524297, 20, 0, 524298, 29, 0, 524299, 20, 0, 524302, 20, 0, 524303, 20, 0, 524304, 20, 0, 524305, 20, 0, 524306, 20, 0, 524307, 29, 0, 524308, 20, 0, 524309, 37, 0, 589824, 39, 0, 589825, 20, 0, 589826, 20, 0, 589827, 20, 0, 589828, 20, 0, 589829, 20, 0, 589830, 20, 0, 589831, 20, 0, 589832, 20, 0, 589833, 20, 0, 589834, 20, 0, 589835, 20, 0, 589836, 20, 0, 589837, 20, 0, 589838, 20, 0, 589839, 20, 0, 589840, 20, 0, 589841, 20, 0, 589842, 20, 0, 589843, 20, 0, 589844, 20, 0, 589845, 37, 0, 655360, 20, 0, 655361, 20, 0, 655362, 20, 0, 655363, 29, 0, 655364, 20, 0, 655365, 29, 0, 655366, 20, 0, 655367, 20, 0, 655368, 20, 0, 655369, 20, 0, 655370, 20, 0, 655371, 29, 0, 655372, 20, 0, 655373, 20, 0, 655374, 20, 0, 655375, 20, 0, 655376, 20, 0, 655377, 30, 0, 655379, 20, 0, 655380, 20, 0, 655381, 20, 0, 720896, 20, 0, 720897, 20, 0, 720898, 20, 0, 720899, 20, 0, 720900, 20, 0, 720901, 20, 0, 720902, 20, 0, 720903, 20, 0, 720904, 33, 0, 720905, 32, 0, 720906, 33, 0, 720907, 31, 0, 720909, 20, 0, 720910, 20, 0, 720911, 20, 0, 720912, 20, 0, 720915, 20, 0, 720916, 20, 0, 720917, 20, 0, 786432, 0, 0, 786434, 4, 0, 786436, 0, 0, 786438, 0, 0, 786440, 4, 0, 786442, 4, 0, 786444, 0, 0, 786446, 0, 0, 786448, 4, 0, 786450, 4, 0, 786452, 0, 0, 917504, 20, 0, 917505, 20, 0, 917506, 20, 0, 917507, 20, 0, 917508, 20, 0, 917509, 20, 0, 917510, 20, 0, 917511, 20, 0, 917512, 20, 0, 917513, 20, 0, 917514, 20, 0, 917515, 20, 0, 917516, 20, 0, 917517, 20, 0, 917518, 20, 0, 917519, 20, 0, 917520, 20, 0, 917521, 20, 0, 917522, 20, 0, 917523, 20, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 176 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 3 )]
+position = Vector2( -32, 176 )
+new_level_path = "res://Levels/Level-b-3.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 168, -32 )
+new_level_path = "res://Levels/Level-a-4.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 376, 176 )
+new_level_path = "res://Levels/Level-b-5.tscn"
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 4 )]
+position = Vector2( 336, 176 )
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 312, -16 )
+
+[node name="UI" parent="." instance=ExtResource( 7 )]
+
+[node name="Battery" parent="." instance=ExtResource( 8 )]
+position = Vector2( 40, 32 )
+
+[node name="BanishBlocks" parent="." instance=ExtResource( 9 )]
+position = Vector2( 72, 72 )
+
+[node name="BanishBlocks2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 216, 152 )
+
+[node name="BanishBlocks3" parent="." instance=ExtResource( 9 )]
+position = Vector2( 120, 152 )
+
+[node name="BanishBlocks4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 264, 72 )
+
+[node name="BanishBlocks5" parent="." instance=ExtResource( 9 )]
+position = Vector2( 232, 104 )
+
+[node name="BanishBlocks6" parent="." instance=ExtResource( 9 )]
+position = Vector2( 104, 104 )
+
+[node name="BanishBlocks7" parent="." instance=ExtResource( 9 )]
+position = Vector2( 168, 40 )
+
+[node name="BanishBlocks9" parent="." instance=ExtResource( 9 )]
+position = Vector2( 72, 128 )
+state = 0
+
+[node name="BanishBlocks12" parent="." instance=ExtResource( 9 )]
+position = Vector2( 264, 128 )
+state = 0
+
+[node name="BanishBlocks10" parent="." instance=ExtResource( 9 )]
+position = Vector2( 128, 72 )
+state = 0
+
+[node name="BanishBlocks11" parent="." instance=ExtResource( 9 )]
+position = Vector2( 208, 72 )
+state = 0
+
+[node name="SteeringEnemy" parent="." instance=ExtResource( 5 )]
+position = Vector2( 168, 104 )
+
+[node name="Props" type="Node2D" parent="."]
+z_index = 4
+
+[node name="Plant" type="Sprite" parent="Props"]
+position = Vector2( 40, 200 )
+texture = ExtResource( 10 )
+
+[node name="Palm" type="Sprite" parent="Props"]
+position = Vector2( 216, 16 )
+scale = Vector2( 1, -1 )
+texture = ExtResource( 6 )
+
+[node name="Palm2" type="Sprite" parent="Props"]
+position = Vector2( 32, -8 )
+scale = Vector2( 1, -1 )
+texture = ExtResource( 6 )
+
+[node name="Palm3" type="Sprite" parent="Props"]
+position = Vector2( 112, 8 )
+scale = Vector2( 1, -1 )
+texture = ExtResource( 6 )
+
+[node name="Palm4" type="Sprite" parent="Props"]
+position = Vector2( 280, 0 )
+scale = Vector2( 1, -1 )
+texture = ExtResource( 6 )
+
+[node name="Plant-big" type="Sprite" parent="Props"]
+position = Vector2( 88, 0 )
+texture = ExtResource( 11 )
+
+[node name="Plant-big2" type="Sprite" parent="Props"]
+position = Vector2( 328, 8 )
+texture = ExtResource( 11 )
+
+[node name="Plant2" type="Sprite" parent="Props"]
+position = Vector2( 248, 0 )
+texture = ExtResource( 10 )
+
+[node name="Plant3" type="Sprite" parent="Props"]
+position = Vector2( 208, 192 )
+texture = ExtResource( 10 )
+
+[node name="Plant4" type="Sprite" parent="Props"]
+position = Vector2( 8, 80 )
+texture = ExtResource( 10 )
+
+[node name="Plant5" type="Sprite" parent="Props"]
+position = Vector2( 176, 200 )
+texture = ExtResource( 10 )
+
+[node name="Plant6" type="Sprite" parent="Props"]
+position = Vector2( 344, 40 )
+texture = ExtResource( 10 )
+
+[node name="Plant-big3" type="Sprite" parent="Props"]
+position = Vector2( 184, 0 )
+texture = ExtResource( 11 )
+
+[node name="Plant-big4" type="Sprite" parent="Props"]
+position = Vector2( 184, 0 )
+texture = ExtResource( 11 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 12 )]
+position = Vector2( 168, 80 )

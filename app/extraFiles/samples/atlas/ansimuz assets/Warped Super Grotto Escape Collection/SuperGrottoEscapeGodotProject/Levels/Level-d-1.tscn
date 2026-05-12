@@ -1,0 +1,128 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Enemies/EnemyLizzard/EnemyLizzard.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://Enemies/EnemyFly/EnemyFly.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Projecttiles/LavaBall/LavaBall.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Comtraption/BanishBlocks/BanishBlocks.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/KillArea/KillArea.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Levels/Layers/far.png" type="Texture" id=12]
+[ext_resource path="res://Levels/Layers/back.png" type="Texture" id=13]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=15]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 116, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 40 )
+
+[node name="Level-d-1" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="Back" type="Sprite" parent="ColorRect"]
+position = Vector2( 200, 192 )
+texture = ExtResource( 13 )
+
+[node name="Far" type="Sprite" parent="ColorRect"]
+visible = false
+position = Vector2( 176, 136 )
+texture = ExtResource( 12 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -65536, 39, 0, 0, 39, 0, 1, 20, 0, 3, 42, 0, 4, 1, 0, 5, 38, 0, 6, 38, 0, 7, 38, 0, 8, 38, 0, 9, 38, 0, 10, 38, 0, 11, 38, 0, 12, 38, 0, 13, 38, 0, 14, 38, 0, 15, 38, 0, 16, 38, 0, 17, 38, 0, 18, 38, 0, 19, 38, 0, 20, 38, 0, 21, 20, 0, 65536, 39, 0, 65537, 20, 0, 65539, 42, 0, 65540, 1, 0, 65556, 1, 0, 65557, 20, 0, 131072, 39, 0, 131073, 20, 0, 131076, 1, 0, 131092, 1, 0, 131093, 20, 0, 196608, 39, 0, 196611, 1, 0, 196612, 1, 0, 196628, 1, 0, 196629, 20, 0, 262144, 39, 0, 262145, 20, 0, 262164, 1, 0, 262165, 20, 0, 327680, 39, 0, 327681, 28, 0, 327700, 1, 0, 327701, 20, 0, 393216, 39, 0, 393217, 20, 0, 393236, 1, 0, 393237, 20, 0, 458752, 1, 0, 458753, 1, 0, 458754, 1, 0, 458757, 28, 0, 458772, 1, 0, 458773, 1, 0, 524288, 20, 0, 524289, 20, 0, 524290, 39, 0, 589824, 20, 0, 589825, 20, 0, 589826, 39, 0, 589827, 28, 0, 655360, 20, 0, 655361, 20, 0, 655362, 39, 0, 655377, 31, 0, 720896, 20, 0, 720897, 20, 0, 720898, 39, 0, 720899, 40, 0, 720900, 40, 0, 720903, 40, 0, 720904, 40, 0, 720907, 40, 0, 720908, 40, 0, 720911, 40, 0, 720912, 40, 0, 720913, 1, 0, 720914, 1, 0, 720915, 1, 0, 720916, 1, 0, 720917, 1, 0, 786432, 20, 0, 786433, 20, 0, 786434, 39, 0, 786449, 37, 0, 786450, 20, 0, 786451, 20, 0, 786452, 20, 0, 786453, 20, 0, 786454, 20, 0, 851968, 20, 0, 851969, 20, 0, 851970, 39, 0, 851971, 15, 0, 851972, 15, 0, 851973, 15, 0, 851974, 15, 0, 851975, 15, 0, 851976, 15, 0, 851977, 15, 0, 851978, 15, 0, 851979, 15, 0, 851980, 15, 0, 851981, 15, 0, 851982, 15, 0, 851983, 15, 0, 851984, 15, 0, 851985, 37, 0, 851986, 20, 0, 851987, 20, 0, 851988, 20, 0, 851989, 20, 0, 917504, 20, 0, 917505, 20, 0, 917506, 39, 0, 917521, 37, 0, 917522, 20, 0, 917523, 20, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 56, 32 )
+
+[node name="EnemyLizzard" parent="." instance=ExtResource( 1 )]
+position = Vector2( 192, 161 )
+
+[node name="EnemyFly" parent="." instance=ExtResource( 3 )]
+position = Vector2( 253, 82 )
+
+[node name="LavaBall" parent="." instance=ExtResource( 4 )]
+position = Vector2( 157, 251 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 7 )]
+position = Vector2( 384, 152 )
+new_level_path = "res://Levels/Level-d-2.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 56, -56 )
+new_level_path = "res://Levels/Level-c-1.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 6 )]
+position = Vector2( 344, 160 )
+
+[node name="UI" parent="." instance=ExtResource( 8 )]
+
+[node name="BanishBlocks" parent="." instance=ExtResource( 9 )]
+position = Vector2( 136, 88 )
+
+[node name="BanishBlocks2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 184, 88 )
+state = 0
+
+[node name="BanishBlocks3" parent="." instance=ExtResource( 9 )]
+position = Vector2( 232, 88 )
+
+[node name="BanishBlocks4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 288, 88 )
+state = 0
+
+[node name="Battery" parent="." instance=ExtResource( 10 )]
+position = Vector2( 304, 32 )
+
+[node name="KillArea" parent="." instance=ExtResource( 11 )]
+position = Vector2( 168, 256 )
+
+[node name="CollisionShape2D" parent="KillArea" index="0"]
+position = Vector2( -12, -24 )
+shape = SubResource( 1 )
+
+[node name="Ladder" parent="." instance=ExtResource( 14 )]
+position = Vector2( 56, 24 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, -32 )
+shape = SubResource( 2 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 15 )]
+position = Vector2( 88, 184 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 104, 184 )
+
+[node name="HelpBlock3" parent="." instance=ExtResource( 15 )]
+position = Vector2( 152, 184 )
+
+[node name="HelpBlock4" parent="." instance=ExtResource( 15 )]
+position = Vector2( 168, 184 )
+
+[node name="HelpBlock5" parent="." instance=ExtResource( 15 )]
+position = Vector2( 232, 184 )
+
+[node name="HelpBlock6" parent="." instance=ExtResource( 15 )]
+position = Vector2( 216, 184 )
+
+[editable path="KillArea"]
+[editable path="Ladder"]

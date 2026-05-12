@@ -1,0 +1,164 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://Enemies/EnemySkeleton/EnemySkeleton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Enemies/EnemyFire/EnemyFire.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Comtraption/BanishBlocks/BanishBlocks.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Comtraption/SpikeBlock/SpikeBlock.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/Card/Card.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Gizmos/KillArea/KillArea.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Levels/Layers/middle2.png" type="Texture" id=14]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Gizmos/Life/Life.tscn" type="PackedScene" id=17]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 19.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 28.5 )
+
+[node name="Level-c-1" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="Middle2" type="Sprite" parent="."]
+position = Vector2( 256, -8 )
+texture = ExtResource( 14 )
+
+[node name="Player" parent="." instance=ExtResource( 6 )]
+position = Vector2( 72, 16 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -196605, 32, 0, -196603, 32, 0, -131069, 32, 0, -131068, 42, 0, -131067, 32, 0, -65533, 32, 0, -65532, 42, 0, -65515, 33, 0, 0, 34, 0, 1, 5, 0, 3, 34, 0, 4, 42, 0, 5, 20, 0, 6, 20, 0, 7, 20, 0, 8, 20, 0, 9, 20, 0, 21, 33, 0, 65541, 20, 0, 65542, 20, 0, 65543, 20, 0, 65544, 20, 0, 65545, 20, 0, 65557, 33, 0, 131072, 33, 0, 131073, 20, 0, 131074, 20, 0, 131075, 20, 0, 131076, 28, 0, 131077, 28, 0, 131078, 28, 0, 131079, 28, 0, 131080, 20, 0, 131081, 20, 0, 131093, 32, 0, 196608, 33, 0, 196609, 20, 0, 196610, 20, 0, 196611, 20, 0, 196612, 20, 0, 196613, 20, 0, 196614, 20, 0, 196615, 20, 0, 196616, 20, 0, 196617, 20, 0, 196629, 33, 0, 262144, 32, 0, 262145, 20, 0, 262146, 20, 0, 262147, 20, 0, 262148, 20, 0, 262149, 20, 0, 262150, 20, 0, 262151, 20, 0, 262152, 20, 0, 262153, 20, 0, 262157, 33, 0, 262158, 32, 0, 262159, 33, 0, 262160, 33, 0, 262161, 33, 0, 262162, 33, 0, 262163, 32, 0, 262164, 33, 0, 262165, 33, 0, 327680, 33, 0, 327681, 29, 0, 327682, 20, 0, 327683, 20, 0, 327684, 20, 0, 327685, 19, 0, 327687, 20, 0, 327688, 20, 0, 327689, 20, 0, 327690, 33, 0, 327691, 33, 0, 327692, 32, 0, 327693, 5, 0, 327695, 34, 0, 327696, 20, 0, 327697, 20, 0, 327698, 20, 0, 327699, 20, 0, 327700, 20, 0, 327701, 20, 0, 393216, 33, 0, 393217, 20, 0, 393218, 20, 0, 393219, 29, 0, 393220, 20, 0, 393223, 20, 0, 393224, 20, 0, 393225, 20, 0, 393226, 33, 0, 393227, 32, 0, 393228, 32, 0, 393232, 20, 0, 393233, 20, 0, 393234, 20, 0, 393235, 20, 0, 393236, 20, 0, 393237, 20, 0, 458752, 33, 0, 458753, 20, 0, 458754, 20, 0, 458755, 20, 0, 458756, 20, 0, 458757, 20, 0, 458758, 20, 0, 458759, 20, 0, 458760, 20, 0, 458761, 20, 0, 458762, 33, 0, 458763, 32, 0, 458764, 33, 0, 458765, 33, 0, 458766, 33, 0, 458767, 33, 0, 458768, 32, 0, 458769, 33, 0, 458770, 33, 0, 458771, 33, 0, 458772, 33, 0, 458773, 33, 0, 524288, 33, 0, 524289, 20, 0, 524290, 20, 0, 524291, 20, 0, 524292, 20, 0, 524293, 20, 0, 524294, 20, 0, 524295, 20, 0, 524296, 20, 0, 524297, 20, 0, 524298, 20, 0, 524299, 20, 0, 524300, 20, 0, 524301, 20, 0, 524302, 20, 0, 524303, 20, 0, 524304, 20, 0, 524305, 20, 0, 524306, 20, 0, 524307, 33, 0, 524308, 33, 0, 524309, 32, 0, 589824, 32, 0, 589825, 30, 0, 589827, 20, 0, 589828, 20, 0, 589829, 20, 0, 589830, 20, 0, 589831, 20, 0, 589832, 20, 0, 589833, 20, 0, 589834, 20, 0, 589835, 20, 0, 589836, 20, 0, 589837, 20, 0, 589838, 20, 0, 589839, 20, 0, 589840, 20, 0, 589841, 20, 0, 589842, 20, 0, 589843, 20, 0, 589844, 20, 0, 589845, 32, 0, 655360, 33, 0, 655363, 20, 0, 655364, 20, 0, 655365, 20, 0, 655366, 20, 0, 655367, 20, 0, 655368, 20, 0, 655369, 20, 0, 655370, 20, 0, 655371, 30, 0, 655373, 20, 0, 655374, 20, 0, 655375, 20, 0, 655376, 20, 0, 655377, 20, 0, 655378, 20, 0, 655379, 20, 0, 655380, 20, 0, 655381, 33, 0, 720896, 32, 0, 720897, 20, 0, 720898, 20, 0, 720899, 20, 0, 720900, 20, 0, 720901, 20, 0, 720902, 20, 0, 720903, 20, 0, 720904, 20, 0, 720905, 28, 0, 720906, 20, 0, 720909, 20, 0, 720910, 20, 0, 720911, 20, 0, 720912, 20, 0, 720913, 20, 0, 720914, 20, 0, 720915, 20, 0, 720916, 20, 0, 720917, 33, 0, 786432, 33, 0, 786433, 20, 0, 786434, 20, 0, 786436, 20, 0, 786437, 20, 0, 786438, 20, 0, 786439, 20, 0, 786440, 20, 0, 786441, 20, 0, 786442, 20, 0, 786443, 20, 0, 786444, 20, 0, 786445, 28, 0, 786446, 20, 0, 786447, 20, 0, 786448, 28, 0, 786449, 20, 0, 786450, 20, 0, 786451, 33, 0, 786452, 33, 0, 786453, 33, 0, 851968, 33, 0, 851969, 33, 0, 851970, 33, 0, 851975, 33, 0, 851976, 32, 0, 851977, 32, 0, 851978, 33, 0, 851979, 15, 0, 851980, 15, 0, 851981, 15, 0, 851982, 15, 0, 851983, 15, 0, 851984, 15, 0, 851985, 15, 0, 851986, 15, 0, 851987, 33, 0, 851988, 35, 0, 851989, 35, 0, 917504, 35, 0, 917505, 35, 0, 917506, 35, 0, 917507, 41, 0, 917508, 35, 0, 917509, 35, 0, 917510, 35, 0, 917511, 33, 0, 917512, 35, 0, 917513, 35, 0, 917514, 33, 0, 917523, 33, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 342, 97 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 1 )]
+position = Vector2( 56, 208 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 5 )]
+position = Vector2( 55, -57 )
+new_level_path = "res://Levels/Level-b-1.tscn"
+
+[node name="LevelZone3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 56, 276 )
+new_level_path = "res://Levels/Level-d-1.tscn"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 384, 96 )
+new_level_path = "res://Levels/Level-c-2.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="EnemyFire" parent="." instance=ExtResource( 4 )]
+position = Vector2( 320, 184 )
+
+[node name="EnemySkeleton" parent="." instance=ExtResource( 3 )]
+position = Vector2( 312, 56 )
+
+[node name="EnemySkeleton2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 232, 56 )
+WALKING_DIRECTION = -1
+
+[node name="UI" parent="." instance=ExtResource( 7 )]
+
+[node name="BanishBlocks" parent="." instance=ExtResource( 8 )]
+position = Vector2( 112, 152 )
+state = 0
+
+[node name="BanishBlocks3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 128, 112 )
+state = 0
+
+[node name="BanishBlocks4" parent="." instance=ExtResource( 8 )]
+position = Vector2( 24, 112 )
+state = 0
+
+[node name="BanishBlocks2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 72, 136 )
+
+[node name="SpikeBlock" parent="." instance=ExtResource( 9 )]
+position = Vector2( 40, 200 )
+wait_time = 2.0
+
+[node name="Battery" parent="." instance=ExtResource( 10 )]
+position = Vector2( 264, 144 )
+
+[node name="SpikeBlock2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 280, 72 )
+
+[node name="SpikeBlock4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 168, 40 )
+wait_time = 2.0
+
+[node name="Card" parent="." instance=ExtResource( 12 )]
+position = Vector2( 280, 96 )
+color = "red"
+
+[node name="KillArea" parent="." instance=ExtResource( 13 )]
+position = Vector2( 240, 264 )
+
+[node name="CollisionShape2D" parent="KillArea" index="0"]
+position = Vector2( 0, -16 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 11 )]
+position = Vector2( 24, 56 )
+
+[node name="Ladder" parent="." instance=ExtResource( 15 )]
+position = Vector2( 56, 230 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, 11.5 )
+shape = SubResource( 1 )
+
+[node name="Ladder2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 73, 6 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder2" index="0"]
+position = Vector2( 0, -20.5 )
+shape = SubResource( 2 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 16 )]
+position = Vector2( 200, 200 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 16 )]
+position = Vector2( 184, 200 )
+
+[node name="HelpBlock3" parent="." instance=ExtResource( 16 )]
+position = Vector2( 248, 200 )
+
+[node name="HelpBlock4" parent="." instance=ExtResource( 16 )]
+position = Vector2( 232, 200 )
+
+[node name="HelpBlock5" parent="." instance=ExtResource( 16 )]
+position = Vector2( 296, 200 )
+
+[node name="HelpBlock6" parent="." instance=ExtResource( 16 )]
+position = Vector2( 280, 200 )
+
+[node name="Life" parent="." instance=ExtResource( 17 )]
+position = Vector2( 312, 16 )
+
+[editable path="KillArea"]
+[editable path="Ladder"]
+[editable path="Ladder2"]

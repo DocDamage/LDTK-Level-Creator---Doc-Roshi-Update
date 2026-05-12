@@ -1,0 +1,92 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/ColorDoor/ColorDoor.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Comtraption/SpikeBlock/SpikeBlock.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Enemies/EnemySkeleton/EnemySkeleton.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Levels/Layers/props/support.png" type="Texture" id=10]
+[ext_resource path="res://Gizmos/Terminal/Terminal.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=13]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 20 )
+
+[node name="Level-c-5" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -131055, 32, 0, -131051, 32, 0, -65519, 32, 0, -65515, 32, 0, 0, 20, 0, 1, 20, 0, 2, 20, 0, 3, 20, 0, 4, 20, 0, 5, 20, 0, 6, 20, 0, 7, 20, 0, 8, 20, 0, 9, 20, 0, 10, 20, 0, 11, 20, 0, 12, 20, 0, 13, 20, 0, 14, 20, 0, 15, 20, 0, 16, 20, 0, 17, 1, 0, 20, 42, 0, 21, 37, 0, 65536, 20, 0, 65537, 20, 0, 65538, 20, 0, 65539, 20, 0, 65540, 20, 0, 65541, 20, 0, 65542, 20, 0, 65543, 20, 0, 65544, 20, 0, 65545, 20, 0, 65546, 20, 0, 65547, 20, 0, 65548, 20, 0, 65549, 20, 0, 65550, 20, 0, 65551, 20, 0, 65552, 20, 0, 65553, 1, 0, 65556, 42, 0, 65557, 37, 0, 131072, 20, 0, 131073, 20, 0, 131074, 20, 0, 131075, 20, 0, 131076, 20, 0, 131077, 20, 0, 131078, 20, 0, 131079, 20, 0, 131080, 20, 0, 131081, 20, 0, 131082, 20, 0, 131083, 20, 0, 131084, 20, 0, 131085, 20, 0, 131086, 20, 0, 131087, 20, 0, 131088, 20, 0, 131089, 1, 0, 131090, 29, 0, 131092, 32, 0, 131093, 37, 0, 196608, 38, 0, 196609, 38, 0, 196610, 38, 0, 196611, 38, 0, 196612, 38, 0, 196613, 38, 0, 196614, 38, 0, 196615, 38, 0, 196616, 38, 0, 196617, 38, 0, 196618, 38, 0, 196619, 38, 0, 196620, 38, 0, 196621, 38, 0, 196622, 38, 0, 196623, 38, 0, 196624, 38, 0, 196625, 38, 0, 196629, 37, 0, 262162, 28, 0, 262165, 37, 0, 327681, 29, 0, 327686, 29, 0, 327688, 19, 0, 327699, 29, 0, 327701, 37, 0, 393228, 29, 0, 393234, 28, 0, 393235, 28, 0, 393236, 28, 0, 393237, 37, 0, 458754, 33, 0, 458755, 33, 0, 458756, 1, 0, 458757, 1, 0, 458768, 28, 0, 458773, 37, 0, 524288, 33, 0, 524289, 33, 0, 524290, 33, 0, 524291, 33, 0, 524293, 29, 0, 524309, 37, 0, 589824, 33, 0, 589825, 33, 0, 589826, 33, 0, 589827, 33, 0, 589836, 35, 0, 589837, 35, 0, 589838, 35, 0, 589839, 35, 0, 589840, 35, 0, 589841, 35, 0, 589842, 35, 0, 589843, 35, 0, 589844, 35, 0, 589845, 35, 0, 655360, 33, 0, 655368, 29, 0, 655372, 1, 0, 655373, 20, 0, 655374, 20, 0, 655375, 20, 0, 655376, 20, 0, 655377, 20, 0, 655378, 20, 0, 655379, 20, 0, 655380, 20, 0, 655381, 20, 0, 720896, 33, 0, 720907, 1, 0, 720908, 1, 0, 720909, 20, 0, 720910, 20, 0, 720911, 20, 0, 720912, 20, 0, 720913, 20, 0, 720914, 20, 0, 720915, 20, 0, 720916, 20, 0, 720917, 20, 0, 786432, 35, 0, 786433, 35, 0, 786434, 35, 0, 786435, 35, 0, 786436, 35, 0, 786437, 35, 0, 786438, 35, 0, 786439, 35, 0, 786440, 35, 0, 786441, 35, 0, 786442, 35, 0, 786443, 35, 0, 786444, 35, 0, 786445, 20, 0, 786446, 20, 0, 786447, 20, 0, 786448, 20, 0, 786449, 20, 0, 786450, 20, 0, 786451, 20, 0, 786452, 20, 0, 786453, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 328, 16 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 4 )]
+position = Vector2( -32, 96 )
+new_level_path = "res://Levels/Level-c-4.tscn"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 320, -64 )
+new_level_path = "res://Levels/Level-b-5.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 3 )]
+position = Vector2( 8, 112 )
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 224, 128 )
+
+[node name="UI" parent="." instance=ExtResource( 5 )]
+
+[node name="ColorDoor" parent="." instance=ExtResource( 6 )]
+position = Vector2( 224, 120 )
+__meta__ = {
+"_edit_lock_": true
+}
+color = "red"
+
+[node name="SpikeBlock" parent="." instance=ExtResource( 7 )]
+position = Vector2( 136, 136 )
+wait_time = 2.0
+
+[node name="EnemySkeleton" parent="." instance=ExtResource( 8 )]
+position = Vector2( 112, 184 )
+
+[node name="Battery" parent="." instance=ExtResource( 9 )]
+position = Vector2( 32, 176 )
+
+[node name="Support" type="Sprite" parent="."]
+position = Vector2( 48, 88 )
+texture = ExtResource( 10 )
+
+[node name="Terminal" parent="." instance=ExtResource( 11 )]
+position = Vector2( 328, 136 )
+msg = 2
+
+[node name="Ladder" parent="." instance=ExtResource( 12 )]
+position = Vector2( 328, -8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, 12 )
+shape = SubResource( 1 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 13 )]
+position = Vector2( 136, 104 )
+
+[editable path="Ladder"]

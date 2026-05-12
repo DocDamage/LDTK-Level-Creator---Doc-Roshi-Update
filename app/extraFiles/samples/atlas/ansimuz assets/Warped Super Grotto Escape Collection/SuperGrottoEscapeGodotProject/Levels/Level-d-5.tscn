@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Enemies/SteringEnemy/SteeringEnemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/ColorDoor/ColorDoor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Projecttiles/LavaBall/LavaBall.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Levels/Layers/back.png" type="Texture" id=9]
+
+[node name="Level-d-5" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="Far" type="Sprite" parent="ColorRect"]
+position = Vector2( 176, 152 )
+texture = ExtResource( 9 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 38, 0, 1, 38, 0, 2, 38, 0, 3, 38, 0, 4, 38, 0, 5, 38, 0, 6, 38, 0, 7, 38, 0, 8, 38, 0, 9, 38, 0, 10, 38, 0, 11, 38, 0, 12, 38, 0, 13, 38, 0, 14, 38, 0, 15, 38, 0, 16, 38, 0, 17, 38, 0, 18, 38, 0, 19, 38, 0, 20, 38, 0, 21, 38, 0, 65536, 20, 0, 65537, 39, 0, 65541, 40, 0, 65542, 40, 0, 65543, 40, 0, 65550, 40, 0, 65551, 40, 0, 65552, 40, 0, 65556, 5, 0, 131072, 20, 0, 131073, 39, 0, 196608, 20, 0, 196609, 39, 0, 196628, 31, 0, 262144, 20, 0, 262145, 39, 0, 262164, 5, 0, 327680, 38, 0, 327681, 1, 0, 393237, 37, 0, 458773, 37, 0, 524292, 11, 0, 524295, 13, 0, 524296, 13, 0, 524297, 13, 0, 524298, 13, 0, 524299, 13, 0, 524300, 13, 0, 524301, 13, 0, 524302, 13, 0, 524303, 12, 0, 524309, 37, 0, 589824, 35, 0, 589825, 35, 0, 589826, 35, 0, 589827, 35, 0, 589828, 1, 0, 589841, 1, 0, 589842, 35, 0, 589843, 35, 0, 589844, 35, 0, 589845, 35, 0, 655360, 20, 0, 655361, 20, 0, 655362, 20, 0, 655363, 20, 0, 655364, 39, 0, 655377, 37, 0, 655378, 20, 0, 655379, 20, 0, 655380, 20, 0, 655381, 20, 0, 720896, 20, 0, 720897, 20, 0, 720898, 20, 0, 720899, 20, 0, 720900, 39, 0, 720913, 37, 0, 720914, 20, 0, 720915, 20, 0, 720916, 20, 0, 720917, 20, 0, 786432, 20, 0, 786433, 20, 0, 786434, 20, 0, 786435, 20, 0, 786436, 39, 0, 786449, 37, 0, 786450, 20, 0, 786451, 20, 0, 786452, 20, 0, 786453, 20, 0, 851968, 20, 0, 851969, 20, 0, 851970, 20, 0, 851971, 20, 0, 851972, 39, 0, 851973, 15, 0, 851974, 15, 0, 851975, 15, 0, 851976, 15, 0, 851977, 15, 0, 851978, 15, 0, 851979, 15, 0, 851980, 15, 0, 851981, 15, 0, 851982, 15, 0, 851983, 15, 0, 851984, 15, 0, 851985, 37, 0, 851986, 20, 0, 851987, 20, 0, 851988, 20, 0, 851989, 20, 0, 917504, 20, 0, 917505, 20, 0, 917506, 20, 0, 917507, 20, 0, 917508, 39, 0, 917521, 37, 0, 917522, 20, 0, 917523, 20, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 11, 130 )
+
+[node name="LevelZone2" parent="." instance=ExtResource( 7 )]
+position = Vector2( -32, 120 )
+new_level_path = "res://Levels/Level-d-4.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LavaBall2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 133, 252 )
+jump_vel = 400
+
+[node name="LavaBall3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 227, 253 )
+jump_vel = 400
+
+[node name="UI" parent="." instance=ExtResource( 3 )]
+
+[node name="ColorDoor" parent="." instance=ExtResource( 4 )]
+position = Vector2( 312, 120 )
+color = "blue"
+
+[node name="SteeringEnemy" parent="." instance=ExtResource( 1 )]
+position = Vector2( 176, 56 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 6 )]
+position = Vector2( 312, 128 )

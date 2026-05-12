@@ -1,0 +1,100 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Gizmos/Terminal/Terminal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Enemies/EnemySlime/EnemySlime.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Gizmos/KillArea/KillArea.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Comtraption/SpikeBlock/SpikeBlock.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Levels/Layers/props/PropFan.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=12]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 30.5 )
+
+[node name="Level-blue-room" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="UI" parent="." instance=ExtResource( 6 )]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 38, 0, 1, 38, 0, 2, 38, 0, 3, 38, 0, 4, 38, 0, 5, 38, 0, 6, 38, 0, 7, 38, 0, 8, 38, 0, 9, 38, 0, 10, 38, 0, 11, 38, 0, 12, 38, 0, 13, 38, 0, 14, 38, 0, 15, 38, 0, 16, 38, 0, 17, 38, 0, 18, 38, 0, 19, 38, 0, 20, 38, 0, 21, 38, 0, 65536, 39, 0, 65540, 34, 0, 65557, 37, 0, 131072, 39, 0, 131093, 37, 0, 196608, 39, 0, 196609, 41, 0, 196610, 28, 0, 196611, 28, 0, 196612, 28, 0, 196629, 37, 0, 262144, 39, 0, 262145, 42, 0, 262165, 37, 0, 327680, 39, 0, 327681, 42, 0, 327692, 28, 0, 327693, 28, 0, 327701, 37, 0, 393216, 39, 0, 393217, 42, 0, 393224, 1, 0, 393225, 1, 0, 393237, 37, 0, 458752, 39, 0, 458753, 32, 0, 458757, 28, 0, 458760, 1, 0, 458761, 1, 0, 458773, 37, 0, 524288, 39, 0, 524305, 1, 0, 524306, 1, 0, 524307, 1, 0, 524308, 1, 0, 524309, 37, 0, 589824, 39, 0, 589827, 1, 0, 589828, 1, 0, 589841, 5, 0, 589843, 5, 0, 589845, 37, 0, 655360, 39, 0, 655363, 1, 0, 655364, 1, 0, 655373, 1, 0, 655374, 1, 0, 655381, 37, 0, 720903, 1, 0, 720904, 1, 0, 720909, 1, 0, 720910, 1, 0, 720913, 5, 0, 720915, 37, 0, 720916, 20, 0, 720917, 20, 0, 786439, 1, 0, 786440, 1, 0, 786442, 34, 0, 786451, 37, 0, 786452, 20, 0, 786453, 20, 0, 851968, 31, 0, 851970, 31, 0, 851972, 31, 0, 851979, 31, 0, 851981, 31, 0, 851983, 15, 0, 851984, 15, 0, 851985, 5, 0, 851987, 37, 0, 851988, 20, 0, 851989, 20, 0, 917504, 1, 0, 917505, 1, 0, 917506, 1, 0, 917507, 1, 0, 917508, 1, 0, 917509, 1, 0, 917510, 1, 0, 917511, 1, 0, 917512, 1, 0, 917513, 1, 0, 917514, 1, 0, 917515, 1, 0, 917516, 1, 0, 917517, 1, 0, 917518, 1, 0, 917523, 37, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 192 )
+
+[node name="LevelZone2" parent="." instance=ExtResource( 5 )]
+position = Vector2( -32, 184 )
+new_level_path = "res://Levels/Level-d-5.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="Battery" parent="." instance=ExtResource( 1 )]
+position = Vector2( 304, 88 )
+
+[node name="EnemySlime" parent="." instance=ExtResource( 7 )]
+position = Vector2( 64, 144 )
+WALKING_DIRECTION = 1
+
+[node name="EnemySlime2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 144, 96 )
+
+[node name="EnemySlime3" parent="." instance=ExtResource( 7 )]
+position = Vector2( 216, 160 )
+WALKING_DIRECTION = 1
+
+[node name="KillArea" parent="." instance=ExtResource( 8 )]
+position = Vector2( 256, 240 )
+
+[node name="SpikeBlock" parent="." instance=ExtResource( 9 )]
+position = Vector2( 296, 136 )
+wait_time = 2.0
+
+[node name="SpikeBlock3" parent="." instance=ExtResource( 9 )]
+position = Vector2( 280, 136 )
+wait_time = 2.0
+
+[node name="SpikeBlock2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 312, 136 )
+wait_time = 2.0
+
+[node name="SpikeBlock4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 328, 136 )
+wait_time = 2.0
+
+[node name="PropFan" parent="." instance=ExtResource( 10 )]
+position = Vector2( 304, 48 )
+frame = 0
+
+[node name="Terminal" parent="." instance=ExtResource( 4 )]
+position = Vector2( 48, 40 )
+msg = 3
+
+[node name="Ladder" parent="." instance=ExtResource( 11 )]
+position = Vector2( 24, 54 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, 22.5 )
+shape = SubResource( 1 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 12 )]
+position = Vector2( 248, 136 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 12 )]
+position = Vector2( 264, 136 )
+
+[editable path="Ladder"]

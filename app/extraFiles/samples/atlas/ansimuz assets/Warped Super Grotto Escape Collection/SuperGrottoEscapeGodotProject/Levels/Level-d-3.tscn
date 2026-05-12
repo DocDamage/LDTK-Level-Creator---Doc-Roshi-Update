@@ -1,0 +1,127 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Enemies/EnemySlime/EnemySlime.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://Comtraption/Door/Door.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Comtraption/Switch/Switch.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Projecttiles/LavaBall/LavaBall.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Comtraption/BanishBlocks/BanishBlocks.tscn" type="PackedScene" id=9]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/KillArea/KillArea.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Levels/Layers/far.png" type="Texture" id=13]
+[ext_resource path="res://Levels/Layers/props/gate.png" type="Texture" id=14]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=17]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 100, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 32 )
+
+[node name="Level-d-3" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="Far" type="Sprite" parent="ColorRect"]
+position = Vector2( 56, 148 )
+texture = ExtResource( 13 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -65515, 1, 0, 0, 20, 0, 1, 20, 0, 2, 20, 0, 3, 20, 0, 4, 20, 0, 5, 20, 0, 6, 20, 0, 7, 20, 0, 8, 20, 0, 9, 20, 0, 10, 20, 0, 11, 20, 0, 12, 20, 0, 13, 20, 0, 14, 20, 0, 15, 20, 0, 16, 5, 0, 20, 42, 0, 21, 1, 0, 65536, 1, 0, 65537, 38, 0, 65538, 38, 0, 65539, 38, 0, 65540, 38, 0, 65541, 38, 0, 65542, 38, 0, 65543, 38, 0, 65544, 38, 0, 65545, 38, 0, 65546, 38, 0, 65547, 38, 0, 65548, 38, 0, 65549, 38, 0, 65550, 38, 0, 65551, 38, 0, 65556, 42, 0, 65557, 1, 0, 131072, 1, 0, 131088, 5, 0, 131092, 42, 0, 131093, 1, 0, 196608, 1, 0, 196628, 32, 0, 196629, 1, 0, 262144, 1, 0, 262160, 5, 0, 262165, 1, 0, 327680, 1, 0, 327698, 28, 0, 327701, 1, 0, 393230, 5, 0, 458771, 28, 0, 524293, 40, 0, 524294, 40, 0, 524298, 40, 0, 524299, 40, 0, 524302, 1, 0, 524303, 1, 0, 589824, 5, 0, 589838, 31, 0, 589840, 31, 0, 589845, 1, 0, 655376, 16, 0, 655380, 1, 0, 655381, 1, 0, 720896, 35, 0, 720897, 35, 0, 720898, 5, 0, 720912, 16, 0, 720916, 1, 0, 720917, 1, 0, 786432, 20, 0, 786433, 20, 0, 786451, 5, 0, 786453, 1, 0, 851968, 20, 0, 851969, 20, 0, 851970, 35, 0, 851971, 35, 0, 851972, 1, 0, 851989, 1, 0, 917504, 35, 0, 917505, 35, 0, 917506, 35, 0, 917507, 35, 0, 917508, 35, 0, 917509, 35, 0, 917510, 34, 0, 917511, 15, 0, 917512, 15, 0, 917513, 15, 0, 917514, 34, 0, 917515, 35, 0, 917516, 35, 0, 917517, 35, 0, 917518, 31, 0, 917520, 31, 0, 917522, 35, 0, 917523, 35, 0, 917524, 35, 0, 917525, 35, 0, 983044, 20, 0, 983045, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 128 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 6 )]
+position = Vector2( 344, 128 )
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 328, 32 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 7 )]
+position = Vector2( 384, 112 )
+new_level_path = "res://Levels/Level-d-4.tscn"
+
+[node name="LevelZone3" parent="." instance=ExtResource( 7 )]
+position = Vector2( 312, -40 )
+new_level_path = "res://Levels/Level-c-3.tscn"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 7 )]
+position = Vector2( -32, 120 )
+new_level_path = "res://Levels/Level-d-2.tscn"
+spawn_point = "SpawnPoint2"
+
+[node name="EnemySlime" parent="." instance=ExtResource( 1 )]
+position = Vector2( 87, 127 )
+
+[node name="EnemySlime2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 181, 127 )
+WALKING_DIRECTION = 1
+
+[node name="Door" parent="." instance=ExtResource( 3 )]
+position = Vector2( 252, 203 )
+
+[node name="Switch" parent="." instance=ExtResource( 4 )]
+position = Vector2( 272, 136 )
+targetObjectPath = NodePath("../Door")
+
+[node name="LavaBall" parent="." instance=ExtResource( 8 )]
+position = Vector2( 137, 263 )
+
+[node name="UI" parent="." instance=ExtResource( 10 )]
+
+[node name="Battery" parent="." instance=ExtResource( 11 )]
+position = Vector2( 238, 66 )
+
+[node name="BanishBlocks" parent="." instance=ExtResource( 9 )]
+position = Vector2( 56, 104 )
+
+[node name="KillArea" parent="." instance=ExtResource( 12 )]
+position = Vector2( 160, 256 )
+
+[node name="CollisionShape2D" parent="KillArea" index="0"]
+position = Vector2( -4, 0 )
+shape = SubResource( 1 )
+
+[node name="Gate" type="Sprite" parent="."]
+position = Vector2( 256, 192 )
+scale = Vector2( 1.10377, 1 )
+texture = ExtResource( 14 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 15 )]
+position = Vector2( 35, 53 )
+
+[node name="Ladder" parent="." instance=ExtResource( 16 )]
+position = Vector2( 328, -16 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, 24 )
+shape = SubResource( 2 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 17 )]
+position = Vector2( 120, 232 )
+
+[node name="HelpBlock3" parent="." instance=ExtResource( 17 )]
+position = Vector2( 136, 232 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 17 )]
+position = Vector2( 152, 232 )
+
+[editable path="KillArea"]
+[editable path="Ladder"]

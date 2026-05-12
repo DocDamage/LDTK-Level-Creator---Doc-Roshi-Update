@@ -1,0 +1,150 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Enemies/EnemySkeleton/EnemySkeleton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Gizmos/Barrier/Barrier.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Levels/Layers/props/palm.png" type="Texture" id=9]
+[ext_resource path="res://Levels/Layers/props/plant-big.png" type="Texture" id=10]
+[ext_resource path="res://Levels/Layers/props/plant.png" type="Texture" id=11]
+[ext_resource path="res://Gizmos/Terminal/Terminal.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Comtraption/SwitchBarrier/SwitchBarrier.tscn" type="PackedScene" id=14]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 26 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 48 )
+
+[node name="Level-b-3" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="UI" parent="." instance=ExtResource( 5 )]
+
+[node name="Barrier" parent="." instance=ExtResource( 8 )]
+position = Vector2( 328, 160 )
+
+[node name="Barrier2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 24, 160 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 20, 0, 1, 20, 0, 2, 20, 0, 3, 20, 0, 4, 20, 0, 5, 20, 0, 6, 20, 0, 7, 17, 0, 9, 20, 0, 10, 20, 0, 11, 20, 0, 12, 20, 0, 13, 18, 0, 15, 20, 0, 16, 20, 0, 17, 38, 0, 18, 38, 0, 19, 38, 0, 20, 42, 0, 21, 1, 0, 65536, 20, 0, 65537, 20, 0, 65538, 20, 0, 65539, 20, 0, 65540, 20, 0, 65541, 20, 0, 65542, 20, 0, 65545, 20, 0, 65546, 20, 0, 65547, 20, 0, 65548, 20, 0, 65551, 1, 0, 65552, 1, 0, 65553, 1, 0, 65554, 20, 0, 65555, 20, 0, 65556, 42, 0, 65557, 1, 0, 131072, 20, 0, 131073, 20, 0, 131074, 20, 0, 131075, 20, 0, 131076, 20, 0, 131077, 20, 0, 131078, 20, 0, 131079, 17, 0, 131081, 20, 0, 131082, 19, 0, 131084, 20, 0, 131085, 18, 0, 131087, 1, 0, 131090, 20, 0, 131091, 20, 0, 131092, 42, 0, 131093, 1, 0, 196608, 20, 0, 196609, 20, 0, 196610, 20, 0, 196611, 20, 0, 196612, 20, 0, 196613, 20, 0, 196614, 20, 0, 196617, 20, 0, 196620, 20, 0, 196623, 1, 0, 196626, 20, 0, 196627, 20, 0, 196628, 42, 0, 196629, 1, 0, 262144, 20, 0, 262145, 20, 0, 262146, 20, 0, 262148, 17, 0, 262150, 23, 0, 262151, 24, 0, 262152, 21, 0, 262153, 20, 0, 262154, 20, 0, 262155, 20, 0, 262156, 20, 0, 262157, 18, 0, 262159, 1, 0, 262162, 20, 0, 262163, 20, 0, 262164, 42, 0, 262165, 18, 0, 327680, 20, 0, 327681, 20, 0, 327682, 20, 0, 327686, 20, 0, 327689, 20, 0, 327690, 20, 0, 327691, 20, 0, 327692, 29, 0, 327695, 1, 0, 327696, 1, 0, 327697, 1, 0, 327698, 20, 0, 327699, 20, 0, 327700, 20, 0, 327701, 18, 0, 393218, 24, 0, 393219, 24, 0, 393220, 24, 0, 393221, 21, 0, 393225, 20, 0, 393226, 20, 0, 393227, 20, 0, 393228, 20, 0, 393229, 22, 0, 393230, 23, 0, 393231, 24, 0, 393232, 23, 0, 393233, 1, 0, 393234, 30, 0, 393236, 1, 0, 393237, 18, 0, 458752, 17, 0, 458755, 20, 0, 458756, 20, 0, 458757, 20, 0, 458758, 20, 0, 458759, 20, 0, 458760, 20, 0, 458761, 20, 0, 458762, 20, 0, 458763, 20, 0, 458764, 20, 0, 458765, 20, 0, 458766, 20, 0, 458767, 20, 0, 458768, 20, 0, 458769, 20, 0, 458772, 1, 0, 458773, 18, 0, 524291, 29, 0, 524292, 20, 0, 524293, 20, 0, 524294, 20, 0, 524295, 20, 0, 524296, 20, 0, 524297, 20, 0, 524298, 20, 0, 524299, 20, 0, 524300, 20, 0, 524301, 20, 0, 524302, 20, 0, 524303, 20, 0, 524304, 20, 0, 524305, 20, 0, 524306, 20, 0, 524307, 41, 0, 524308, 1, 0, 589824, 1, 0, 589825, 3, 0, 589827, 20, 0, 589828, 20, 0, 589829, 28, 0, 589830, 28, 0, 589831, 28, 0, 589832, 28, 0, 589833, 28, 0, 589834, 28, 0, 589835, 28, 0, 589836, 28, 0, 589837, 28, 0, 589838, 28, 0, 589839, 20, 0, 589840, 20, 0, 589841, 20, 0, 589842, 20, 0, 589843, 42, 0, 589844, 3, 0, 589845, 1, 0, 655363, 28, 0, 655364, 29, 0, 655365, 20, 0, 655366, 20, 0, 655367, 20, 0, 655368, 20, 0, 655369, 20, 0, 655370, 20, 0, 655371, 20, 0, 655372, 20, 0, 655373, 20, 0, 655374, 20, 0, 655375, 28, 0, 655376, 20, 0, 655377, 20, 0, 655378, 20, 0, 655379, 42, 0, 720899, 20, 0, 720900, 20, 0, 720901, 20, 0, 720902, 20, 0, 720903, 20, 0, 720904, 20, 0, 720905, 20, 0, 720906, 20, 0, 720907, 20, 0, 720908, 20, 0, 720909, 29, 0, 720910, 20, 0, 720911, 20, 0, 720912, 20, 0, 720913, 20, 0, 720914, 20, 0, 720915, 20, 0, 786432, 0, 0, 786434, 4, 0, 786436, 4, 0, 786438, 4, 0, 786440, 4, 0, 786442, 0, 0, 786444, 4, 0, 786446, 4, 0, 786448, 0, 0, 786450, 0, 0, 786452, 4, 0, 917504, 20, 0, 917505, 20, 0, 917506, 20, 0, 917507, 20, 0, 917508, 20, 0, 917509, 20, 0, 917510, 20, 0, 917511, 20, 0, 917512, 20, 0, 917513, 20, 0, 917514, 20, 0, 917515, 20, 0, 917516, 20, 0, 917517, 20, 0, 917518, 20, 0, 917519, 20, 0, 917520, 20, 0, 917521, 20, 0, 917522, 20, 0, 917523, 20, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 176, -16 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 3 )]
+position = Vector2( -32, 176 )
+new_level_path = "res://Levels/Level-b-2.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 336, -32 )
+new_level_path = "res://Levels/Level-a-3.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 384, 176 )
+new_level_path = "res://Levels/Level-b-4.tscn"
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 4 )]
+position = Vector2( 344, 176 )
+
+[node name="SpawnPoint3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 328, 16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 8, 176 )
+
+[node name="EnemySkeleton" parent="." instance=ExtResource( 7 )]
+position = Vector2( 88, 136 )
+WALKING_DIRECTION = 0
+
+[node name="EnemySkeleton2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 232, 136 )
+WALKING_DIRECTION = 0
+
+[node name="Props" type="Node2D" parent="."]
+z_index = 4
+
+[node name="Plant" type="Sprite" parent="Props"]
+position = Vector2( 240, 200 )
+texture = ExtResource( 11 )
+
+[node name="Plant2" type="Sprite" parent="Props"]
+position = Vector2( 128, 56 )
+texture = ExtResource( 11 )
+
+[node name="Plant3" type="Sprite" parent="Props"]
+position = Vector2( 224, 88 )
+texture = ExtResource( 11 )
+
+[node name="Palm" type="Sprite" parent="Props"]
+position = Vector2( 24, 232 )
+texture = ExtResource( 9 )
+
+[node name="Plant-big" type="Sprite" parent="Props"]
+position = Vector2( 208, 8 )
+texture = ExtResource( 10 )
+
+[node name="Plant-big2" type="Sprite" parent="Props"]
+position = Vector2( 80, 64 )
+texture = ExtResource( 10 )
+
+[node name="Plant-big3" type="Sprite" parent="Props"]
+position = Vector2( 120, 200 )
+texture = ExtResource( 10 )
+
+[node name="Plant-big4" type="Sprite" parent="Props"]
+position = Vector2( 24, 104 )
+texture = ExtResource( 10 )
+
+[node name="Terminal" parent="." instance=ExtResource( 12 )]
+position = Vector2( 176, 184 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 13 )]
+position = Vector2( 120, 96 )
+
+[node name="Ladder" parent="." instance=ExtResource( 6 )]
+position = Vector2( 312, 133 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, 18 )
+shape = SubResource( 1 )
+
+[node name="Ladder2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 328, 0 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder2" index="0"]
+position = Vector2( 0, 40 )
+shape = SubResource( 2 )
+
+[node name="SwitchBarrier" parent="." instance=ExtResource( 14 )]
+position = Vector2( 264, 72 )
+targetObjectPath = NodePath("../Barrier")
+targetObjectPath2 = NodePath("../Barrier2")
+
+[editable path="Ladder"]
+[editable path="Ladder2"]

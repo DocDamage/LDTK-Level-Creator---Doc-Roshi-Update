@@ -1,0 +1,140 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Enemies/EnemySlime/EnemySlime.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Enemies/EnemyFire/EnemyFire.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Projecttiles/LavaBall/LavaBall.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Enemies/EnemyBat/EnemyBat.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/Ladder/Ladder.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/KillArea/KillArea.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Levels/Layers/far.png" type="Texture" id=13]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Comtraption/BanishBlocks/BanishBlocks.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Comtraption/SwitchHelpBlocks/SwitchHelpBlocks.tscn" type="PackedScene" id=17]
+[ext_resource path="res://Enemies/EnemySkeleton/EnemySkeleton.tscn" type="PackedScene" id=18]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 128, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 8, 40 )
+
+[node name="Level-d-4" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="Far" type="Sprite" parent="ColorRect"]
+position = Vector2( 176, 136 )
+texture = ExtResource( 13 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( -196597, 32, 0, -131065, 32, 0, -131061, 32, 0, -65529, 32, 0, -65525, 32, 0, 0, 38, 0, 1, 38, 0, 2, 38, 0, 3, 38, 0, 4, 38, 0, 5, 38, 0, 6, 38, 0, 7, 38, 0, 8, 42, 0, 11, 38, 0, 12, 38, 0, 13, 20, 0, 14, 20, 0, 15, 20, 0, 16, 20, 0, 17, 20, 0, 18, 20, 0, 19, 20, 0, 20, 1, 0, 21, 1, 0, 65536, 39, 0, 65544, 42, 0, 65549, 38, 0, 65550, 38, 0, 65551, 38, 0, 65552, 38, 0, 65553, 38, 0, 65554, 38, 0, 65555, 38, 0, 65556, 1, 0, 65557, 1, 0, 131072, 39, 0, 131092, 1, 0, 131093, 1, 0, 196608, 39, 0, 196609, 1, 0, 196610, 1, 0, 196611, 1, 0, 196612, 1, 0, 196616, 28, 0, 196617, 28, 0, 196628, 1, 0, 196629, 1, 0, 262144, 39, 0, 262164, 1, 0, 262165, 1, 0, 327680, 1, 0, 327685, 28, 0, 327691, 28, 0, 327692, 28, 0, 327700, 1, 0, 327701, 1, 0, 458760, 31, 0, 458765, 28, 0, 589824, 5, 0, 589844, 33, 0, 589845, 33, 0, 655379, 33, 0, 655380, 1, 0, 655381, 1, 0, 720896, 20, 0, 720897, 5, 0, 720909, 31, 0, 720911, 32, 0, 720912, 32, 0, 720913, 32, 0, 720914, 33, 0, 720915, 1, 0, 720916, 20, 0, 720917, 20, 0, 786432, 20, 0, 786443, 5, 0, 786445, 34, 0, 786446, 5, 0, 786448, 32, 0, 786449, 32, 0, 786450, 33, 0, 786451, 1, 0, 786452, 20, 0, 786453, 20, 0, 851968, 20, 0, 851969, 20, 0, 851970, 20, 0, 851971, 33, 0, 851972, 15, 0, 851973, 15, 0, 851974, 15, 0, 851975, 5, 0, 851977, 15, 0, 851978, 15, 0, 851984, 32, 0, 851985, 32, 0, 851986, 33, 0, 851987, 1, 0, 851988, 20, 0, 851989, 20, 0, 917504, 20, 0, 917505, 20, 0, 917506, 20, 0, 917507, 33, 0, 917515, 1, 0, 917516, 1, 0, 917517, 1, 0, 917518, 1, 0, 917519, 1, 0, 917520, 32, 0, 917521, 32, 0, 917522, 33, 0, 917523, 1, 0, 917524, 20, 0, 917525, 20, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 8, 128 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 6 )]
+position = Vector2( 344, 128 )
+
+[node name="SpawnPoint2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 136, 32 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 7 )]
+position = Vector2( 384, 112 )
+new_level_path = "res://Levels/Level-d-5.tscn"
+
+[node name="LevelZone3" parent="." instance=ExtResource( 7 )]
+position = Vector2( 144, -48 )
+new_level_path = "res://Levels/Level-c-4.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="LevelZone2" parent="." instance=ExtResource( 7 )]
+position = Vector2( -32, 120 )
+new_level_path = "res://Levels/Level-d-3.tscn"
+spawn_point = "SpawnPoint"
+
+[node name="EnemyFire" parent="." instance=ExtResource( 4 )]
+position = Vector2( 264, 168 )
+speed = 0
+
+[node name="LavaBall" parent="." instance=ExtResource( 8 )]
+position = Vector2( 84, 275 )
+
+[node name="EnemyBat2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 288, 88 )
+
+[node name="EnemySlime" parent="." instance=ExtResource( 1 )]
+position = Vector2( 136, 112 )
+
+[node name="UI" parent="." instance=ExtResource( 3 )]
+
+[node name="Battery" parent="." instance=ExtResource( 10 )]
+position = Vector2( 144, 72 )
+
+[node name="KillArea" parent="." instance=ExtResource( 12 )]
+position = Vector2( 184, 248 )
+
+[node name="CollisionShape2D" parent="KillArea" index="0"]
+position = Vector2( -8, -16 )
+shape = SubResource( 1 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 14 )]
+position = Vector2( 248, 48 )
+
+[node name="Ladder" parent="." instance=ExtResource( 11 )]
+position = Vector2( 136, 32 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" parent="Ladder" index="0"]
+position = Vector2( 0, -32 )
+shape = SubResource( 2 )
+
+[node name="BanishBlocks" parent="." instance=ExtResource( 15 )]
+position = Vector2( 72, 120 )
+
+[node name="BanishBlocks2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 264, 144 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 16 )]
+position = Vector2( 104, 216 )
+
+[node name="HelpBlock5" parent="." instance=ExtResource( 16 )]
+position = Vector2( 88, 216 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 16 )]
+position = Vector2( 72, 216 )
+
+[node name="HelpBlock3" parent="." instance=ExtResource( 16 )]
+position = Vector2( 168, 216 )
+
+[node name="HelpBlock4" parent="." instance=ExtResource( 16 )]
+position = Vector2( 152, 216 )
+
+[node name="SwitchHelpBlocks" parent="." instance=ExtResource( 17 )]
+position = Vector2( 24, 40 )
+
+[node name="EnemySkeleton" parent="." instance=ExtResource( 18 )]
+position = Vector2( 40, 40 )
+WALKING_DIRECTION = 0
+
+[node name="EnemySkeleton2" parent="." instance=ExtResource( 18 )]
+position = Vector2( 56, 40 )
+WALKING_DIRECTION = 0
+
+[editable path="KillArea"]
+[editable path="Ladder"]

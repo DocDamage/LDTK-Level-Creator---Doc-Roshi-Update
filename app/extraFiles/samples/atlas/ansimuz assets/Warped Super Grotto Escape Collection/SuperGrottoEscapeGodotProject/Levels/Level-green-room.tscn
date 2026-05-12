@@ -1,0 +1,96 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Gizmos/Battery/Battery.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Enemies/EnemyLizzard/EnemyLizzard.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Comtraption/SpikeBlock/SpikeBlock.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Enemies/EnemyFire/EnemyFire.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Levels/Layers/props/plant.png" type="Texture" id=10]
+[ext_resource path="res://Levels/Layers/props/plant-big.png" type="Texture" id=11]
+[ext_resource path="res://Levels/Layers/props/support.png" type="Texture" id=12]
+[ext_resource path="res://Levels/Layers/props/pipes.png" type="Texture" id=13]
+[ext_resource path="res://Gizmos/Life/Life.tscn" type="PackedScene" id=14]
+
+[node name="Level-green-room" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="UI" parent="." instance=ExtResource( 6 )]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 65536, 38, 0, 65537, 38, 0, 65538, 38, 0, 65539, 38, 0, 65540, 38, 0, 65541, 38, 0, 65542, 38, 0, 65543, 38, 0, 65544, 38, 0, 65545, 38, 0, 65546, 38, 0, 65547, 38, 0, 65548, 38, 0, 65549, 38, 0, 65550, 38, 0, 65551, 38, 0, 65552, 38, 0, 65553, 38, 0, 65554, 38, 0, 65555, 38, 0, 65556, 38, 0, 65557, 38, 0, 131072, 39, 0, 131076, 1, 0, 131077, 1, 0, 131078, 1, 0, 131079, 1, 0, 131085, 1, 0, 131086, 1, 0, 131087, 1, 0, 131088, 1, 0, 131089, 1, 0, 131090, 1, 0, 131091, 1, 0, 131092, 1, 0, 131093, 1, 0, 196608, 39, 0, 196621, 1, 0, 196622, 1, 0, 196623, 1, 0, 196624, 1, 0, 196625, 1, 0, 196626, 1, 0, 196627, 1, 0, 196628, 1, 0, 196629, 1, 0, 262144, 39, 0, 262165, 37, 0, 327680, 39, 0, 327701, 37, 0, 393216, 39, 0, 393237, 37, 0, 458752, 39, 0, 458756, 1, 0, 458757, 1, 0, 458758, 1, 0, 458760, 1, 0, 458761, 1, 0, 458762, 1, 0, 458763, 1, 0, 458767, 1, 0, 458773, 37, 0, 524288, 39, 0, 524301, 28, 0, 524303, 1, 0, 524309, 37, 0, 589824, 39, 0, 589839, 1, 0, 589842, 28, 0, 589845, 37, 0, 655374, 5, 0, 655381, 37, 0, 720899, 1, 0, 720917, 37, 0, 786432, 35, 0, 786433, 35, 0, 786434, 35, 0, 786435, 35, 0, 786436, 35, 0, 786437, 35, 0, 786438, 35, 0, 786439, 35, 0, 786440, 35, 0, 786441, 35, 0, 786442, 35, 0, 786443, 35, 0, 786444, 35, 0, 786445, 35, 0, 786446, 35, 0, 786447, 35, 0, 786448, 35, 0, 786449, 35, 0, 786450, 35, 0, 786451, 35, 0, 786452, 35, 0, 786453, 35, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 176 )
+
+[node name="LevelZone2" parent="." instance=ExtResource( 5 )]
+position = Vector2( -24, 176 )
+new_level_path = "res://Levels/Level-c-2.tscn"
+spawn_point = "SpawnPoint2"
+
+[node name="Battery" parent="." instance=ExtResource( 1 )]
+position = Vector2( 40, 80 )
+
+[node name="EnemyLizzard" parent="." instance=ExtResource( 7 )]
+position = Vector2( 192, 184 )
+WALKING_DIRECTION = -1
+
+[node name="SpikeBlock" parent="." instance=ExtResource( 8 )]
+position = Vector2( 104, 120 )
+scale = Vector2( 1, -1 )
+
+[node name="SpikeBlock2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 88, 120 )
+scale = Vector2( 1, -1 )
+
+[node name="SpikeBlock3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 120, 120 )
+scale = Vector2( 1, -1 )
+
+[node name="SpikeBlock4" parent="." instance=ExtResource( 8 )]
+position = Vector2( 72, 120 )
+scale = Vector2( 1, -1 )
+
+[node name="EnemyFire" parent="." instance=ExtResource( 9 )]
+position = Vector2( 144, 104 )
+
+[node name="SpikeBlock5" parent="." instance=ExtResource( 8 )]
+position = Vector2( 264, 184 )
+
+[node name="SpikeBlock6" parent="." instance=ExtResource( 8 )]
+position = Vector2( 328, 136 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 4 )]
+position = Vector2( 328, 176 )
+
+[node name="Props" type="Node2D" parent="."]
+
+[node name="Pipes" type="Sprite" parent="."]
+position = Vector2( 168, 64 )
+texture = ExtResource( 13 )
+
+[node name="Plant-big" type="Sprite" parent="."]
+position = Vector2( 16, 24 )
+texture = ExtResource( 11 )
+
+[node name="Plant" type="Sprite" parent="."]
+position = Vector2( 224, 192 )
+texture = ExtResource( 10 )
+
+[node name="Support" type="Sprite" parent="."]
+position = Vector2( 256, 88 )
+texture = ExtResource( 12 )
+
+[node name="Life" parent="." instance=ExtResource( 14 )]
+position = Vector2( 328, 88 )

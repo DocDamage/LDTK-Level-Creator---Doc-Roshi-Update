@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Enemies/EnemyLizzard/EnemyLizzard.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Enemies/EnemyFly/EnemyFly.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Enemies/EnemyFire/EnemyFire.tscn" type="PackedScene" id=6]
+
+[node name="Level" type="Node2D"]
+position = Vector2( -1, 1 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 196619, 1, 0, 196620, 1, 0, 196621, 1, 0, 327685, 1, 0, 327686, 1, 0, 327687, 1, 0, 327688, 1, 0, 655371, 1, 0, 655372, 1, 0, 655373, 1, 0, 720906, 1, 0, 720907, 1, 0, 720908, 1, 0, 720909, 1, 0, 786432, 1, 0, 786433, 1, 0, 786434, 1, 0, 786435, 1, 0, 786436, 1, 0, 786437, 1, 0, 786438, 1, 0, 786439, 1, 0, 786440, 1, 0, 786441, 1, 0, 786442, 1, 0, 786443, 1, 0, 786444, 1, 0, 786445, 1, 0, 786446, 1, 0, 786447, 1, 0, 786448, 1, 0, 786449, 1, 0, 786450, 1, 0, 786451, 1, 0, 786452, 1, 0, 786453, 1, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 56, 177 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 4 )]
+position = Vector2( 297, 64 )
+
+[node name="EnemyFire" parent="." instance=ExtResource( 6 )]
+position = Vector2( 168, 168 )
+
+[node name="EnemyFly" parent="." instance=ExtResource( 5 )]
+position = Vector2( 198, 138 )
+
+[node name="EnemyLizzard" parent="." instance=ExtResource( 3 )]
+position = Vector2( 269, 179 )

@@ -1,0 +1,115 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Levels/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Levels/Layers/props/palm.png" type="Texture" id=2]
+[ext_resource path="res://Gizmos/Card/Card.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Gizmos/LevelZone/LevelZone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Levels/Layers/props/plant.png" type="Texture" id=5]
+[ext_resource path="res://Gizmos/GunEnergy/GunEnergy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://UI/UI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Levels/Layers/props/plant-big.png" type="Texture" id=9]
+[ext_resource path="res://Comtraption/SpikeBlock/SpikeBlock.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Gizmos/HelpBlock/HelpBlock.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Gizmos/Life/Life.tscn" type="PackedScene" id=12]
+
+[node name="Level-a-4" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 352.0
+margin_bottom = 240.0
+color = Color( 0.0823529, 0.0666667, 0.137255, 1 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 393216, 34, 0, 393237, 34, 0, 524288, 34, 0, 524309, 34, 0, 655360, 34, 0, 655381, 34, 0, 786432, 1, 0, 786433, 1, 0, 786434, 1, 0, 786435, 1, 0, 786436, 1, 0, 786437, 1, 0, 786438, 1, 0, 786439, 1, 0, 786440, 1, 0, 786444, 1, 0, 786445, 28, 0, 786446, 28, 0, 786447, 28, 0, 786448, 28, 0, 786449, 28, 0, 786452, 28, 0, 786453, 1, 0, 851968, 1, 0, 851969, 1, 0, 851970, 1, 0, 851971, 1, 0, 851972, 1, 0, 851973, 1, 0, 851974, 1, 0, 851975, 1, 0, 851976, 1, 0, 851980, 1, 0, 917504, 1, 0, 917505, 1, 0, 917506, 1, 0, 917507, 1, 0, 917508, 1, 0, 917509, 1, 0, 917510, 1, 0, 917511, 1, 0, 917512, 1, 0, 917513, 28, 0, 917514, 28, 0, 917515, 28, 0, 917516, 1, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 8 )]
+position = Vector2( 168, 208 )
+
+[node name="LevelZone" parent="." instance=ExtResource( 4 )]
+position = Vector2( 304, 272 )
+new_level_path = "res://Levels/Level-b-4.tscn"
+spawn_point = "SpawnPoint2"
+
+[node name="UI" parent="." instance=ExtResource( 7 )]
+
+[node name="Card" parent="." instance=ExtResource( 3 )]
+position = Vector2( 240, 168 )
+
+[node name="Props" type="Node2D" parent="."]
+
+[node name="Palm" type="Sprite" parent="Props"]
+position = Vector2( 40, 240 )
+texture = ExtResource( 2 )
+
+[node name="Palm2" type="Sprite" parent="Props"]
+position = Vector2( 264, 232 )
+texture = ExtResource( 2 )
+
+[node name="Palm3" type="Sprite" parent="Props"]
+position = Vector2( 232, 224 )
+texture = ExtResource( 2 )
+
+[node name="Palm4" type="Sprite" parent="Props"]
+position = Vector2( 352, 224 )
+texture = ExtResource( 2 )
+
+[node name="Palm5" type="Sprite" parent="Props"]
+position = Vector2( 336, 232 )
+texture = ExtResource( 2 )
+
+[node name="Palm6" type="Sprite" parent="Props"]
+position = Vector2( 104, 216 )
+texture = ExtResource( 2 )
+
+[node name="Palm7" type="Sprite" parent="Props"]
+position = Vector2( 8, 192 )
+texture = ExtResource( 2 )
+
+[node name="Plant-big" type="Sprite" parent="Props/Palm7"]
+position = Vector2( 72, 48 )
+texture = ExtResource( 9 )
+
+[node name="Plant-big2" type="Sprite" parent="Props/Palm7"]
+position = Vector2( 0, 48 )
+texture = ExtResource( 9 )
+
+[node name="Plant-big3" type="Sprite" parent="Props/Palm7"]
+position = Vector2( 344, -96 )
+texture = ExtResource( 9 )
+
+[node name="Plant-big4" type="Sprite" parent="Props/Palm7"]
+position = Vector2( -16, -104 )
+texture = ExtResource( 9 )
+
+[node name="Plant" type="Sprite" parent="Props/Palm7/Plant-big4"]
+position = Vector2( 64, 104 )
+texture = ExtResource( 5 )
+
+[node name="GunEnergy" parent="." instance=ExtResource( 6 )]
+position = Vector2( 64, 160 )
+
+[node name="SpikeBlock" parent="." instance=ExtResource( 10 )]
+position = Vector2( 88, 200 )
+
+[node name="SpikeBlock2" parent="." instance=ExtResource( 10 )]
+position = Vector2( 136, 200 )
+
+[node name="SpikeBlock3" parent="." instance=ExtResource( 10 )]
+position = Vector2( 40, 200 )
+
+[node name="HelpBlock" parent="." instance=ExtResource( 11 )]
+position = Vector2( 40, 168 )
+
+[node name="HelpBlock2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 88, 152 )
+
+[node name="HelpBlock3" parent="." instance=ExtResource( 11 )]
+position = Vector2( 136, 136 )
+
+[node name="Life" parent="." instance=ExtResource( 12 )]
+position = Vector2( 168, 104 )

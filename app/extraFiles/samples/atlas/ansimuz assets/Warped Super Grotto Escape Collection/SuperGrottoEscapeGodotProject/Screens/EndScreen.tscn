@@ -1,0 +1,119 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Levels/Layers/back.png" type="Texture" id=1]
+[ext_resource path="res://UI/Pixel.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Screens/EndScreen.gd" type="Script" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec2 direction = vec2(0.0, 1.0);
+uniform float speed_scale = 0.02;
+
+void fragment(){
+	vec2 move = direction * TIME * speed_scale;
+	COLOR = texture(TEXTURE, UV + move);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/direction = Vector2( 0, 1 )
+shader_param/speed_scale = 0.02
+
+[sub_resource type="DynamicFont" id=3]
+size = 8
+font_data = ExtResource( 2 )
+
+[node name="EndScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+material = SubResource( 2 )
+margin_right = 416.0
+margin_bottom = 240.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 2
+
+[node name="scroll" type="Node2D" parent="."]
+position = Vector2( 88, 496 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ScrollingText" type="Label" parent="scroll"]
+margin_left = 32.0
+margin_top = -8.0
+margin_right = 208.0
+margin_bottom = 457.0
+custom_fonts/font = SubResource( 3 )
+text = "nothings
+Jon Silvera
+Jason McMillen
+Thomas
+Zach Breman
+Cesar Guirao
+TTT
+David Ang
+Matthew D Moores
+Alex
+Philip Rushik
+Brandon Morris
+Molly the Bully
+Jeremy Seay
+fan_of_shera
+Rxtje
+spaghettiSyntax
+Anatolijs Ropotovs
+ClassyCrustatio
+Thomas Key
+Matthew Randall
+Simon Austin
+Michael Greenhut
+Nick Johnson
+Matthew Kautzman
+frederick robinson
+Damien Marble
+BigChibi
+Ronja Render
+GVguide
+Bazil
+Drew Anderson
+David York
+Andrew Ettensohn
+Kevin Garaventa Jevin Garaventa
+Aze Wan
+Darkbit
+Stephen Gaffen
+"
+
+[node name="Label" type="Label" parent="scroll"]
+margin_left = 32.0
+margin_top = -168.0
+margin_right = 386.0
+margin_bottom = 9.0
+custom_fonts/font = SubResource( 3 )
+text = "THANKS TO MY PATREON SUPPORTERS
+
+Gnoll
+Chris Davis
+Arthur Bates
+Chris. Gilchrist
+Tobias Edvarsen
+Omegus
+nickquest"
+
+[node name="thanks" type="Label" parent="scroll"]
+margin_left = 32.0
+margin_top = -272.0
+margin_right = 368.0
+margin_bottom = -184.0
+custom_fonts/font = SubResource( 3 )
+text = "A  Game by Ansimuz made in Godot.
+
+Feel free to use this project 
+for your own game development.
+
+Visit ansimuz.itch.io"
