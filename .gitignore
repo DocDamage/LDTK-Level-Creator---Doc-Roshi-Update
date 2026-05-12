@@ -30,8 +30,5 @@ tests/_private
 tests/_backups
 tests/*.txt
 
-# Bundled asset library metadata is committed, but raw source packs are too large for GitHub.
-app/extraFiles/samples/atlas/*
-!app/extraFiles/samples/atlas/assetLibrary.json
-!app/extraFiles/samples/atlas/_libraryThumbs/
-!app/extraFiles/samples/atlas/_libraryThumbs/*.png
+# Converted to MP3 for GitHub distribution.
+app/extraFiles/samples/atlas/sound effects/Horror SFX Free/Ambient/Suburban Neighborhood_morning.wav
