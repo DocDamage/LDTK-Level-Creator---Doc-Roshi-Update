@@ -260,7 +260,7 @@ class AssetPackBrowser {
 			});
 		}
 		if( file.kind=="audio" ) {
-			var jSelect = new J('<button type="button" class="gray" title="Select audio path"><span class="icon check"></span></button>');
+			var jSelect = new J('<button type="button" class="gray" title="Select audio path"><span class="icon checker"></span></button>');
 			jSelect.appendTo(jActions);
 			jSelect.toggleClass("active", selectedAudio.indexOf(file.relPath)>=0);
 			jSelect.click((ev:js.jquery.Event)->{
