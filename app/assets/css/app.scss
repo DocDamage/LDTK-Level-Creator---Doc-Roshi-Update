@@ -6440,7 +6440,7 @@ canvas#webgl {
 				.sampleTools,
 				.assetTools {
 					display: grid;
-					grid-template-columns: 180px min-content auto;
+					grid-template-columns: 180px auto;
 					gap: 4px;
 					align-items: center;
 					padding: 4px;
@@ -6497,6 +6497,10 @@ canvas#webgl {
 							}
 						}
 					}
+				}
+
+				.assetTools {
+					grid-template-columns: 180px min-content auto;
 				}
 
 				.sampleTools {
