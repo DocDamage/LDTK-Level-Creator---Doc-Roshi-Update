@@ -13,101 +13,101 @@
     {
       "path": "stages",
       "name": "Magic and fantasy stages",
-      "author": "Mixed artists",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/stages",
-      "licenseSummary": "Mixed third-party asset packs. Verify each original pack license before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "See the original files and folder names retained under the stages pack."
+      "author": "Mixed artists, including CraftPix / Free Game Assets and other paid asset-pack creators",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/stages; representative verified source: https://craftpix.net/file-licenses/",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. CraftPix/Free Game Assets licenses allow use in games, but explicitly do not permit distributing source art files in a way that lets end users reuse the art. Several retained folders are paid asset packs with no bundled redistribution grant.",
+      "redistributionStatus": "not-release-approved-standalone-source-files",
+      "attribution": "Keep creator attribution per original pack if used in a compiled game; do not publish the raw stage pack files in this repository without explicit redistribution permission."
     },
     {
       "path": "ansimuz assets",
       "name": "Ansimuz environment collection",
-      "author": "Ansimuz and bundled pack credits",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/ansimuz assets",
-      "licenseSummary": "Ansimuz packs and included license/readme files. Verify every retained pack license before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "Ansimuz environment packs and credits included in retained pack folders."
+      "author": "Ansimuz / Luis Zuno, with bundled audio/font credits in some folders",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/ansimuz assets; local license examples include public-license.txt and license.pdf; representative public page: https://ansimuz.itch.io/gothicvania-cold-corridors",
+      "licenseSummary": "Partially release-approved. Local Ansimuz public-license text allows personal/commercial use, modification, and redistribution for covered art, with credit appreciated. Some retained audio/font files are credited separately and need per-file attribution confirmation before a public asset-library release.",
+      "redistributionStatus": "partially-release-approved-subassets-need-attribution-review",
+      "attribution": "Credit Luis Zuno / Ansimuz for covered art. Preserve local public-license files. Credit bundled music/audio authors such as Pascal Belisle where retained."
     },
     {
       "path": "20000 Icons RPG + Recolors - Full version",
       "name": "HoriHori icon library",
       "author": "HoriHori",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/20000 Icons RPG + Recolors - Full version",
-      "licenseSummary": "HoriHori pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "HoriHori RPG icon library."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/20000 Icons RPG + Recolors - Full version; verified source: https://horihoripixel.itch.io/20000-rpg-icons",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. The HoriHori icon page allows editing and personal/commercial project use, but forbids redistribution or resale.",
+      "redistributionStatus": "not-release-approved-redistribution-forbidden",
+      "attribution": "HoriHori / HoriHoriPixel / HorizonPixelArt. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "HoriHori Assets/cards",
       "name": "HoriHori card art",
       "author": "HoriHori",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/cards",
-      "licenseSummary": "HoriHori pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "HoriHori card art."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/cards; verified source: https://horihoripixel.itch.io/12000-rpg-cards",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. The HoriHori cards page allows editing and personal/commercial project use, but forbids redistribution or resale.",
+      "redistributionStatus": "not-release-approved-redistribution-forbidden",
+      "attribution": "HoriHori / HoriHoriPixel / HorizonPixelArt. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "HoriHori Assets/spells",
       "name": "HoriHori spell effects",
       "author": "HoriHori",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/spells",
-      "licenseSummary": "HoriHori pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "HoriHori spell effects."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/spells; verified source: https://horihoripixel.itch.io/12000-rpg-spells",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. The HoriHori spells page allows editing and personal/commercial project use, but forbids redistribution or resale.",
+      "redistributionStatus": "not-release-approved-redistribution-forbidden",
+      "attribution": "HoriHori / HoriHoriPixel / HorizonPixelArt. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "Spells",
       "name": "Elemental spell library",
-      "author": "Mixed artists",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Spells",
-      "licenseSummary": "Mixed spell-art pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "Elemental spell art from retained pack folders."
+      "author": "CraftPix / Free Game Assets",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Spells; verified source: https://craftpix.net/file-licenses/",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. CraftPix licenses allow use in personal/commercial projects and games, but prohibit redistributing source art files in a reusable form.",
+      "redistributionStatus": "not-release-approved-standalone-source-files",
+      "attribution": "CraftPix / Free Game Assets. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "HoriHori Assets",
       "name": "HoriHori characters and backgrounds",
       "author": "HoriHori",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets",
-      "licenseSummary": "HoriHori pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "HoriHori characters, backgrounds, portraits, and items."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets; representative verified source: https://horihoripixel.itch.io/44000-rpg-icons-cards-spells",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. HoriHori public pack pages for the same bundle family allow editing and personal/commercial project use, but forbid redistribution or resale.",
+      "redistributionStatus": "not-release-approved-redistribution-forbidden",
+      "attribution": "HoriHori / HoriHoriPixel / HorizonPixelArt. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "CuteSCKR_uncut",
       "name": "CuteSCKR tilesets",
       "author": "CuteSCKR",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/CuteSCKR_uncut",
-      "licenseSummary": "CuteSCKR pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "CuteSCKR tileset collection."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/CuteSCKR_uncut; representative verified source: https://comshadow.itch.io/abandoned-hospital-tileset",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. Cute SCKR terms allow personal/commercial use in game projects, but prohibit reselling or redistributing the assets as standalone resources.",
+      "redistributionStatus": "not-release-approved-standalone-source-files",
+      "attribution": "Cute SCKR. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "Monster Mega Pack",
       "name": "Monster Mega Pack",
       "author": "BattleInkMaps",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Monster Mega Pack",
-      "licenseSummary": "BattleInkMaps pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "Monster Mega Pack by BattleInkMaps."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Monster Mega Pack; verified purchase page: https://battleinkmaps.itch.io/monsters-mega-pack/purchase",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. The public purchase page confirms this is a paid asset pack but does not provide an explicit permission grant to redistribute the raw PNG files.",
+      "redistributionStatus": "not-release-approved-no-public-redistribution-grant-found",
+      "attribution": "Monster Mega Pack by BattleInkMaps. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "portraits",
       "name": "Fantasy portraits",
-      "author": "Mixed artists",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/portraits",
-      "licenseSummary": "Mixed portrait/avatar pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "Fantasy portrait and avatar packs from retained folders."
+      "author": "CraftPix / Free Game Assets",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/portraits; verified source: https://craftpix.net/file-licenses/",
+      "licenseSummary": "Not release-approved as a public GitHub asset library. CraftPix licenses allow use in personal/commercial projects and games, but prohibit redistributing source art files in a reusable form.",
+      "redistributionStatus": "not-release-approved-standalone-source-files",
+      "attribution": "CraftPix / Free Game Assets. Remove from public raw asset distribution unless explicit redistribution permission is obtained."
     },
     {
       "path": "sound effects",
       "name": "Sound effects",
       "author": "Mixed artists",
-      "source": "Imported source pack folder: app/extraFiles/samples/atlas/sound effects",
-      "licenseSummary": "Mixed audio pack terms must be verified before public release.",
-      "redistributionStatus": "requires-pack-level-review",
-      "attribution": "Horror, fantasy, dialogue, and prototype sound-effect packs from retained folders."
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/sound effects; verified TomMusic comment/source: https://tommusic.itch.io/free-fantasy-200-sfx-pack/comments",
+      "licenseSummary": "Partially verified only. TomMusic confirms commercial project use with credit, but this folder contains many other audio packs with no bundled license files and no verified redistribution grant for publishing raw audio files as a reusable asset library.",
+      "redistributionStatus": "partially-verified-not-release-approved-mixed-audio",
+      "attribution": "Credit TomMusic for Free Fantasy SFX Pack if retained. Verify or remove every other audio subpack before public raw asset distribution."
     }
   ]
 }

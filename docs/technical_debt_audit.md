@@ -12,7 +12,7 @@ The main engineering risks are:
 
 1. Huge bundled asset footprint makes clone, CI, packaging, and review slow and fragile.
 2. Asset source drops still need a formal import/normalization pipeline even though known sidecars are now blocked.
-3. License/attribution has a strict pack manifest, but entries marked `requires-pack-level-review` still need legal/source verification.
+3. License/attribution has now been checked against local files and public pack pages; most newly imported raw asset packs are not release-approved for public GitHub redistribution.
 4. Core renderer files remain large and tightly coupled.
 5. Several old TODOs hide correctness risks outside the asset-library path.
 
@@ -124,30 +124,29 @@ Recommendation:
 - Add validator coverage for explicitly forbidden large raw audio paths.
 - Consider a max-size validator for tracked atlas files, with allowlisted exceptions only.
 
-### 4. Asset Licensing Is Not Yet Release-Grade
+### 4. Asset Licensing Blocks A Public Raw-Asset Release
+
+Status: verified and blocking. `docs/asset_license_manifest.json` now replaces vague `requires-pack-level-review` placeholders with concrete release statuses, and `docs/asset_license_verification.md` records the checked sources.
 
 Evidence:
 
 - `docs/DOC_ROSHI_ASSET_CREDITS.md` maps packs to authors and broad license notes.
-- Most entries say “See original pack terms” or “See original files in pack folders.”
-- The repository ships assets directly, so broad attribution may not be enough.
+- HoriHori public pack pages allow project use but forbid redistribution/resale.
+- Cute SCKR public terms allow game-project use but prohibit standalone resource redistribution.
+- CraftPix/Free Game Assets licenses allow game distribution but prohibit redistributing source art in reusable form.
+- BattleInkMaps has no public raw-file redistribution grant on the checked purchase page.
+- Ansimuz is partially verified through local public-license files, but retained music/font/audio side-assets still need attribution review.
 
 Impact:
 
-- Release/legal risk if pack licenses require specific wording, links, redistribution terms, or bundled license files.
-- Reviewers and users cannot quickly verify whether redistribution is allowed.
+- Public GitHub distribution of many retained raw PNG/WAV files likely violates or exceeds the verified asset-pack terms.
+- Attribution alone is not enough for packs that prohibit standalone redistribution.
 
 Recommendation:
 
-- Add a per-pack license manifest with:
-  - original URL/source,
-  - author,
-  - license name,
-  - redistribution permission,
-  - required attribution text,
-  - local license file path.
-- Fail CI if a pack in `assetLibrary.json` lacks a license manifest entry.
-- Keep license files next to imported assets or in `docs/licenses/asset-packs/`.
+- Remove or replace every `not-release-approved-*` raw asset pack before a public release.
+- Keep only assets with CC0/public-domain/open redistribution terms or explicit written permission for this repository use case.
+- Keep local license files next to any retained redistributable assets.
 
 ## Medium Severity Debt
 
