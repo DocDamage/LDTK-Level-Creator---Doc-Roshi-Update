@@ -21,7 +21,7 @@ Raw source drops and large library folders may remain ignored, but any file refe
 | Fantasy portraits | `app/extraFiles/samples/atlas/portraits/` | Mixed artists | See original files in pack folders | Dialog, NPC, and party UI starter material |
 | Sound effects | `app/extraFiles/samples/atlas/sound effects/` | Mixed artists | See original files in pack folders | Audio file fields and the horror/audio demo |
 
-Before public release, every entry marked `not-release-approved-*` or `partially-*` in `docs/asset_license_manifest.json` must be removed, replaced, or covered by explicit written redistribution permission. See `docs/asset_license_verification.md` for the current evidence.
+This asset bundle is intended for private/personal use. Keep the repository private while it contains packs marked `private-use-*` in `docs/asset_license_manifest.json`; public raw-asset redistribution still requires removal, replacement, or explicit written permission. See `docs/asset_license_verification.md` for the current evidence.
 
 ## Release checks
 

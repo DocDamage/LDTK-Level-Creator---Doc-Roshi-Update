@@ -12,7 +12,7 @@ The main engineering risks are:
 
 1. Huge bundled asset footprint makes clone, CI, packaging, and review slow and fragile.
 2. Asset source drops still need a formal import/normalization pipeline even though known sidecars are now blocked.
-3. License/attribution has now been checked against local files and public pack pages; most newly imported raw asset packs are not release-approved for public GitHub redistribution.
+3. License/attribution has now been checked against local files and public pack pages; the imported packs are documented for private/personal use, but most are not approved for public raw-asset redistribution.
 4. Core renderer files remain large and tightly coupled.
 5. Several old TODOs hide correctness risks outside the asset-library path.
 
@@ -124,9 +124,9 @@ Recommendation:
 - Add validator coverage for explicitly forbidden large raw audio paths.
 - Consider a max-size validator for tracked atlas files, with allowlisted exceptions only.
 
-### 4. Asset Licensing Blocks A Public Raw-Asset Release
+### 4. Asset Licensing Requires Private-Only Distribution
 
-Status: verified and blocking. `docs/asset_license_manifest.json` now replaces vague `requires-pack-level-review` placeholders with concrete release statuses, and `docs/asset_license_verification.md` records the checked sources.
+Status: verified for the current project intent. This app update is for private/personal use, and `docs/asset_license_manifest.json` now records that distinction explicitly. Public raw-asset redistribution remains blocked unless permissions change.
 
 Evidence:
 
@@ -139,12 +139,14 @@ Evidence:
 
 Impact:
 
+- Private/personal use is the intended scope and is documented.
 - Public GitHub distribution of many retained raw PNG/WAV files likely violates or exceeds the verified asset-pack terms.
 - Attribution alone is not enough for packs that prohibit standalone redistribution.
 
 Recommendation:
 
-- Remove or replace every `not-release-approved-*` raw asset pack before a public release.
+- Keep this repository private while it contains raw packs marked `private-use-*`.
+- Remove or replace every private-only raw asset pack before a public release.
 - Keep only assets with CC0/public-domain/open redistribution terms or explicit written permission for this repository use case.
 - Keep local license files next to any retained redistributable assets.
 
@@ -301,7 +303,7 @@ Impact:
 Recommendation:
 
 - Extend validation in small steps.
-- Tighten per-pack license manifest statuses from `requires-pack-level-review` to verified release statuses.
+- Keep per-pack license manifest statuses aligned with the private/personal-use scope.
 - Add manifest file-count accuracy checks for every pack.
 - Add corrupt-image/thumbnail dimension checks.
 
