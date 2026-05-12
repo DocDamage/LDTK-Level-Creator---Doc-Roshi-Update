@@ -11,7 +11,7 @@
   "iid": "1b8da288-6145-4ae5-a735-8867bf6a2063",
   "jsonVersion": "1.5.3",
   "appBuildId": 473702,
-  "nextUid": 40,
+  "nextUid": 41,
   "identifierStyle": "Capitalize",
   "toc": [],
   "worldLayout": "Free",
@@ -76,6 +76,41 @@
         "autoRuleGroups": [],
         "autoSourceLayerDefUid": null,
         "tilesetDefUid": null,
+        "tilePivotX": 0,
+        "tilePivotY": 0,
+        "biomeFieldUid": null
+      },
+      {
+        "__type": "Tiles",
+        "identifier": "FeaturedTiles",
+        "type": "Tiles",
+        "uid": 25,
+        "doc": "Editable sample tiles pulled from the FeaturedAsset image so this starter opens with real bundled art on the canvas.",
+        "uiColor": "#B55088",
+        "gridSize": 16,
+        "guideGridWid": 0,
+        "guideGridHei": 0,
+        "displayOpacity": 1,
+        "inactiveOpacity": 1,
+        "hideInList": false,
+        "hideFieldsWhenInactive": false,
+        "canSelectWhenInactive": true,
+        "renderInWorldView": true,
+        "pxOffsetX": 0,
+        "pxOffsetY": 0,
+        "parallaxFactorX": 0,
+        "parallaxFactorY": 0,
+        "parallaxScaling": true,
+        "requiredTags": [],
+        "excludedTags": [],
+        "autoTilesKilledByOtherLayerUid": null,
+        "uiFilterTags": [],
+        "useAsyncRender": false,
+        "intGridValues": [],
+        "intGridValuesGroups": [],
+        "autoRuleGroups": [],
+        "autoSourceLayerDefUid": null,
+        "tilesetDefUid": 20,
         "tilePivotX": 0,
         "tilePivotY": 0,
         "biomeFieldUid": null
@@ -418,7 +453,30 @@
         ]
       }
     ],
-    "tilesets": [],
+    "tilesets": [
+      {
+        "__cWid": 2,
+        "__cHei": 2,
+        "identifier": "FeaturedAssetTiles",
+        "uid": 20,
+        "relPath": "atlas/20000 Icons RPG + Recolors - Full version/Arcane orb/Arcane orb1.png",
+        "embedAtlas": null,
+        "pxWid": 32,
+        "pxHei": 32,
+        "tileGridSize": 16,
+        "spacing": 0,
+        "padding": 0,
+        "tags": [],
+        "tagsSourceEnumUid": null,
+        "enumTags": [],
+        "customData": [],
+        "savedSelections": [],
+        "cachedPixelData": {
+          "opaqueTiles": "",
+          "averageColors": ""
+        }
+      }
+    ],
     "enums": [],
     "externalEnums": [],
     "levelFields": [
@@ -943,6 +1001,96 @@
               "__worldY": 64
             }
           ]
+        },
+        {
+          "__identifier": "FeaturedTiles",
+          "__type": "Tiles",
+          "__cWid": 20,
+          "__cHei": 11,
+          "__gridSize": 16,
+          "__opacity": 1,
+          "__pxTotalOffsetX": 0,
+          "__pxTotalOffsetY": 0,
+          "__tilesetDefUid": 20,
+          "__tilesetRelPath": "atlas/20000 Icons RPG + Recolors - Full version/Arcane orb/Arcane orb1.png",
+          "iid": "a0fc0271-4924-474c-bc5f-edc310e13e87",
+          "levelId": 2,
+          "layerDefUid": 25,
+          "pxOffsetX": 0,
+          "pxOffsetY": 0,
+          "visible": true,
+          "optionalRules": [],
+          "intGridCsv": [],
+          "autoLayerTiles": [],
+          "seed": 654321,
+          "overrideTilesetUid": null,
+          "gridTiles": [
+            {
+              "px": [
+                16,
+                16
+              ],
+              "src": [
+                0,
+                0
+              ],
+              "f": 0,
+              "t": 0,
+              "d": [
+                0
+              ],
+              "a": 1
+            },
+            {
+              "px": [
+                32,
+                16
+              ],
+              "src": [
+                16,
+                0
+              ],
+              "f": 0,
+              "t": 1,
+              "d": [
+                1
+              ],
+              "a": 1
+            },
+            {
+              "px": [
+                16,
+                32
+              ],
+              "src": [
+                0,
+                16
+              ],
+              "f": 0,
+              "t": 2,
+              "d": [
+                2
+              ],
+              "a": 1
+            },
+            {
+              "px": [
+                32,
+                32
+              ],
+              "src": [
+                16,
+                16
+              ],
+              "f": 0,
+              "t": 3,
+              "d": [
+                3
+              ],
+              "a": 1
+            }
+          ],
+          "entityInstances": []
         },
         {
           "__identifier": "Layout",
