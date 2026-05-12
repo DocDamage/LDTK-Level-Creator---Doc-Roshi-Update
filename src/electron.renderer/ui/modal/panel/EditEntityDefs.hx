@@ -332,6 +332,7 @@ class EditEntityDefs extends ui.modal.Panel {
 			});
 		}
 		JsTools.appendTilesetsToSelect(project, jRenderSelect);
+		appendAssetLibraryTilesetPicker(jRenderSelect);
 
 		// Pick render mode
 		jRenderSelect.change( function(ev) {
@@ -676,6 +677,93 @@ class EditEntityDefs extends ui.modal.Panel {
 		JsTools.parseComponents(jEntityList);
 		checkBackup();
 		search.run();
+	}
+
+
+	function appendAssetLibraryTilesetPicker(jRenderSelect:js.jquery.JQuery) {
+		jRenderSelect.siblings("button.assetLibrary").remove();
+
+		var packs = AssetLibrary.getPacks();
+		if( packs.length==0 )
+			return;
+
+		var jButton = new J('<button type="button" class="recall assetLibrary" title="Create tileset from bundled asset library"><span class="icon folder"/></button>');
+		jButton.insertAfter(jRenderSelect);
+		jButton.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			var ctx = new ContextMenu(ev);
+			ctx.addTitle(L.t._("Bundled asset library"));
+			for(pack in packs) {
+				if( !AssetLibrary.isImagePack(pack) )
+					continue;
+
+				var folder = AssetLibrary.getPackAbsPath(pack);
+				if( !NT.fileExists(folder) )
+					continue;
+
+				ctx.addAction({
+					label: L.untranslated(pack.name),
+					subText: L.untranslated(pack.kind+" - "+pack.files+" files"),
+					iconId: "folder",
+					cb: ()->{
+						dn.js.ElectronDialogs.openFile([".png", ".gif", ".jpg", ".jpeg", ".aseprite", ".ase"], folder, function(absPath) {
+							App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+							var td = createTilesetFromAssetImage(absPath);
+							if( td!=null )
+								useTilesetForEntityRender(td);
+						});
+					},
+				});
+			}
+		});
+	}
+
+
+	function createTilesetFromAssetImage(absPath:String) : Null<data.def.TilesetDef> {
+		var td = project.defs.createTilesetDef();
+		var relPath = project.makeRelativeFilePath(absPath);
+
+		App.LOG.fileOp("Loading bundled asset atlas: "+absPath);
+		var result = td.importAtlasImage(relPath);
+		switch result {
+			case Ok:
+
+			case FileNotFound, LoadingFailed(_), UnsupportedFileOrigin(_):
+				project.defs.removeTilesetDef(td);
+				new ui.modal.dialog.Warning( Lang.imageLoadingMessage(relPath, result) );
+				return null;
+
+			case TrimmedPadding, RemapLoss, RemapSuccessful:
+				new ui.modal.dialog.Message( Lang.imageLoadingMessage(relPath, result), "tile" );
+		}
+
+		editor.watcher.watchImage(td.relPath);
+		project.defs.autoRenameTilesetIdentifier(null, td);
+		editor.ge.emit( TilesetDefAdded(td) );
+		editor.ge.emit( TilesetImageLoaded(td, false) );
+		return td;
+	}
+
+
+	function useTilesetForEntityRender(td:data.def.TilesetDef) {
+		if( curEntity==null )
+			return;
+
+		var oldMode = curEntity.renderMode;
+		curEntity._oldTileId = null;
+		curEntity.tileRect = null;
+		curEntity.renderMode = Tile;
+		curEntity.tilesetId = td.uid;
+
+		if( oldMode!=Tile ) {
+			curEntity.tileOpacity = 1;
+			curEntity.fillOpacity = 0.08;
+			curEntity.lineOpacity = 0;
+		}
+
+		editor.ge.emit( EntityDefChanged );
+		updateEntityForm();
+		updatePreview();
 	}
 
 

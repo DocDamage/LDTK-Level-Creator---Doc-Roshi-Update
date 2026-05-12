@@ -1,0 +1,136 @@
+{
+	"packs": [
+		{
+			"name": "Classic sample tilesets",
+			"path": ".",
+			"thumb": "_libraryThumbs/classic-sample-tilesets.png",
+			"kind": "Tilesets",
+			"files": 8,
+			"author": "LDtk sample artists",
+			"license": "See samples README",
+			"suggestedUse": "Starter examples",
+			"summary": "Original LDtk sample atlas sheets used by the bundled example projects."
+		},
+		{
+			"name": "Magic and fantasy stages",
+			"path": "stages",
+			"thumb": "_libraryThumbs/magic-fantasy-stages.png",
+			"kind": "Environment packs",
+			"files": 2530,
+			"author": "Mixed artists",
+			"license": "See pack folders",
+			"suggestedUse": "Level themes",
+			"summary": "Large themed environment packs for forests, dungeons, cyberpunk interiors, temples, caverns, world maps, and post-apocalyptic scenes."
+		},
+		{
+			"name": "Ansimuz environment collection",
+			"path": "ansimuz assets",
+			"thumb": "_libraryThumbs/ansimuz-environments.png",
+			"kind": "Environment packs",
+			"files": 3620,
+			"author": "Ansimuz",
+			"license": "See pack folders",
+			"suggestedUse": "Side-view levels",
+			"summary": "Platformer and parallax environment packs with cyberpunk streets, gothic corridors, forests, sewers, underwater scenes, sci-fi labs, and warped fantasy locations."
+		},
+		{
+			"name": "HoriHori icon library",
+			"path": "20000 Icons RPG + Recolors - Full version",
+			"thumb": "_libraryThumbs/rpg-icons-recolors.png",
+			"kind": "RPG icons",
+			"files": 21402,
+			"author": "HoriHori",
+			"license": "See pack folders",
+			"suggestedUse": "Entity icons and UI",
+			"summary": "A large recolored icon library for items, equipment, resources, status effects, and RPG-style UI."
+		},
+		{
+			"name": "HoriHori card art",
+			"path": "HoriHori Assets/cards",
+			"thumb": "_libraryThumbs/horihori-cards.png",
+			"kind": "Cards",
+			"files": 13078,
+			"author": "HoriHori",
+			"license": "See pack folders",
+			"suggestedUse": "Cards and rewards",
+			"summary": "Card backs, fronts, and variants for deck-builders, rewards, collectibles, and board-game prototypes."
+		},
+		{
+			"name": "HoriHori spell effects",
+			"path": "HoriHori Assets/spells",
+			"thumb": "_libraryThumbs/horihori-spells.png",
+			"kind": "Spells",
+			"files": 13039,
+			"author": "HoriHori",
+			"license": "See pack folders",
+			"suggestedUse": "Abilities and VFX",
+			"summary": "Spell and ability art grouped by element and effect style, with many variants for combat prototypes."
+		},
+		{
+			"name": "Elemental spell library",
+			"path": "Spells",
+			"thumb": "_libraryThumbs/elemental-spells.png",
+			"kind": "Spells",
+			"files": 13000,
+			"author": "Mixed artists",
+			"license": "See pack folders",
+			"suggestedUse": "Spell entities and VFX",
+			"summary": "Elemental spell art organized into Air, Dark, Fire, Light, and Water collections for abilities, pickups, combat markers, and effect prototypes."
+		},
+		{
+			"name": "HoriHori characters and backgrounds",
+			"path": "HoriHori Assets",
+			"thumb": "_libraryThumbs/horihori-characters-backgrounds.png",
+			"kind": "Characters",
+			"files": 9024,
+			"author": "HoriHori",
+			"license": "See pack folders",
+			"suggestedUse": "NPCs and scenes",
+			"summary": "Character, portrait, item, and background art from the numbered HoriHori mega packs."
+		},
+		{
+			"name": "CuteSCKR tilesets",
+			"path": "CuteSCKR_uncut",
+			"thumb": "_libraryThumbs/cutesckr-tilesets.png",
+			"kind": "Tileset collection",
+			"files": 628,
+			"author": "CuteSCKR",
+			"license": "See pack folders",
+			"suggestedUse": "Tileset imports",
+			"summary": "A broad collection of pixel-art tilesets covering modern, medieval, sci-fi, horror, war, fantasy, and survival settings."
+		},
+		{
+			"name": "Monster Mega Pack",
+			"path": "Monster Mega Pack",
+			"thumb": "_libraryThumbs/monster-mega-pack.png",
+			"kind": "Creatures",
+			"files": 915,
+			"author": "BattleInkMaps",
+			"license": "See pack folders",
+			"suggestedUse": "Enemy entities",
+			"summary": "Creature and enemy art suitable for entity icons, encounters, bestiaries, and combat prototypes."
+		},
+		{
+			"name": "Fantasy portraits",
+			"path": "portraits",
+			"thumb": "_libraryThumbs/fantasy-portraits.png",
+			"kind": "Character portraits",
+			"files": 1019,
+			"author": "Mixed artists",
+			"license": "See pack folders",
+			"suggestedUse": "Dialog and NPCs",
+			"summary": "Portrait and avatar images for NPCs, dialogue, party members, encounters, and UI mockups."
+		},
+		{
+			"name": "Sound effects",
+			"path": "sound effects",
+			"thumb": "",
+			"kind": "Audio",
+			"files": 1621,
+			"author": "Mixed artists",
+			"license": "See pack folders",
+			"suggestedUse": "Prototype audio",
+			"summary": "Bundled WAV and OGG effects for game prototypes and interaction tests."
+		}
+	]
+}

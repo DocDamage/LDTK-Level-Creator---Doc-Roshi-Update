@@ -1,11 +1,13 @@
 package page;
 
 import hxd.Key;
+import misc.AssetLibrary.AssetLibraryPack;
 
 class Home extends Page {
 	public static var ME : Home;
 
 	var pendingBackupChecks : Array<{ projectFp:dn.FilePath, jTarget:js.jquery.JQuery }> = [];
+	var assetFilter = "*";
 
 	public function new() {
 		super();
@@ -55,7 +57,14 @@ class Home extends Page {
 			else
 				hideSamples();
 		});
-		jPage.find(".allSamples .hide").click( (_)->hideSamples() );
+		jPage.find(".sampleProjects .hide").click( (_)->hideSamples() );
+		jPage.find(".assets").click( (_)->{
+			if( jPage.find(".assetLibrary").is(":visible") )
+				hideAssetLibrary();
+			else
+				showAssetLibrary();
+		});
+		jPage.find(".assetLibrary .hide").click( (_)->hideAssetLibrary() );
 		jPage.find(".import").click( (ev)->onImport(ev) );
 		jPage.find(".new").click( (_)->if( !cd.hasSetS("newLock",0.2) ) onNew() );
 
@@ -103,11 +112,12 @@ class Home extends Page {
 		var path = JsTools.getSamplesDir();
 		App.LOG.debug("samplesDir="+path);
 		var files = NT.readDir(path);
-		var jSamples = jPage.find(".allSamples");
+		var jSamples = jPage.find(".sampleProjects");
 		var jScroller = jSamples.children(".scroller");
-		jScroller.on( "wheel", (ev:js.html.WheelEvent)->{
+		jPage.find(".allSamples .scroller").on( "wheel", (ev:js.html.WheelEvent)->{
 			var ev = (cast ev).originalEvent;
-			jScroller.scrollLeft( jScroller.scrollLeft() + ev.deltaY );
+			var jTarget = new J(ev.currentTarget);
+			jTarget.scrollLeft( jTarget.scrollLeft() + ev.deltaY );
 			ev.preventDefault();
 		});
 		for(f in files) {
@@ -127,6 +137,148 @@ class Home extends Page {
 			if( App.ME.recentProjectsContains(fp.full) )
 				jSample.addClass("seen");
 		}
+
+		loadAssetLibrary();
+	}
+
+	function loadAssetLibrary() {
+		var atlasDir = AssetLibrary.getDir();
+		var jScroller = jPage.find(".assetLibrary .scroller");
+
+		if( !NT.fileExists(atlasDir) ) {
+			jScroller.append('<div class="sample"><div class="name">No asset library folder</div></div>');
+			return;
+		}
+
+		if( !NT.fileExists(AssetLibrary.getManifestPath()) ) {
+			jScroller.append('<div class="sample"><div class="name">No asset manifest</div></div>');
+			return;
+		}
+
+		var packs = AssetLibrary.getPacks();
+		if( packs.length==0 ) {
+			jScroller.append('<div class="sample"><div class="name">No asset packs</div></div>');
+			return;
+		}
+
+		createAssetLibraryFilters(packs);
+
+		for(pack in packs) {
+			var folder = AssetLibrary.getPackAbsPath(pack);
+			var thumb = AssetLibrary.getThumbAbsPath(pack);
+			thumb = StringTools.replace(thumb, "\\", "/");
+
+			var jPack = new J('<div class="sample assetPack"/>');
+			jPack.appendTo(jScroller);
+			jPack.attr("data-kind", pack.kind);
+			jPack.attr("data-search", (pack.name+" "+pack.kind+" "+pack.summary+" "+pack.suggestedUse+" "+pack.author).toLowerCase());
+			if( pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb) )
+				jPack.append('<div class="thumb" style="background-image:url(\'$thumb\')"></div>');
+			else
+				jPack.append('<div class="thumb"></div>');
+
+			var details = pack.kind+" - "+pack.files+" files";
+			if( pack.author!=null && pack.author.length>0 )
+				details += "<br/>by "+pack.author;
+			if( pack.license!=null && pack.license.length>0 )
+				details += "<br/>"+pack.license;
+			if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
+				details += "<br/>"+pack.suggestedUse;
+
+			jPack.append('<div class="name">${pack.name}<br/><small>$details</small></div>');
+			jPack.attr("title", pack.summary);
+			jPack.click((ev)->openAssetPackMenu(ev, pack, folder, thumb));
+			jPack.on("contextmenu", (ev:js.jquery.Event)->{
+				ev.preventDefault();
+				openAssetPackMenu(ev, pack, folder, thumb);
+			});
+		}
+		updateAssetLibraryFilter();
+	}
+
+	function createAssetLibraryFilters(packs:Array<AssetLibraryPack>) {
+		var jFilters = jPage.find(".assetLibrary .assetFilters");
+		jFilters.empty();
+
+		var kinds = [];
+		var seen = new Map<String,Bool>();
+		for(pack in packs)
+			if( !seen.exists(pack.kind) ) {
+				seen.set(pack.kind, true);
+				kinds.push(pack.kind);
+			}
+		kinds.sort(Reflect.compare);
+
+		function addFilter(label:String, kind:String) {
+			var jButton = new J('<button type="button"/>');
+			jButton.appendTo(jFilters);
+			jButton.text(label);
+			jButton.attr("data-kind", kind);
+			jButton.click((ev)->{
+				assetFilter = kind;
+				updateAssetLibraryFilter();
+			});
+		}
+
+		addFilter(L.t._("All"), "*");
+		for(kind in kinds)
+			addFilter(kind, kind);
+
+		jPage.find(".assetLibrary .assetSearch").off().on("input", (_)->updateAssetLibraryFilter());
+	}
+
+	function updateAssetLibraryFilter() {
+		var query = (jPage.find(".assetLibrary .assetSearch").val():String);
+		query = query==null ? "" : query.toLowerCase();
+
+		jPage.find(".assetLibrary .assetFilters button").each( function(idx, e) {
+			var jButton = new J(e);
+			jButton.toggleClass("active", jButton.attr("data-kind")==assetFilter);
+		});
+
+		var visibleCount = 0;
+		jPage.find(".assetLibrary .assetPack").each( function(idx, e) {
+			var jPack = new J(e);
+			var matchesKind = assetFilter=="*" || jPack.attr("data-kind")==assetFilter;
+			var haystack = jPack.attr("data-search");
+			var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
+			var visible = matchesKind && matchesQuery;
+			if( visible )
+				visibleCount++;
+			jPack.toggle(visible);
+		});
+		jPage.find(".assetLibrary .assetEmpty").toggle(visibleCount==0);
+	}
+
+	function openAssetPackMenu(ev:js.jquery.Event, pack:AssetLibraryPack, folder:String, thumb:String) {
+		ev.stopPropagation();
+
+		var ctx = new ui.modal.ContextMenu(ev);
+		ctx.addTitle(L.untranslated(pack.name));
+		ctx.addAction({
+			label: L.t._("Open asset folder"),
+			iconId: "open",
+			cb: ()->JsTools.locateFile(folder, false),
+		});
+		ctx.addAction({
+			label: L.t._("Copy folder path"),
+			iconId: "copy",
+			cb: ()->{
+				App.ME.clipboard.copyStr(folder);
+				N.copied("folder path");
+			},
+		});
+		ctx.addAction({
+			label: L.t._("Reveal preview image"),
+			iconId: "locate",
+			show: ()->pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb),
+			cb: ()->JsTools.locateFile(thumb, true),
+		});
+		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
+			ctx.addAction({
+				label: L.untranslated(pack.suggestedUse),
+				subText: L.untranslated(pack.summary),
+			});
 	}
 
 
@@ -438,17 +590,36 @@ class Home extends Page {
 	function showSamples(anim=true) {
 		jPage.find(".files").addClass("hasSamples");
 		if( anim )
-			jPage.find(".allSamples").slideDown(100);
+			jPage.find(".sampleProjects").slideDown(100);
 		else
-			jPage.find(".allSamples").show();
+			jPage.find(".sampleProjects").show();
 		settings.setUiStateBool( HideSamplesOnHome, false );
 	}
 
 
 	function hideSamples() {
-		jPage.find(".files").removeClass("hasSamples");
-		jPage.find(".allSamples").slideUp(60);
+		jPage.find(".sampleProjects").slideUp(60, ()->{
+			if( !jPage.find(".assetLibrary").is(":visible") )
+				jPage.find(".files").removeClass("hasSamples");
+		});
 		settings.setUiStateBool( HideSamplesOnHome, true );
+	}
+
+
+	function showAssetLibrary(anim=true) {
+		jPage.find(".files").addClass("hasSamples");
+		if( anim )
+			jPage.find(".assetLibrary").slideDown(100);
+		else
+			jPage.find(".assetLibrary").show();
+	}
+
+
+	function hideAssetLibrary() {
+		jPage.find(".assetLibrary").slideUp(60, ()->{
+			if( !jPage.find(".sampleProjects").is(":visible") )
+				jPage.find(".files").removeClass("hasSamples");
+		});
 	}
 
 

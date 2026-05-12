@@ -6073,6 +6073,50 @@ canvas#webgl {
 					background-color: $helpDark;
 				}
 
+				.assetTools {
+					display: grid;
+					grid-template-columns: 180px auto;
+					gap: 4px;
+					align-items: center;
+					padding: 4px;
+					background-color: $helpDark;
+
+					input[type=text] {
+						width: 100%;
+						box-sizing: border-box;
+					}
+
+					.assetFilters {
+						display: flex;
+						gap: 2px;
+						overflow-x: auto;
+
+						button {
+							flex: 0 0 auto;
+							width: auto;
+							padding: 5px 8px;
+							font-size: 8pt;
+							background-color: $helpDarker;
+							box-shadow: none;
+
+							&.active {
+								color: black;
+								background-color: $help;
+							}
+						}
+					}
+				}
+
+				.assetEmpty {
+					display: none;
+					padding: 12px;
+					text-align: center;
+					font-family: Roboto;
+					font-style: italic;
+					color: $help;
+					background-color: $helpDark;
+				}
+
 				.sample {
 					display: grid;
 					flex: 0 0 128px;

@@ -450,10 +450,8 @@ class FieldInstancesForm {
 				input.focus( ev->{
 					input.blur();
 				});
-				input.click( ev->{
-					var uiDirId = "field_"+fi.def.identifier+"_"+fi.def.uid;
-					var defaultDir = App.ME.settings.getUiDir(project, uiDirId, project.getProjectDir());
-					dn.js.ElectronDialogs.openFile(fi.def.acceptFileTypes, defaultDir, function( absPath ) {
+				var uiDirId = "field_"+fi.def.identifier+"_"+fi.def.uid;
+				function pickAbsFile(absPath:String) {
 						var fp = dn.FilePath.fromFile(absPath);
 						fp.useSlashes();
 						var relPath = project.makeRelativeFilePath(fp.full);
@@ -462,9 +460,15 @@ class FieldInstancesForm {
 						onFieldChange(fi);
 						N.debug(fp.directory);
 						App.ME.settings.storeUiDir(project, uiDirId, fp.directory);
+				}
+				input.click( ev->{
+					var defaultDir = App.ME.settings.getUiDir(project, uiDirId, project.getProjectDir());
+					dn.js.ElectronDialogs.openFile(fi.def.acceptFileTypes, defaultDir, function( absPath ) {
+						pickAbsFile(absPath);
 					});
 					input.blur();
 				});
+				appendAssetLibraryPathPicker(jTarget, fi, input, pickAbsFile);
 
 				// Edit
 				if( !fi.isUsingDefault(arrayIdx) ) {
@@ -766,6 +770,43 @@ class FieldInstancesForm {
 				// Not done here
 		}
 
+	}
+
+
+	function appendAssetLibraryPathPicker(jTarget:js.jquery.JQuery, fi:FieldInstance, input:js.jquery.JQuery, onPick:String->Void) {
+		var packs = [];
+		for(pack in AssetLibrary.getPacks()) {
+			if( !AssetLibrary.matchesAcceptedFileTypes(pack, fi.def.acceptFileTypes) )
+				continue;
+			if( !NT.fileExists(AssetLibrary.getPackAbsPath(pack)) )
+				continue;
+			packs.push(pack);
+		}
+		if( packs.length==0 )
+			return;
+
+		var jButton = new J('<button type="button" class="recall assetLibrary" title="Pick from bundled asset library"><span class="icon folder"/></button>');
+		jButton.appendTo(jTarget);
+		jButton.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			var ctx = new ui.modal.ContextMenu(ev);
+			ctx.addTitle(L.t._("Bundled asset library"));
+			for(pack in packs) {
+				var folder = AssetLibrary.getPackAbsPath(pack);
+				var exts = AssetLibrary.getMatchingPackExtensions(pack, fi.def.acceptFileTypes);
+				ctx.addAction({
+					label: L.untranslated(pack.name),
+					subText: L.untranslated(pack.kind+" - "+pack.files+" files"+(exts.length>0 ? " - "+exts.join(", ") : "")),
+					iconId: "folder",
+					cb: ()->{
+						dn.js.ElectronDialogs.openFile(fi.def.acceptFileTypes, folder, function(absPath) {
+							onPick(absPath);
+							input.blur();
+						});
+					},
+				});
+			}
+		});
 	}
 
 

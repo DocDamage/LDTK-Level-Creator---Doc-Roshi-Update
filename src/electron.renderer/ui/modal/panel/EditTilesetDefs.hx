@@ -1,5 +1,7 @@
 package ui.modal.panel;
 
+import misc.AssetLibrary.AssetLibraryPack;
+
 class EditTilesetDefs extends ui.modal.Panel {
 	var jList : js.jquery.JQuery;
 	var jForm : js.jquery.JQuery;
@@ -146,7 +148,7 @@ class EditTilesetDefs extends ui.modal.Panel {
 		if( curTd.isUsingEmbedAtlas() )
 			jForm.find("dd.img").append("<span>This tileset uses an embed atlas image.</span>");
 		else {
-			var jImg = JsTools.createImagePicker(project, curTd.relPath, (relPath)->{
+			function importAtlasRelPath(relPath:Null<String>) {
 				var oldRelPath = curTd.relPath;
 				if( relPath==null ) {
 					// Remove image
@@ -178,7 +180,10 @@ class EditTilesetDefs extends ui.modal.Panel {
 
 				updateTilesetPreview();
 				editor.ge.emit( TilesetImageLoaded(curTd, false) );
-			});
+			}
+
+			var jImg = JsTools.createImagePicker(project, curTd.relPath, importAtlasRelPath);
+			appendAssetLibraryPicker(jImg, importAtlasRelPath);
 			jImg.appendTo( jForm.find("dd.img") );
 		}
 
@@ -380,5 +385,39 @@ class EditTilesetDefs extends ui.modal.Panel {
 		JsTools.parseComponents(jList);
 		checkBackup();
 		search.run();
+	}
+
+	function appendAssetLibraryPicker(jImg:js.jquery.JQuery, onPick:Null<String>->Void) {
+		var packs = AssetLibrary.getPacks();
+		if( packs.length==0 )
+			return;
+
+		var jButton = new J('<button class="recall assetLibrary" title="Pick from bundled asset library"><span class="icon folder"/></button>');
+		jButton.insertAfter(jImg.find("button.pick"));
+		jButton.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			var ctx = new ui.modal.ContextMenu(ev);
+			ctx.addTitle(L.t._("Bundled asset library"));
+			for(pack in packs) {
+				if( !AssetLibrary.isImagePack(pack) )
+					continue;
+
+				var folder = AssetLibrary.getPackAbsPath(pack);
+				if( !NT.fileExists(folder) )
+					continue;
+
+				ctx.addAction({
+					label: L.untranslated(pack.name),
+					subText: L.untranslated(pack.kind+" - "+pack.files+" files"),
+					iconId: "folder",
+					cb: ()->{
+						dn.js.ElectronDialogs.openFile([".png", ".gif", ".jpg", ".jpeg", ".aseprite", ".ase"], folder, function(absPath) {
+							App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+							onPick(project.makeRelativeFilePath(absPath));
+						});
+					},
+				});
+			}
+		});
 	}
 }
