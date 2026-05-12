@@ -11,7 +11,7 @@
   "iid": "d2a838a5-c358-4385-81ce-555789f4cf1e",
   "jsonVersion": "1.5.3",
   "appBuildId": 473702,
-  "nextUid": 30,
+  "nextUid": 40,
   "identifierStyle": "Capitalize",
   "toc": [],
   "worldLayout": "Free",
@@ -37,7 +37,7 @@
   "backupLimit": 10,
   "backupRelPath": null,
   "levelNamePattern": "Doc_Roshi_Asset_20000_Icons_RPG_Recolors_Full_version_Coin_%idx",
-  "tutorialDesc": "Doc Roshi bundled asset starter for Coin. This template includes starter markers, a collision sketch, a StarterBrief, and a FeaturedAsset field pointing at representative art from '20000 Icons RPG + Recolors - Full version/Coin'.",
+  "tutorialDesc": "Doc Roshi bundled asset starter for Coin. Catalog starter: markers are arranged like preview slots so assets can become pickups, interactables, menu entries, or reward beats. Includes a FeaturedAsset path, SourceFolder, AssetPackKind, RecommendedUse, editable MarkerNote fields, and a starter collision sketch.",
   "customCommands": [],
   "flags": [
     "ExportOldTableOfContentData",
@@ -50,7 +50,7 @@
         "identifier": "StarterMarkers",
         "type": "Entities",
         "uid": 12,
-        "doc": null,
+        "doc": "Starter entities with notes for turning this bundled asset pack into real gameplay objects.",
         "uiColor": "#0099DB",
         "gridSize": 16,
         "guideGridWid": 0,
@@ -71,7 +71,7 @@
         "autoTilesKilledByOtherLayerUid": null,
         "uiFilterTags": [],
         "useAsyncRender": false,
-        "intGridValues": null,
+        "intGridValues": [],
         "intGridValuesGroups": [],
         "autoRuleGroups": [],
         "autoSourceLayerDefUid": null,
@@ -85,7 +85,7 @@
         "identifier": "Layout",
         "type": "IntGrid",
         "uid": 1,
-        "doc": null,
+        "doc": "Editable collision/blockout sketch. Value 1 is Solid; reshape it to match the featured asset pack.",
         "uiColor": "#7FC8A9",
         "gridSize": 16,
         "guideGridWid": 0,
@@ -106,13 +106,15 @@
         "autoTilesKilledByOtherLayerUid": null,
         "uiFilterTags": [],
         "useAsyncRender": false,
-        "intGridValues": {
-          "value": 1,
-          "identifier": "Solid",
-          "color": "#7FC8A9",
-          "tile": null,
-          "groupUid": 0
-        },
+        "intGridValues": [
+          {
+            "value": 1,
+            "identifier": "Solid",
+            "color": "#7FC8A9",
+            "tile": null,
+            "groupUid": 0
+          }
+        ],
         "intGridValuesGroups": [],
         "autoRuleGroups": [],
         "autoSourceLayerDefUid": null,
@@ -129,7 +131,7 @@
         "tags": [],
         "exportToToc": false,
         "allowOutOfBounds": false,
-        "doc": null,
+        "doc": "Spawn starter marker with an editable MarkerNote field.",
         "width": 16,
         "height": 24,
         "resizableX": false,
@@ -156,7 +158,45 @@
         "limitBehavior": "DiscardOldOnes",
         "pivotX": 0.5,
         "pivotY": 1,
-        "fieldDefs": []
+        "fieldDefs": [
+          {
+            "identifier": "MarkerNote",
+            "doc": "What this starter marker is intended to become in your project.",
+            "__type": "String",
+            "uid": 21,
+            "type": "F_String",
+            "isArray": false,
+            "canBeNull": false,
+            "arrayMinLength": null,
+            "arrayMaxLength": null,
+            "editorDisplayMode": "NameAndValue",
+            "editorDisplayScale": 1,
+            "editorDisplayPos": "Above",
+            "editorLinkStyle": "StraightArrow",
+            "editorDisplayColor": null,
+            "editorAlwaysShow": true,
+            "editorShowInWorld": true,
+            "editorCutLongValues": false,
+            "editorTextSuffix": null,
+            "editorTextPrefix": null,
+            "useForSmartColor": false,
+            "exportToToc": false,
+            "searchable": true,
+            "min": null,
+            "max": null,
+            "regex": null,
+            "acceptFileTypes": null,
+            "defaultOverride": null,
+            "textLanguageMode": null,
+            "symmetricalRef": false,
+            "autoChainRef": false,
+            "allowOutOfLevelRef": true,
+            "allowedRefs": "OnlySame",
+            "allowedRefsEntityUid": null,
+            "allowedRefTags": [],
+            "tilesetUid": null
+          }
+        ]
       },
       {
         "identifier": "Goal",
@@ -164,7 +204,7 @@
         "tags": [],
         "exportToToc": false,
         "allowOutOfBounds": false,
-        "doc": null,
+        "doc": "Goal starter marker with an editable MarkerNote field.",
         "width": 16,
         "height": 24,
         "resizableX": false,
@@ -191,7 +231,45 @@
         "limitBehavior": "DiscardOldOnes",
         "pivotX": 0.5,
         "pivotY": 1,
-        "fieldDefs": []
+        "fieldDefs": [
+          {
+            "identifier": "MarkerNote",
+            "doc": "What this starter marker is intended to become in your project.",
+            "__type": "String",
+            "uid": 22,
+            "type": "F_String",
+            "isArray": false,
+            "canBeNull": false,
+            "arrayMinLength": null,
+            "arrayMaxLength": null,
+            "editorDisplayMode": "NameAndValue",
+            "editorDisplayScale": 1,
+            "editorDisplayPos": "Above",
+            "editorLinkStyle": "StraightArrow",
+            "editorDisplayColor": null,
+            "editorAlwaysShow": true,
+            "editorShowInWorld": true,
+            "editorCutLongValues": false,
+            "editorTextSuffix": null,
+            "editorTextPrefix": null,
+            "useForSmartColor": false,
+            "exportToToc": false,
+            "searchable": true,
+            "min": null,
+            "max": null,
+            "regex": null,
+            "acceptFileTypes": null,
+            "defaultOverride": null,
+            "textLanguageMode": null,
+            "symmetricalRef": false,
+            "autoChainRef": false,
+            "allowOutOfLevelRef": true,
+            "allowedRefs": "OnlySame",
+            "allowedRefsEntityUid": null,
+            "allowedRefTags": [],
+            "tilesetUid": null
+          }
+        ]
       },
       {
         "identifier": "Hazard",
@@ -199,7 +277,7 @@
         "tags": [],
         "exportToToc": false,
         "allowOutOfBounds": false,
-        "doc": null,
+        "doc": "Hazard starter marker with an editable MarkerNote field.",
         "width": 16,
         "height": 16,
         "resizableX": false,
@@ -226,7 +304,45 @@
         "limitBehavior": "DiscardOldOnes",
         "pivotX": 0.5,
         "pivotY": 0.5,
-        "fieldDefs": []
+        "fieldDefs": [
+          {
+            "identifier": "MarkerNote",
+            "doc": "What this starter marker is intended to become in your project.",
+            "__type": "String",
+            "uid": 23,
+            "type": "F_String",
+            "isArray": false,
+            "canBeNull": false,
+            "arrayMinLength": null,
+            "arrayMaxLength": null,
+            "editorDisplayMode": "NameAndValue",
+            "editorDisplayScale": 1,
+            "editorDisplayPos": "Above",
+            "editorLinkStyle": "StraightArrow",
+            "editorDisplayColor": null,
+            "editorAlwaysShow": true,
+            "editorShowInWorld": true,
+            "editorCutLongValues": false,
+            "editorTextSuffix": null,
+            "editorTextPrefix": null,
+            "useForSmartColor": false,
+            "exportToToc": false,
+            "searchable": true,
+            "min": null,
+            "max": null,
+            "regex": null,
+            "acceptFileTypes": null,
+            "defaultOverride": null,
+            "textLanguageMode": null,
+            "symmetricalRef": false,
+            "autoChainRef": false,
+            "allowOutOfLevelRef": true,
+            "allowedRefs": "OnlySame",
+            "allowedRefsEntityUid": null,
+            "allowedRefTags": [],
+            "tilesetUid": null
+          }
+        ]
       },
       {
         "identifier": "Prop",
@@ -234,7 +350,7 @@
         "tags": [],
         "exportToToc": false,
         "allowOutOfBounds": false,
-        "doc": null,
+        "doc": "Prop starter marker with an editable MarkerNote field.",
         "width": 16,
         "height": 16,
         "resizableX": false,
@@ -261,7 +377,45 @@
         "limitBehavior": "DiscardOldOnes",
         "pivotX": 0.5,
         "pivotY": 0.5,
-        "fieldDefs": []
+        "fieldDefs": [
+          {
+            "identifier": "MarkerNote",
+            "doc": "What this starter marker is intended to become in your project.",
+            "__type": "String",
+            "uid": 24,
+            "type": "F_String",
+            "isArray": false,
+            "canBeNull": false,
+            "arrayMinLength": null,
+            "arrayMaxLength": null,
+            "editorDisplayMode": "NameAndValue",
+            "editorDisplayScale": 1,
+            "editorDisplayPos": "Above",
+            "editorLinkStyle": "StraightArrow",
+            "editorDisplayColor": null,
+            "editorAlwaysShow": true,
+            "editorShowInWorld": true,
+            "editorCutLongValues": false,
+            "editorTextSuffix": null,
+            "editorTextPrefix": null,
+            "useForSmartColor": false,
+            "exportToToc": false,
+            "searchable": true,
+            "min": null,
+            "max": null,
+            "regex": null,
+            "acceptFileTypes": null,
+            "defaultOverride": null,
+            "textLanguageMode": null,
+            "symmetricalRef": false,
+            "autoChainRef": false,
+            "allowOutOfLevelRef": true,
+            "allowedRefs": "OnlySame",
+            "allowedRefsEntityUid": null,
+            "allowedRefTags": [],
+            "tilesetUid": null
+          }
+        ]
       }
     ],
     "tilesets": [],
@@ -347,6 +501,117 @@
         "allowedRefsEntityUid": null,
         "allowedRefTags": [],
         "tilesetUid": null
+      },
+      {
+        "identifier": "SourceFolder",
+        "doc": "Bundled atlas folder this starter was generated from.",
+        "__type": "String",
+        "uid": 17,
+        "type": "F_String",
+        "isArray": false,
+        "canBeNull": false,
+        "arrayMinLength": null,
+        "arrayMaxLength": null,
+        "editorDisplayMode": "NameAndValue",
+        "editorDisplayScale": 1,
+        "editorDisplayPos": "Beneath",
+        "editorLinkStyle": "StraightArrow",
+        "editorDisplayColor": null,
+        "editorAlwaysShow": true,
+        "editorShowInWorld": true,
+        "editorCutLongValues": false,
+        "editorTextSuffix": null,
+        "editorTextPrefix": null,
+        "useForSmartColor": false,
+        "exportToToc": false,
+        "searchable": true,
+        "min": null,
+        "max": null,
+        "regex": null,
+        "acceptFileTypes": null,
+        "defaultOverride": null,
+        "textLanguageMode": null,
+        "symmetricalRef": false,
+        "autoChainRef": false,
+        "allowOutOfLevelRef": true,
+        "allowedRefs": "OnlySame",
+        "allowedRefsEntityUid": null,
+        "allowedRefTags": [],
+        "tilesetUid": null
+      },
+      {
+        "identifier": "AssetPackKind",
+        "doc": "Suggested design category for this starter.",
+        "__type": "String",
+        "uid": 18,
+        "type": "F_String",
+        "isArray": false,
+        "canBeNull": false,
+        "arrayMinLength": null,
+        "arrayMaxLength": null,
+        "editorDisplayMode": "NameAndValue",
+        "editorDisplayScale": 1,
+        "editorDisplayPos": "Beneath",
+        "editorLinkStyle": "StraightArrow",
+        "editorDisplayColor": null,
+        "editorAlwaysShow": true,
+        "editorShowInWorld": true,
+        "editorCutLongValues": false,
+        "editorTextSuffix": null,
+        "editorTextPrefix": null,
+        "useForSmartColor": false,
+        "exportToToc": false,
+        "searchable": true,
+        "min": null,
+        "max": null,
+        "regex": null,
+        "acceptFileTypes": null,
+        "defaultOverride": null,
+        "textLanguageMode": null,
+        "symmetricalRef": false,
+        "autoChainRef": false,
+        "allowOutOfLevelRef": true,
+        "allowedRefs": "OnlySame",
+        "allowedRefsEntityUid": null,
+        "allowedRefTags": [],
+        "tilesetUid": null
+      },
+      {
+        "identifier": "RecommendedUse",
+        "doc": "Practical next step for turning this starter into a real level.",
+        "__type": "String",
+        "uid": 19,
+        "type": "F_String",
+        "isArray": false,
+        "canBeNull": false,
+        "arrayMinLength": null,
+        "arrayMaxLength": null,
+        "editorDisplayMode": "NameAndValue",
+        "editorDisplayScale": 1,
+        "editorDisplayPos": "Beneath",
+        "editorLinkStyle": "StraightArrow",
+        "editorDisplayColor": null,
+        "editorAlwaysShow": true,
+        "editorShowInWorld": true,
+        "editorCutLongValues": false,
+        "editorTextSuffix": null,
+        "editorTextPrefix": null,
+        "useForSmartColor": false,
+        "exportToToc": false,
+        "searchable": true,
+        "min": null,
+        "max": null,
+        "regex": null,
+        "acceptFileTypes": null,
+        "defaultOverride": null,
+        "textLanguageMode": null,
+        "symmetricalRef": false,
+        "autoChainRef": false,
+        "allowOutOfLevelRef": true,
+        "allowedRefs": "OnlySame",
+        "allowedRefsEntityUid": null,
+        "allowedRefTags": [],
+        "tilesetUid": null
       }
     ]
   },
@@ -389,14 +654,59 @@
         {
           "__identifier": "StarterBrief",
           "__type": "String",
-          "__value": "Starter hook: Use this as a catalog scene: place markers for pickups, actors, rewards, or combat beats, then wire file fields to the bundled art. Replace marker entities with real project entities and browse this pack from the Home asset browser.",
+          "__value": "Starter hook: Catalog starter: markers are arranged like preview slots so assets can become pickups, interactables, menu entries, or reward beats. Featured folder: 20000 Icons RPG + Recolors - Full version/Coin. Replace marker entities with project-specific entities and use Home > Assets to browse sibling art.",
           "__tile": null,
           "defUid": 11,
           "realEditorValues": [
             {
               "id": "V_String",
               "params": [
-                "Starter hook: Use this as a catalog scene: place markers for pickups, actors, rewards, or combat beats, then wire file fields to the bundled art. Replace marker entities with real project entities and browse this pack from the Home asset browser."
+                "Starter hook: Catalog starter: markers are arranged like preview slots so assets can become pickups, interactables, menu entries, or reward beats. Featured folder: 20000 Icons RPG + Recolors - Full version/Coin. Replace marker entities with project-specific entities and use Home > Assets to browse sibling art."
+              ]
+            }
+          ]
+        },
+        {
+          "__identifier": "SourceFolder",
+          "__type": "String",
+          "__value": "20000 Icons RPG + Recolors - Full version/Coin",
+          "__tile": null,
+          "defUid": 17,
+          "realEditorValues": [
+            {
+              "id": "V_String",
+              "params": [
+                "20000 Icons RPG + Recolors - Full version/Coin"
+              ]
+            }
+          ]
+        },
+        {
+          "__identifier": "AssetPackKind",
+          "__type": "String",
+          "__value": "Catalog / UI asset set",
+          "__tile": null,
+          "defUid": 18,
+          "realEditorValues": [
+            {
+              "id": "V_String",
+              "params": [
+                "Catalog / UI asset set"
+              ]
+            }
+          ]
+        },
+        {
+          "__identifier": "RecommendedUse",
+          "__type": "String",
+          "__value": "Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+          "__tile": null,
+          "defUid": 19,
+          "realEditorValues": [
+            {
+              "id": "V_String",
+              "params": [
+                "Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
               ]
             }
           ]
@@ -421,7 +731,7 @@
           "pxOffsetY": 0,
           "visible": true,
           "optionalRules": [],
-          "intGridCsv": null,
+          "intGridCsv": [],
           "autoLayerTiles": [],
           "seed": 123456,
           "overrideTilesetUid": null,
@@ -448,7 +758,23 @@
                 32,
                 144
               ],
-              "fieldInstances": [],
+              "fieldInstances": [
+                {
+                  "__identifier": "MarkerNote",
+                  "__type": "String",
+                  "__value": "Starting point, camera anchor, or first room entrance for this starter. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+                  "__tile": null,
+                  "defUid": 21,
+                  "realEditorValues": [
+                    {
+                      "id": "V_String",
+                      "params": [
+                        "Starting point, camera anchor, or first room entrance for this starter. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
+                      ]
+                    }
+                  ]
+                }
+              ],
               "__worldX": 32,
               "__worldY": 144
             },
@@ -473,7 +799,23 @@
                 272,
                 144
               ],
-              "fieldInstances": [],
+              "fieldInstances": [
+                {
+                  "__identifier": "MarkerNote",
+                  "__type": "String",
+                  "__value": "Exit, reward, objective, menu selection target, or reveal beat. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+                  "__tile": null,
+                  "defUid": 22,
+                  "realEditorValues": [
+                    {
+                      "id": "V_String",
+                      "params": [
+                        "Exit, reward, objective, menu selection target, or reveal beat. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
+                      ]
+                    }
+                  ]
+                }
+              ],
               "__worldX": 272,
               "__worldY": 144
             },
@@ -498,7 +840,23 @@
                 160,
                 144
               ],
-              "fieldInstances": [],
+              "fieldInstances": [
+                {
+                  "__identifier": "MarkerNote",
+                  "__type": "String",
+                  "__value": "Threat, blocker, lock, damage, suspense trigger, or invalid-slot placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+                  "__tile": null,
+                  "defUid": 23,
+                  "realEditorValues": [
+                    {
+                      "id": "V_String",
+                      "params": [
+                        "Threat, blocker, lock, damage, suspense trigger, or invalid-slot placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
+                      ]
+                    }
+                  ]
+                }
+              ],
               "__worldX": 160,
               "__worldY": 144
             },
@@ -523,7 +881,23 @@
                 96,
                 96
               ],
-              "fieldInstances": [],
+              "fieldInstances": [
+                {
+                  "__identifier": "MarkerNote",
+                  "__type": "String",
+                  "__value": "Interactable, pickup, scenery, preview slot, cover, or ambient event placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+                  "__tile": null,
+                  "defUid": 24,
+                  "realEditorValues": [
+                    {
+                      "id": "V_String",
+                      "params": [
+                        "Interactable, pickup, scenery, preview slot, cover, or ambient event placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
+                      ]
+                    }
+                  ]
+                }
+              ],
               "__worldX": 96,
               "__worldY": 96
             },
@@ -548,7 +922,23 @@
                 224,
                 64
               ],
-              "fieldInstances": [],
+              "fieldInstances": [
+                {
+                  "__identifier": "MarkerNote",
+                  "__type": "String",
+                  "__value": "Interactable, pickup, scenery, preview slot, cover, or ambient event placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata.",
+                  "__tile": null,
+                  "defUid": 24,
+                  "realEditorValues": [
+                    {
+                      "id": "V_String",
+                      "params": [
+                        "Interactable, pickup, scenery, preview slot, cover, or ambient event placeholder. Asset intent: Use as a display board for pickups, UI icons, character portraits, spells, or equipment metadata."
+                      ]
+                    }
+                  ]
+                }
+              ],
               "__worldX": 224,
               "__worldY": 64
             }
@@ -613,7 +1003,6 @@
             0,
             0,
             0,
-            1,
             0,
             0,
             0,
@@ -632,8 +1021,6 @@
             0,
             0,
             0,
-            1,
-            1,
             0,
             0,
             0,
@@ -652,8 +1039,6 @@
             0,
             0,
             0,
-            1,
-            1,
             0,
             0,
             0,
@@ -672,8 +1057,6 @@
             0,
             0,
             0,
-            1,
-            1,
             0,
             0,
             0,
@@ -684,16 +1067,6 @@
             0,
             0,
             0,
-            0,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            0,
-            1,
-            1,
             0,
             0,
             0,
@@ -714,12 +1087,18 @@
             0,
             1,
             1,
-            0,
+            1,
             0,
             1,
             1,
             1,
             1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0,
             1,
             1,
             0,
@@ -727,9 +1106,16 @@
             0,
             0,
             0,
+            1,
+            1,
             0,
             0,
+            1,
+            1,
             0,
+            0,
+            1,
+            1,
             0,
             0,
             1,
@@ -752,8 +1138,6 @@
             0,
             0,
             0,
-            1,
-            1,
             0,
             0,
             0,
@@ -772,6 +1156,14 @@
             0,
             0,
             0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             1,
             1,
             1,
@@ -790,15 +1182,13 @@
             1,
             1,
             1,
-            1,
-            1,
-            1
+            0
           ],
           "autoLayerTiles": [],
           "seed": 123456,
           "overrideTilesetUid": null,
           "gridTiles": [],
-          "entityInstances": null
+          "entityInstances": []
         }
       ],
       "__neighbours": []
