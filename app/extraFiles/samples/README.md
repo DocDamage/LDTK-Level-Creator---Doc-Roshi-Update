@@ -22,3 +22,5 @@ This branch adds a large bundled starter library on top of the original LDtk sam
 The Home screen exposes these as sample templates with filters for environments, catalog/UI assets, characters, audio, CuteSCKR, and core examples. The Asset Library also links matching packs back to their starter templates, so a user can browse an asset pack and open a ready-to-edit LDtk project from the same place.
 
 The starter projects intentionally reference imported, app-known assets under `atlas/`. The raw source folders can remain ignored, but the assets referenced by `assetLibrary.json`, sample thumbnails, and the LDtk starter files must stay available in the repository so a fresh checkout can open the templates immediately.
+
+Run `node tools/validate-doc-roshi-assets.js` from the repository root after regenerating or importing assets. The check validates the bundled asset manifest, thumbnails, linked starter samples, FeaturedAsset paths, marker notes, layout grids, and generated preview tiles.
