@@ -158,12 +158,25 @@ class ProjectSaver extends dn.Process {
 				ui.modal.dialog.CommandRunner.runMultipleCommands( project, project.getCustomCommmands(BeforeSave), beginNextState );
 
 			case AutoLayers:
-				if( hasEditor() ) { // TODO support this without an Editor?
-					logState();
+				logState();
+				if( hasEditor() )
 					Editor.ME.checkAutoLayersCache( (anyChange)->beginState(Backup) );
+				else {
+					var ops : Array<ui.modal.Progress.ProgressOp> = [];
+					for(w in project.worlds)
+					for(l in w.levels)
+					for(li in l.layerInstances)
+						if( li.def.isAutoLayer() && li.autoTilesCache==null )
+							ops.push({
+								label: l.identifier+"."+li.def.identifier,
+								cb: li.applyAllRules,
+							});
+
+					if( ops.length>0 )
+						new ui.modal.Progress("Updating auto-layers...", ops, ()->beginState(Backup));
+					else
+						beginNextState();
 				}
-				else
-					beginNextState();
 
 			case Backup:
 				// var backupDir = project.getAbsExternalFilesDir() + "/backups";
@@ -425,7 +438,7 @@ class ProjectSaver extends dn.Process {
 				}
 
 			case ExportingGMS:
-				if( false ) { // TODO check actual project export setting
+				if( false ) {
 					logState();
 					ui.modal.Progress.single(
 						L.t._("Exporting Tiled..."),

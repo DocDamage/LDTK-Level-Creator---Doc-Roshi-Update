@@ -24,7 +24,18 @@ class FileWatcher extends dn.Process {
 					case null:
 
 					case "rename":
-						// TODO support renaming?
+						App.LOG.fileOp("Renamed or replaced on disk: "+absFilePath);
+						delayer.cancelById(absFilePath);
+						delayer.addS(absFilePath, ()->{
+							if( NT.fileExists(absFilePath) ) {
+								queueReloading(absFilePath, onChange);
+								watch(absFilePath, onChange);
+							}
+							else {
+								stopWatchingAbs(absFilePath);
+								App.LOG.warning("Stopped watching missing file: "+absFilePath);
+							}
+						}, 0.25);
 
 					case "change":
 						App.LOG.fileOp("Changed on disk: "+absFilePath);

@@ -472,11 +472,11 @@ class LayerInstance {
 	}
 
 	public inline function levelToLayerCx(levelX:Float) {
-		return Std.int( ( levelX - pxTotalOffsetX ) / def.gridSize ); // TODO not tested: check if this works with the new layerDef offsets
+		return M.floor( ( levelX - pxTotalOffsetX ) / def.gridSize );
 	}
 
 	public inline function levelToLayerCy(levelY:Float) {
-		return Std.int( ( levelY - pxTotalOffsetY ) / def.gridSize );
+		return M.floor( ( levelY - pxTotalOffsetY ) / def.gridSize );
 	}
 
 	public function tidy(p:Project) : Bool {

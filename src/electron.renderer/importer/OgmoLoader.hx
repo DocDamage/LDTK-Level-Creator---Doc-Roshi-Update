@@ -309,7 +309,6 @@ class OgmoLoader {
 				level.useAutoIdentifier = false;
 				level.pxWid = levelJson.width;
 				level.pxHei = levelJson.height;
-				// TODO add level offset to layers
 				p.tidy();
 
 
@@ -371,8 +370,8 @@ class OgmoLoader {
 
 								// Base entity instance
 								var ei = li.createEntityInstance(ed);
-								ei.x = entJson.x;
-								ei.y = entJson.y;
+								ei.x = entJson.x + li.pxTotalOffsetX;
+								ei.y = entJson.y + li.pxTotalOffsetY;
 								ei.customWidth = ed.resizableX && entJson.width!=null && entJson.width!=ed.width ? entJson.width : null;
 								ei.customHeight = ed.resizableY && entJson.height!=null && entJson.height!=ed.height ? entJson.height: null;
 

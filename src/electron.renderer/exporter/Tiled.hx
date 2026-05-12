@@ -20,8 +20,12 @@ class Tiled extends Exporter {
 
 		setOutputPath( projectPath.directory + "/" + p.getRelExternalFilesDir() + "/tiled", true );
 
-		var curWorld = p.worlds[0]; // HACK support multi-worlds for Tiled
+		var multiWorld = p.worlds.length>1;
+		for(curWorld in p.worlds)
+			exportWorld(curWorld, multiWorld);
+	}
 
+	function exportWorld(curWorld:data.World, multiWorld:Bool) {
 		// Prepare world object
 		var world = {
 			maps: [],
@@ -46,7 +50,9 @@ class Tiled extends Exporter {
 			var bytes = exportLevel(l);
 
 			var fp = outputPath.clone();
-			fp.fileName = ( curWorld.levels.length>1 ? '${dn.Lib.leadingZeros(i,Const.LEVEL_FILE_LEADER_ZEROS)}_' : '' ) + l.identifier;
+			fp.fileName = ( multiWorld ? curWorld.identifier+"__" : "" )
+				+ ( curWorld.levels.length>1 ? '${dn.Lib.leadingZeros(i,Const.LEVEL_FILE_LEADER_ZEROS)}_' : '' )
+				+ l.identifier;
 			fp.extension = "tmx";
 			addOuputFile(fp.full, bytes);
 
@@ -63,7 +69,7 @@ class Tiled extends Exporter {
 		log.fileOp("Creating world JSON...");
 		var json = dn.data.JsonPretty.stringify(world);
 		var fp = outputPath.clone();
-		fp.fileName = projectPath.fileName;
+		fp.fileName = projectPath.fileName + ( multiWorld ? "__"+curWorld.identifier : "" );
 		fp.extension = "world";
 		addOuputFile(fp.full, haxe.io.Bytes.ofString(json));
 	}
@@ -319,6 +325,9 @@ class Tiled extends Exporter {
 
 				case Entities:
 					function _createProperty(props:Xml, name:String, type:Null<String>, val:Dynamic) {
+						if( val==null )
+							return null;
+
 						var prop = Xml.createElement("property");
 						props.addChild(prop);
 						prop.set("name", name);
@@ -370,7 +379,7 @@ class Tiled extends Exporter {
 								case F_Point: null;
 								case F_Path: "file";
 								case F_Tile: "tile";
-								case F_EntityRef: null; // TODO entity refs in Tiled?
+								case F_EntityRef: null;
 							}
 							// Value
 							var v : Dynamic = switch fi.def.type {
@@ -388,7 +397,19 @@ class Tiled extends Exporter {
 								case F_EntityRef: fi.getEntityRefIid(i);
 								case F_Tile: fi.getTileRectStr(i);
 							}
-							_createProperty(props, fi.def.identifier + (fi.getArrayLength()<=1 ? "" : "_"+i), type, v);
+							var name = fi.def.identifier + (fi.getArrayLength()<=1 ? "" : "_"+i);
+							_createProperty(props, name, type, v);
+							if( fi.def.type==F_EntityRef ) {
+								var target = fi.getEntityRefInstance(i);
+								if( target!=null ) {
+									_createProperty(props, name+"__worldIid", null, target._li.level._world.iid);
+									_createProperty(props, name+"__levelIid", null, target._li.level.iid);
+									_createProperty(props, name+"__layerIid", null, target._li.iid);
+									_createProperty(props, name+"__entityIid", null, target.iid);
+									_createProperty(props, name+"__entity", null, target.def.identifier);
+									_createProperty(props, name+"__level", null, target._li.level.identifier);
+								}
+							}
 						}
 					}
 

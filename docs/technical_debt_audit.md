@@ -207,11 +207,10 @@ Recommendation:
 
 Evidence:
 
-- `src/electron.renderer/exporter/Tiled.hx:23`: multi-world export hack.
-- `src/electron.renderer/exporter/Tiled.hx:373`: entity refs not exported.
+- `src/electron.renderer/exporter/Tiled.hx`: multi-world export and entity-ref metadata are now handled.
 - `src/electron.renderer/exporter/GameMakerStudio2.hx`: multiple TODO dynamic fields.
-- `src/electron.renderer/data/inst/LayerInstance.hx:475`: layer offset coordinate calculation marked untested.
-- `src/electron.renderer/misc/FileWatcher.hx:27`: rename support missing.
+- `src/electron.renderer/data/inst/LayerInstance.hx`: offset coordinate conversion now uses floor semantics for negative offsets.
+- `src/electron.renderer/misc/FileWatcher.hx`: file replacement/rename events now rewatch or stop cleanly.
 - `src/electron.renderer/page/Editor.hx:1045`: allocation optimization TODO.
 - `src/electron.common/Settings.hx:323`: UI scale hack.
 
@@ -222,8 +221,8 @@ Impact:
 
 Recommendation:
 
-- Triage TODOs into correctness, performance, and cosmetic buckets.
-- Prioritize exporter correctness and file watcher rename support.
+- Triage remaining TODOs into correctness, performance, and cosmetic buckets.
+- Prioritize the GameMaker Studio exporter only if it becomes user-facing; it currently has no project export setting.
 - Add regression samples for multi-world export, entity references, and layer offset calculations.
 
 ### 8. Dependency Reproducibility Is Now Lockfile-Based
@@ -315,7 +314,7 @@ Recommendation:
 4. Create a strict `docs/asset_license_manifest.json` and validate every `assetLibrary.json` pack against it.
 5. Extract the Home asset-library browser into a focused Haxe module.
 6. Add lazy preview paging/search inside the asset browser.
-7. Triage old TODOs, starting with exporter correctness and file watcher rename behavior.
+7. Continue triaging old TODOs, starting with GameMaker Studio exporter typing if that exporter becomes user-facing.
 
 ## Suggested Next Implementation Slice
 
