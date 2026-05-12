@@ -138,12 +138,16 @@ class Home extends Page {
 			jSample.appendTo(jScroller);
 			var name = StringTools.replace( fp.fileName, "_", " " );
 			var sampleKind = getSampleKind(fp.fileName);
+			var sampleSubKind = getSampleSubKind(fp.fileName, sampleKind);
 			jSample.attr("data-kind", sampleKind);
+			jSample.attr("data-subkind", sampleSubKind);
 			jSample.attr("data-search", getSampleSearchText(fp.fileName, name, sampleKind));
 			jSample.append('<div class="thumb" style="background-image:url($path/thumbs/${fp.fileName}.png)"></div>');
 			if( StringTools.startsWith(fp.fileName, "Doc_Roshi_") ) {
 				jSample.addClass("template");
-				jSample.append('<div class="name"><span class="badge">Template</span><strong>$name</strong><small>Bundled asset starter</small></div>');
+				var badge = sampleKind=="asset" ? getSampleSubKindLabel(sampleSubKind) : "Template";
+				var subtitle = getSampleSubtitle(sampleKind, sampleSubKind);
+				jSample.append('<div class="name"><div class="packHeader"><span class="kind">$badge</span><span class="count">LDtk</span></div><strong>$name</strong><small>$subtitle</small></div>');
 			}
 			else
 				jSample.append('<div class="name">$name</div>');
@@ -170,10 +174,50 @@ class Home extends Page {
 		return "core";
 	}
 
+	function getSampleSubKind(fileName:String, kind:String) {
+		if( kind!="asset" )
+			return kind;
+
+		var lower = fileName.toLowerCase();
+		if( lower.indexOf("sound")>=0 || lower.indexOf("audio")>=0 || lower.indexOf("sfx")>=0 || lower.indexOf("horror")>=0 )
+			return "assetAudio";
+		if( lower.indexOf("portrait")>=0 || lower.indexOf("avatar")>=0 || lower.indexOf("monster")>=0 || lower.indexOf("character")>=0 )
+			return "assetCharacters";
+		if( lower.indexOf("icon")>=0 || lower.indexOf("spell")>=0 || lower.indexOf("card")>=0 || lower.indexOf("item")>=0 || lower.indexOf("hori")>=0 )
+			return "assetCatalog";
+		return "assetEnvironment";
+	}
+
+	function getSampleSubKindLabel(subKind:String) {
+		return switch subKind {
+			case "assetAudio": "Audio";
+			case "assetCatalog": "Catalog";
+			case "assetCharacters": "Characters";
+			case "assetEnvironment": "Environment";
+			case _: "Template";
+		}
+	}
+
+	function getSampleSubtitle(kind:String, subKind:String) {
+		return switch kind {
+			case "asset":
+				switch subKind {
+					case "assetAudio": "Horror/audio starter";
+					case "assetCatalog": "UI, item, or spell starter";
+					case "assetCharacters": "Character or portrait starter";
+					case _: "Environment starter";
+				}
+			case "cutesckr": "CuteSCKR starter";
+			case "template": "Bundled asset starter";
+			case _: "Core example";
+		}
+	}
+
 	function getSampleSearchText(fileName:String, name:String, kind:String) {
+		var subKind = getSampleSubKind(fileName, kind);
 		var labels = switch kind {
 			case "cutesckr": "template cutesckr bundled asset starter tileset";
-			case "asset": "template asset pack bundled starter atlas";
+			case "asset": "template asset pack bundled starter atlas "+getSampleSubKindLabel(subKind)+" "+subKind;
 			case "template": "template bundled asset starter";
 			case _: "core example sample";
 		}
@@ -196,10 +240,19 @@ class Home extends Page {
 			});
 		}
 
+		function addFilterIfAny(label:String, kind:String) {
+			if( countMatchingSamples(kind, "")>0 )
+				addFilter(label, kind);
+		}
+
 		addFilter(L.t._("All"), "*");
 		addFilter(L.t._("Templates"), "template");
 		addFilter(L.untranslated("CuteSCKR"), "cutesckr");
 		addFilter(L.untranslated("Assets"), "asset");
+		addFilterIfAny(L.untranslated("Environments"), "asset:assetEnvironment");
+		addFilterIfAny(L.untranslated("Catalog"), "asset:assetCatalog");
+		addFilterIfAny(L.untranslated("Characters"), "asset:assetCharacters");
+		addFilterIfAny(L.untranslated("Audio"), "asset:assetAudio");
 		addFilter(L.t._("Core"), "core");
 
 		jPage.find(".sampleProjects .sampleSearch").off().on("input", (_)->updateSampleFilter());
@@ -237,7 +290,8 @@ class Home extends Page {
 
 	function sampleMatchesFilter(jSample:js.jquery.JQuery, kindFilter:String, query:String) {
 		var kind = jSample.attr("data-kind");
-		var matchesKind = kindFilter=="*" || kind==kindFilter || ( kindFilter=="template" && (kind=="template" || kind=="cutesckr" || kind=="asset") );
+		var subKind = jSample.attr("data-subkind");
+		var matchesKind = kindFilter=="*" || kind==kindFilter || subKind==kindFilter || ( StringTools.startsWith(kindFilter, "asset:") && kind=="asset" && subKind==kindFilter.substr(6) ) || ( kindFilter=="template" && (kind=="template" || kind=="cutesckr" || kind=="asset") );
 		var haystack = jSample.attr("data-search");
 		var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
 		return matchesKind && matchesQuery;
