@@ -501,9 +501,9 @@ class Home extends Page {
 	}
 
 	function openAssetPackBrowser(pack:AssetLibraryPack) {
-		var files = AssetLibrary.getPreviewFiles(pack);
 		var starters = AssetLibrary.getStarterSamples(pack);
 		var folder = AssetLibrary.getPackAbsPath(pack);
+		var previewLimit = 60;
 		var w = new ui.modal.Dialog(null, "assetBrowser");
 		w.addTitle(L.untranslated(pack.name), true);
 
@@ -565,19 +565,50 @@ class Home extends Page {
 			}
 		}
 
-		if( files.length==0 ) {
-			new J('<div class="empty"/>').text("No previewable images or audio files were found in this pack. Use Open folder to inspect the source files.").appendTo(w.jContent);
-			w.addClose();
-			return;
-		}
+		var jTools = new J('<div class="assetBrowserActions"/>');
+		jTools.appendTo(w.jContent);
+		var jSearch = new J('<input type="text" placeholder="Search previews"/>');
+		jSearch.appendTo(jTools);
+		jSearch.css("flex", "1 1 auto");
+		jSearch.css("min-width", "220px");
+		var jCount = new J('<button type="button" class="gray" disabled/>');
+		jCount.appendTo(jTools);
+		jCount.css("flex", "0 0 auto");
 
 		var jGrid = new J('<div class="assetBrowserGrid"/>');
 		jGrid.appendTo(w.jContent);
-		for(file in files)
-			appendAssetPreview(jGrid, file);
+		var jEmpty = new J('<div class="empty"/>');
+		jEmpty.appendTo(w.jContent);
+		var jMore = new J('<button type="button" class="gray"><span class="icon down"></span>Show more previews</button>');
+		jMore.appendTo(w.jContent);
 
-		if( pack.files>files.length )
-			new J('<div class="more"/>').text("Showing the first "+files.length+" previewable files from this pack. Use Open folder for the complete set.").appendTo(w.jContent);
+		var renderPreviews = function() {
+			var query : String = jSearch.val();
+			var total = AssetLibrary.getPreviewFileCount(pack, query);
+			var files = AssetLibrary.getPreviewFiles(pack, previewLimit, query);
+			jGrid.empty();
+			for(file in files)
+				appendAssetPreview(jGrid, file);
+
+			jGrid.toggle(total>0);
+			jEmpty.toggle(total==0);
+			if( total==0 )
+				jEmpty.text(query==null || StringTools.trim(query).length==0
+					? "No previewable images or audio files were found in this pack. Use Open folder to inspect the source files."
+					: "No previewable files match this search.");
+			jCount.text(total==0 ? "0 previews" : files.length+" / "+total+" previews");
+			jMore.toggle(total>files.length);
+		}
+
+		jSearch.on("input", (_)->{
+			previewLimit = 60;
+			renderPreviews();
+		});
+		jMore.click((ev)->{
+			previewLimit+=60;
+			renderPreviews();
+		});
+		renderPreviews();
 
 		w.addClose();
 	}

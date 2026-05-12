@@ -32,6 +32,7 @@ typedef AssetLibraryStarterSample = {
 
 class AssetLibrary {
 	static var packExtCache = new Map<String,Array<String>>();
+	static var packPreviewCache = new Map<String,Array<AssetLibraryPreviewFile>>();
 	static var packStarterCache = new Map<String,Array<AssetLibraryStarterSample>>();
 	static var blockedRuntimeExtensions = [
 		".exe" => true,
@@ -163,7 +164,10 @@ class AssetLibrary {
 		return ext==".wav" || ext==".ogg" || ext==".mp3";
 	}
 
-	public static function getPreviewFiles(pack:AssetLibraryPack, limit=120) : Array<AssetLibraryPreviewFile> {
+	static function getAllPreviewFiles(pack:AssetLibraryPack) : Array<AssetLibraryPreviewFile> {
+		if( packPreviewCache.exists(pack.path) )
+			return packPreviewCache.get(pack.path);
+
 		var folder = getPackAbsPath(pack);
 		if( !NT.fileExists(folder) )
 			return [];
@@ -200,7 +204,42 @@ class AssetLibrary {
 				return a.kind=="image" ? -1 : 1;
 			return Reflect.compare(a.relPath, b.relPath);
 		});
-		return out.length>limit ? out.slice(0, limit) : out;
+		packPreviewCache.set(pack.path, out);
+		return out;
+	}
+
+	static function previewMatches(file:AssetLibraryPreviewFile, query:String) {
+		if( query==null )
+			return true;
+
+		query = StringTools.trim(query.toLowerCase());
+		if( query.length==0 )
+			return true;
+
+		return file.name.toLowerCase().indexOf(query)>=0
+			|| file.relPath.toLowerCase().indexOf(query)>=0
+			|| file.extension.toLowerCase().indexOf(query)>=0
+			|| file.kind.toLowerCase().indexOf(query)>=0;
+	}
+
+	public static function getPreviewFiles(pack:AssetLibraryPack, limit=120, query="") : Array<AssetLibraryPreviewFile> {
+		var out = [];
+		for(file in getAllPreviewFiles(pack)) {
+			if( previewMatches(file, query) ) {
+				out.push(file);
+				if( limit>0 && out.length>=limit )
+					break;
+			}
+		}
+		return out;
+	}
+
+	public static function getPreviewFileCount(pack:AssetLibraryPack, query="") {
+		var count = 0;
+		for(file in getAllPreviewFiles(pack))
+			if( previewMatches(file, query) )
+				count++;
+		return count;
 	}
 
 	static function sanitizeStarterPath(path:String) {
