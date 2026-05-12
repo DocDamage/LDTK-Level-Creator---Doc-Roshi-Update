@@ -210,7 +210,7 @@ function starterMatchesPack(fileNameNoExt, pack) {
 	if (pack.path === ".")
 		return false;
 
-	const exact = pack.path === "CuteSCKR_uncut"
+	const exact = pack.path === "CuteSCKR_uncut" || pack.path === "CuteSCKR_cut"
 		? "Doc_Roshi_CuteSCKR"
 		: `Doc_Roshi_Asset_${sanitizeStarterPath(pack.path)}`;
 

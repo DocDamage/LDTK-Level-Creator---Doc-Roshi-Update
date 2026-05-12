@@ -320,7 +320,7 @@ class AssetLibrary {
 			return out;
 		}
 
-		var exact = pack.path=="CuteSCKR_uncut"
+		var exact = pack.path=="CuteSCKR_uncut" || pack.path=="CuteSCKR_cut"
 			? "Doc_Roshi_CuteSCKR"
 			: "Doc_Roshi_Asset_"+sanitizeStarterPath(pack.path);
 		var prefix = exact+"_";
@@ -352,7 +352,7 @@ class AssetLibrary {
 
 	public static function getStarterCategory(pack:AssetLibraryPack, starter:AssetLibraryStarterSample) {
 		var s = (pack.name+" "+pack.path+" "+starter.name+" "+starter.relPath+" "+pack.kind+" "+pack.suggestedUse).toLowerCase();
-		if( pack.path=="CuteSCKR_uncut" || s.indexOf("cutesckr")>=0 )
+		if( pack.path=="CuteSCKR_uncut" || pack.path=="CuteSCKR_cut" || s.indexOf("cutesckr")>=0 )
 			return "cutesckr";
 		if( s.indexOf("audio")>=0 || s.indexOf("sound")>=0 || s.indexOf("sfx")>=0 || s.indexOf("horror")>=0 )
 			return "horror";

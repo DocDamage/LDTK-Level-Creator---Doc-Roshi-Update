@@ -100,6 +100,17 @@
 			"summary": "A broad collection of pixel-art tilesets covering modern, medieval, sci-fi, horror, war, fantasy, and survival settings."
 		},
 		{
+			"name": "CuteSCKR chopped tiles",
+			"path": "CuteSCKR_cut",
+			"thumb": "_libraryThumbs/cutesckr-tilesets.png",
+			"kind": "Tileset pieces",
+			"files": 39002,
+			"author": "CuteSCKR",
+			"license": "See pack folders",
+			"suggestedUse": "Individual tile and object imports",
+			"summary": "CuteSCKR tilesheets split into individual PNG pieces for direct browsing, favorites, and one-off import workflows."
+		},
+		{
 			"name": "Monster Mega Pack",
 			"path": "Monster Mega Pack",
 			"thumb": "_libraryThumbs/monster-mega-pack.png",

@@ -29,6 +29,9 @@ tests/_private
 tests/_backups
 tests/*.txt
 
+# Local raw source copy; the app-ingested copy lives under app/extraFiles.
+/CuteSCKR_cut/
+
 # Converted to MP3 for GitHub distribution.
 app/extraFiles/samples/atlas/sound effects/Horror SFX Free/Ambient/Suburban Neighborhood_morning.wav
 

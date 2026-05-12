@@ -83,6 +83,15 @@
       "attribution": "Cute SCKR. Keep this repository private unless explicit redistribution permission is obtained."
     },
     {
+      "path": "CuteSCKR_cut",
+      "name": "CuteSCKR chopped tiles",
+      "author": "CuteSCKR",
+      "source": "Imported derived pack folder: app/extraFiles/samples/atlas/CuteSCKR_cut, cut from the CuteSCKR tilesheet source collection; representative verified source: https://comshadow.itch.io/abandoned-hospital-tileset",
+      "licenseSummary": "Private/personal project use is acceptable for local prototyping. Public raw-asset redistribution is not approved: this folder contains the same Cute SCKR art split into individual PNG tiles and objects, and should be treated as standalone raw assets.",
+      "redistributionStatus": "private-use-only-public-raw-redistribution-not-approved",
+      "attribution": "Cute SCKR. Keep this repository private unless explicit redistribution permission is obtained."
+    },
+    {
       "path": "Monster Mega Pack",
       "name": "Monster Mega Pack",
       "author": "BattleInkMaps",
