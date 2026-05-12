@@ -1,3 +1,4 @@
+@use "sass:color";
 // Colors
 $bgDark: #1e2229;
 $bgMed: #2e333f;
@@ -274,7 +275,7 @@ button {
 	}
 
 	&.help {
-		background-color: darken($color: $helpMed, $amount: 10%);
+		background-color: color.adjust($color: $helpMed, $lightness: -10%);
 		&:hover {
 			background-color: $helpMed;
 		}
@@ -333,7 +334,7 @@ button {
 	}
 
 	&.dark {
-		background-color: scale-color($color: $bgDark, $lightness: 10%);
+		background-color: color.scale($color: $bgDark, $lightness: 10%);
 		box-shadow: 0px 0px 2px $bgLight inset, 0px 0px 3px black, 0px 2px 2px black;
 		&:hover {
 			background-color: $bgLight;
@@ -745,10 +746,10 @@ div.key {
 
 	$keyColor: #E1D6BB;
 	$opacity: 0.45;
-	$lighten: 0.3;
-	$darken: 0.4;
-	background-color: transparentize( $keyColor, $opacity );
-	border-bottom: 4px solid transparentize( darken( $keyColor, $darken ), $opacity );
+	$lighten: 0.3%;
+	$darken: 0.4%;
+	background-color: color.adjust( $keyColor, $alpha: -$opacity );
+	border-bottom: 4px solid color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	box-shadow: 0px 2px 2px black;
 	border-radius: 2px;
 
@@ -767,17 +768,17 @@ div.key {
 		text-shadow: none;
 
 		$keyColor : #FD4F66;
-		color: scale-color($color: $keyColor, $lightness: 60%);
-		background-color: transparentize( $keyColor, $opacity );
-		border-color: transparentize( lighten( $keyColor, $lighten ), $opacity );
-		border-bottom-color: transparentize( darken( $keyColor, $darken ), $opacity );
+		color: color.scale($color: $keyColor, $lightness: 60%);
+		background-color: color.adjust( $keyColor, $alpha: -$opacity );
+		border-color: color.adjust( color.adjust( $keyColor, $lightness: $lighten ), $alpha: -$opacity );
+		border-bottom-color: color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	}
 	&.special {
 		$keyColor : #B577FD;
-		color: scale-color($color: $keyColor, $lightness: 60%);
-		background-color: transparentize( $keyColor, $opacity );
-		border-color: transparentize( lighten( $keyColor, $lighten ), $opacity );
-		border-bottom-color: transparentize( darken( $keyColor, $darken ), $opacity );
+		color: color.scale($color: $keyColor, $lightness: 60%);
+		background-color: color.adjust( $keyColor, $alpha: -$opacity );
+		border-color: color.adjust( color.adjust( $keyColor, $lightness: $lighten ), $alpha: -$opacity );
+		border-bottom-color: color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	}
 	&.meta {
 		color: transparent;
@@ -788,23 +789,23 @@ div.key {
 		background-size: contain;
 
 		$keyColor : #FD4F66;
-		background-color: transparentize( $keyColor, $opacity );
-		border-color: transparentize( lighten( $keyColor, $lighten ), $opacity );
-		border-bottom-color: transparentize( darken( $keyColor, $darken ), $opacity );
+		background-color: color.adjust( $keyColor, $alpha: -$opacity );
+		border-color: color.adjust( color.adjust( $keyColor, $lightness: $lighten ), $alpha: -$opacity );
+		border-bottom-color: color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	}
 	&.ctrl {
 		$keyColor : #FD4F66;
-		color: scale-color($color: $keyColor, $lightness: 60%);
-		background-color: transparentize( $keyColor, $opacity );
-		border-color: transparentize( lighten( $keyColor, $lighten ), $opacity );
-		border-bottom-color: transparentize( darken( $keyColor, $darken ), $opacity );
+		color: color.scale($color: $keyColor, $lightness: 60%);
+		background-color: color.adjust( $keyColor, $alpha: -$opacity );
+		border-color: color.adjust( color.adjust( $keyColor, $lightness: $lighten ), $alpha: -$opacity );
+		border-bottom-color: color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	}
 	&.alt {
 		$keyColor : #FD4F66;
-		color: scale-color($color: $keyColor, $lightness: 60%);
-		background-color: transparentize( $keyColor, $opacity );
-		border-color: transparentize( lighten( $keyColor, $lighten ), $opacity );
-		border-bottom-color: transparentize( darken( $keyColor, $darken ), $opacity );
+		color: color.scale($color: $keyColor, $lightness: 60%);
+		background-color: color.adjust( $keyColor, $alpha: -$opacity );
+		border-color: color.adjust( color.adjust( $keyColor, $lightness: $lighten ), $alpha: -$opacity );
+		border-bottom-color: color.adjust( color.adjust( $keyColor, $lightness: -$darken ), $alpha: -$opacity );
 	}
 }
 
@@ -981,7 +982,7 @@ ul.niceList {
 		}
 
 		&:not(.active):hover {
-			outline: 2px solid transparentize($color: white, $amount: 0.35);
+			outline: 2px solid color.adjust($color: white, $alpha: -0.35);
 			outline-offset: -2px;
 		}
 
@@ -2033,7 +2034,7 @@ select {
 
 	&:not(.gray) {
 		border-radius: 3px;
-		box-shadow: 0px 2px 0px transparentize($color: black, $amount: 0.7);
+		box-shadow: 0px 2px 0px color.adjust($color: black, $alpha: -0.7);
 	}
 
 	&:disabled {
@@ -2121,7 +2122,7 @@ select {
 		top: 0;
 		height: 100%;
 		pointer-events: none;
-		background-color: transparentize($color: $bgDark, $amount: 0.33);
+		background-color: color.adjust($color: $bgDark, $alpha: -0.33);
 	}
 
 	&:hover {
@@ -2650,8 +2651,8 @@ textarea {
 	border-radius: 4px;
 	background-color: $helpDark;
 	box-shadow:
-		0px 0px 2px transparentize($color: black, $amount: 0.4),
-		0px 3px 0px transparentize($color: black, $amount: 0.6),
+		0px 0px 2px color.adjust($color: black, $alpha: -0.4),
+		0px 3px 0px color.adjust($color: black, $alpha: -0.6),
 		0px 8px 16px rgba(0, 0, 0, 0.3);
 	pointer-events: none;
 
@@ -3085,7 +3086,7 @@ textarea {
 		border-radius: 3px;
 		border: 1px solid $bgMed;
 		background-color: transparent;
-		box-shadow: 0px 1px 0px transparentize($color: black, $amount: 0.8);
+		box-shadow: 0px 1px 0px color.adjust($color: black, $alpha: -0.8);
 		&:hover {
 			border-color: white;
 			.icon {
@@ -3108,7 +3109,7 @@ textarea {
 		border-bottom: none;
 		border-top: none;
 		border-top-right-radius: 5px;
-		box-shadow: 8px 0px 0px transparentize($color: black, $amount: 0.5);
+		box-shadow: 8px 0px 0px color.adjust($color: black, $alpha: -0.5);
 
 		&.backupLock {
 			background-color: $bgMed;
@@ -3138,7 +3139,7 @@ textarea {
 					padding: 16px;
 					border-radius: 4px;
 					background-color: $backupBg;
-					box-shadow: 0px 0px 16px transparentize($color: black, $amount: 0.6);
+					box-shadow: 0px 0px 16px color.adjust($color: black, $alpha: -0.6);
 				}
 			}
 		}
@@ -3291,7 +3292,7 @@ textarea {
 
 .window.support {
 	.mask {
-		background-color: transparentize($color: $bgLight, $amount: 0.2);
+		background-color: color.adjust($color: $bgLight, $alpha: -0.2);
 	}
 
 	.wrapper {
@@ -3358,7 +3359,7 @@ textarea {
 
 .window.changelog {
 	&>.mask {
-		background-color: transparentize($color: black, $amount: 0.1) !important;
+		background-color: color.adjust($color: black, $alpha: -0.1) !important;
 	}
 	&>.wrapper {
 		position: relative;
@@ -3789,7 +3790,7 @@ textarea {
 					max-height: $iconSize;
 					margin-right: 8px;
 					background-image: url("../img/stripesLight.png");
-					outline: 1px solid transparentize($color: black, $amount: 0.4);
+					outline: 1px solid color.adjust($color: black, $alpha: -0.4);
 				}
 				.icon.selectionTick {
 					width: 24px;
@@ -4441,7 +4442,7 @@ textarea {
 				>a {
 					border: 1px solid black;
 					cursor: pointer;
-					box-shadow: 0px 0px 8px transparentize($color: black, $amount: 0.5);
+					box-shadow: 0px 0px 8px color.adjust($color: black, $alpha: -0.5);
 					background-color: black;
 					background-image: url("../img/stripesLight.png");
 					background-repeat: repeat;
@@ -4925,13 +4926,13 @@ div.sortHandle {
 	}
 
 	span.grid {
-		background-color: transparentize($color: #3fc3a5, $amount: 0.6);
+		background-color: color.adjust($color: #3fc3a5, $alpha: -0.6);
 	}
 	span.level {
-		background-color: transparentize($color: #257361, $amount: 0.6);
+		background-color: color.adjust($color: #257361, $alpha: -0.6);
 	}
 	span.world {
-		background-color: transparentize($color: #233373, $amount: 0.6);
+		background-color: color.adjust($color: #233373, $alpha: -0.6);
 	}
 }
 
@@ -4995,7 +4996,7 @@ canvas#webgl {
 	justify-content: flex-end;
 	align-items: center;
 
-	background-color: transparentize($color: $red, $amount: 0.6);
+	background-color: color.adjust($color: $red, $alpha: -0.6);
 	box-shadow: 0px 0px 64px inset $red;
 	background-repeat: repeat;
 
@@ -5004,7 +5005,7 @@ canvas#webgl {
 		margin-bottom: 3px;
 		color: $orangeLight;
 		text-shadow: 0px 2px 4px black;
-		background-color: transparentize($color: black, $amount: 0.5);
+		background-color: color.adjust($color: black, $alpha: -0.5);
 	}
 }
 
@@ -5017,7 +5018,7 @@ canvas#webgl {
 	height: 100vh;
 	z-index: 9999;
 	&:not(.transparent) {
-		background-color: transparentize($color: $bgDark, $amount: 0.6);
+		background-color: color.adjust($color: $bgDark, $alpha: -0.6);
 		background-image: url("../img/stripesLight.png");
 		background-repeat: repeat;
 	}
@@ -5175,7 +5176,7 @@ canvas#webgl {
 
 				&.faded button:not(.active) {
 					opacity: 0.5;
-					box-shadow: 0px -6px 0px transparentize($color: black, $amount: 0.6) inset;
+					box-shadow: 0px -6px 0px color.adjust($color: black, $alpha: -0.6) inset;
 				}
 			}
 		}
@@ -5680,7 +5681,7 @@ canvas#webgl {
 		border-radius: 4px;
 		max-height: 70vh;
 		overflow-y: auto;
-		box-shadow: 0px 4px 2px transparentize($color: black, $amount: 0.6);
+		box-shadow: 0px 4px 2px color.adjust($color: black, $alpha: -0.6);
 
 		>.title {
 			display: grid;
@@ -5793,7 +5794,7 @@ canvas#webgl {
 			z-index: 0;
 			width: 100vw;
 			height: 100vh;
-			background-color: transparentize($color: black, $amount: 0.3);
+			background-color: color.adjust($color: black, $alpha: -0.3);
 		}
 		.wrapper {
 			z-index: 1;
@@ -5826,10 +5827,10 @@ canvas#webgl {
 						}
 
 						&:not(.active) {
-							&.SE_Definition	{ color: #ffcc00; background-color: transparentize($color: #ffcc00, $amount: 0.85);}
-							&.SE_World		{ color: #94483b; background-color: transparentize($color: #94483b, $amount: 0.85);}
-							&.SE_Level		{ color: #70a9ff; background-color: transparentize($color: #70a9ff, $amount: 0.85);}
-							&.SE_Entity		{ color: #20e2a5; background-color: transparentize($color: #20e2a5, $amount: 0.85);}
+							&.SE_Definition	{ color: #ffcc00; background-color: color.adjust($color: #ffcc00, $alpha: -0.85);}
+							&.SE_World		{ color: #94483b; background-color: color.adjust($color: #94483b, $alpha: -0.85);}
+							&.SE_Level		{ color: #70a9ff; background-color: color.adjust($color: #70a9ff, $alpha: -0.85);}
+							&.SE_Entity		{ color: #20e2a5; background-color: color.adjust($color: #20e2a5, $alpha: -0.85);}
 						}
 
 						&.active {
@@ -5885,7 +5886,7 @@ canvas#webgl {
 				width: 16px;
 				height: 100vh;
 				background-image: url("../img/stripes.png");
-				background-color: transparentize($color: white, $amount: 0.9);
+				background-color: color.adjust($color: white, $alpha: -0.9);
 				border-right: 1px solid white;
 				cursor: e-resize;
 			}
@@ -7246,7 +7247,7 @@ canvas#webgl {
 			outline: 2px solid #f0f;
 			outline-offset: -2px;
 			border: 1px solid black;
-			background-color: transparentize($color: #f0f, $amount: 0.8);
+			background-color: color.adjust($color: #f0f, $alpha: -0.8);
 		}
 	}
 
@@ -7549,7 +7550,7 @@ canvas#webgl {
 
 				border: 1px solid white; // color in code
 				border-radius: 3px;
-				box-shadow: 0px 0px 4px transparentize($color: black, $amount: 0.5);
+				box-shadow: 0px 0px 4px color.adjust($color: black, $alpha: -0.5);
 
 				&.array {
 					border-left: 2px solid white !important;
@@ -9133,7 +9134,7 @@ body.sorting ul.collapsedSortTarget {
 				&.disabled {
 					opacity: 0.35;
 					background-image: url("../img/stripes.png");
-					background-color: transparentize(#400, 0.3) !important;
+					background-color: color.adjust(#400, $alpha: -0.3) !important;
 
 					>.sortHandle {
 						opacity: 0.35;
@@ -9245,7 +9246,7 @@ body.sorting ul.collapsedSortTarget {
 							margin-top: 1px;
 							margin-bottom: 1px;
 							box-shadow: 0px 0px 4px black;
-							background-color: transparentize($color: black, $amount: 0.6);
+							background-color: color.adjust($color: black, $alpha: -0.6);
 						}
 
 						.text {
@@ -9281,7 +9282,7 @@ body.sorting ul.collapsedSortTarget {
 						min-width: 24px;
 
 						&:hover{
-							background-color: transparentize($color: white, $amount: 0.6);
+							background-color: color.adjust($color: white, $alpha: -0.6);
 						}
 
 						&.multiples img {
@@ -9318,7 +9319,7 @@ body.sorting ul.collapsedSortTarget {
 							font-size: 12pt;
 						}
 						&.groupToggler:hover{
-							background-color: transparentize($color: white, $amount: 0.66) !important;
+							background-color: color.adjust($color: white, $alpha: -0.66) !important;
 						}
 
 						&.off {
@@ -9347,7 +9348,7 @@ body.sorting ul.collapsedSortTarget {
 				}
 
 				&:not(.optional) header div.name:hover {
-					background-color: transparentize($color: white, $amount: 0.8) !important;
+					background-color: color.adjust($color: white, $alpha: -0.8) !important;
 				}
 
 
@@ -9413,7 +9414,7 @@ body.sorting ul.collapsedSortTarget {
 
 						&.inactive {
 							background-image: url("../img/stripesLight.png");
-							background-color: transparentize($darkRed, 0.5);
+							background-color: color.adjust($darkRed, $alpha: -0.5);
 							opacity: 0.6;
 						}
 
@@ -10454,7 +10455,7 @@ $patternSize : 32px;
 								.value {
 									color: $bgDark;
 									background-color: white;
-									box-shadow: 0px 4px 8px transparentize($color: black, $amount: 0.6);
+									box-shadow: 0px 4px 8px color.adjust($color: black, $alpha: -0.6);
 								}
 							}
 							&:not(.active) {
@@ -10805,7 +10806,7 @@ $patternSize : 32px;
 
 		border: 1px solid $bgLight;
 		border-radius: 3px;
-		background-color: transparentize($color: black, $amount: 0.3);
+		background-color: color.adjust($color: black, $alpha: -0.3);
 		box-shadow: 0px 4px 8px black;
 
 		&>div {
@@ -10827,7 +10828,7 @@ $patternSize : 32px;
 
 			&.current {
 				border-right: 3px solid $orange;
-				box-shadow: -2px 0px 0px transparentize($color: black, $amount: 0.5) inset;
+				box-shadow: -2px 0px 0px color.adjust($color: black, $alpha: -0.5) inset;
 			}
 
 			&.hasState {
