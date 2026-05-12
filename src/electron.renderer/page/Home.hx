@@ -3,6 +3,7 @@ package page;
 import hxd.Key;
 import misc.AssetLibrary.AssetLibraryPack;
 import misc.AssetLibrary.AssetLibraryPreviewFile;
+import misc.AssetLibrary.AssetLibraryStarterSample;
 
 class Home extends Page {
 	public static var ME : Home;
@@ -322,6 +323,7 @@ class Home extends Page {
 		for(pack in packs) {
 			var folder = AssetLibrary.getPackAbsPath(pack);
 			var thumb = AssetLibrary.getThumbAbsPath(pack);
+			var starters = AssetLibrary.getStarterSamples(pack);
 			thumb = StringTools.replace(thumb, "\\", "/");
 
 			var jPack = new J('<div class="sample assetPack"/>');
@@ -338,6 +340,8 @@ class Home extends Page {
 			jName.append('<div class="packHeader"><span class="kind">${pack.kind}</span><span class="count">${pack.files}</span></div>');
 			jName.append('<strong>${pack.name}</strong>');
 			jName.append('<small class="exts">${AssetLibrary.getExtensionLabel(pack)}</small>');
+			if( starters.length>0 )
+				jName.append('<small class="use">${starters.length} starter template${starters.length==1 ? "" : "s"}</small>');
 			if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
 				jName.append('<small class="use">${pack.suggestedUse}</small>');
 			if( pack.author!=null && pack.author.length>0 )
@@ -437,6 +441,14 @@ class Home extends Page {
 			iconId: "search",
 			cb: ()->openAssetPackBrowser(pack),
 		});
+		var starters = AssetLibrary.getStarterSamples(pack);
+		ctx.addAction({
+			label: starters.length==1 ? L.t._("Open starter template") : L.t._("Open first starter template"),
+			iconId: "open",
+			subText: L.untranslated(starters.length+" starter template"+(starters.length==1 ? "" : "s")),
+			show: ()->starters.length>0,
+			cb: ()->App.ME.loadProject(starters[0].absPath),
+		});
 		ctx.addAction({
 			label: L.t._("Open asset folder"),
 			iconId: "open",
@@ -485,6 +497,7 @@ class Home extends Page {
 
 	function openAssetPackBrowser(pack:AssetLibraryPack) {
 		var files = AssetLibrary.getPreviewFiles(pack);
+		var starters = AssetLibrary.getStarterSamples(pack);
 		var folder = AssetLibrary.getPackAbsPath(pack);
 		var w = new ui.modal.Dialog(null, "assetBrowser");
 		w.addTitle(L.untranslated(pack.name), true);
@@ -510,6 +523,40 @@ class Home extends Page {
 			App.ME.clipboard.copyStr(folder);
 			N.copied("folder path");
 		});
+
+		if( starters.length>0 ) {
+			var jStarters = new J('<div class="assetBrowserActions starterActions"/>');
+			jStarters.appendTo(w.jContent);
+			jStarters.css("flex-wrap", "wrap");
+			jStarters.css("max-height", "120px");
+			jStarters.css("overflow", "auto");
+			jStarters.css("padding", "4px");
+			var shown = starters.length>10 ? starters.slice(0, 10) : starters;
+			for(starter in shown) {
+				var jStarter = new J('<button type="button" class="help"><span class="icon doc"></span>${starter.name}</button>');
+				jStarter.appendTo(jStarters);
+				jStarter.css("flex", "1 1 210px");
+				jStarter.css("min-width", "0");
+				jStarter.css("overflow", "hidden");
+				jStarter.css("text-overflow", "ellipsis");
+				jStarter.css("text-transform", "none");
+				jStarter.css("white-space", "nowrap");
+				jStarter.attr("title", starter.absPath);
+				jStarter.click((ev)->App.ME.loadProject(starter.absPath));
+			}
+			if( starters.length>shown.length ) {
+				var jMore = new J('<button type="button" class="gray">+${starters.length-shown.length} more</button>');
+				jMore.appendTo(jStarters);
+				jMore.css("flex", "0 0 auto");
+				jMore.click((ev)->{
+					sampleFilter = "asset";
+					jPage.find(".sampleProjects .sampleSearch").val(pack.path);
+					showSamples();
+					updateSampleFilter();
+					w.close();
+				});
+			}
+		}
 
 		if( files.length==0 ) {
 			w.jContent.append('<div class="empty">No previewable images or audio files in this pack.</div>');

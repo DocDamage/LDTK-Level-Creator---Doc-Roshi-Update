@@ -24,8 +24,15 @@ typedef AssetLibraryPreviewFile = {
 	var kind : String;
 }
 
+typedef AssetLibraryStarterSample = {
+	var name : String;
+	var relPath : String;
+	var absPath : String;
+}
+
 class AssetLibrary {
 	static var packExtCache = new Map<String,Array<String>>();
+	static var packStarterCache = new Map<String,Array<AssetLibraryStarterSample>>();
 
 	public static function getDir() {
 		return JsTools.getSamplesDir()+"/atlas";
@@ -141,6 +148,69 @@ class AssetLibrary {
 			return Reflect.compare(a.relPath, b.relPath);
 		});
 		return out.length>limit ? out.slice(0, limit) : out;
+	}
+
+	static function sanitizeStarterPath(path:String) {
+		var out = new StringBuf();
+		var lastWasSep = true;
+		for(i in 0...path.length) {
+			var c = path.charCodeAt(i);
+			var isAlphaNum = c>=48 && c<=57 || c>=65 && c<=90 || c>=97 && c<=122;
+			if( isAlphaNum ) {
+				out.addChar(c);
+				lastWasSep = false;
+			}
+			else if( !lastWasSep ) {
+				out.add("_");
+				lastWasSep = true;
+			}
+		}
+		var s = out.toString();
+		while( StringTools.endsWith(s, "_") )
+			s = s.substr(0, s.length-1);
+		return s;
+	}
+
+	public static function getStarterSamples(pack:AssetLibraryPack) : Array<AssetLibraryStarterSample> {
+		var cacheKey = pack.path;
+		if( packStarterCache.exists(cacheKey) )
+			return packStarterCache.get(cacheKey);
+
+		var samplesDir = JsTools.getSamplesDir();
+		var out : Array<AssetLibraryStarterSample> = [];
+		if( !NT.fileExists(samplesDir) || pack.path=="." ) {
+			packStarterCache.set(cacheKey, out);
+			return out;
+		}
+
+		var exact = pack.path=="CuteSCKR_uncut"
+			? "Doc_Roshi_CuteSCKR"
+			: "Doc_Roshi_Asset_"+sanitizeStarterPath(pack.path);
+		var prefix = exact+"_";
+
+		try {
+			for(f in NT.readDir(samplesDir)) {
+				var fp = dn.FilePath.fromFile(samplesDir+"/"+f);
+				if( fp.extension!="ldtk" )
+					continue;
+				var matches = fp.fileName==exact || StringTools.startsWith(fp.fileName, prefix);
+				if( pack.kind=="Audio" && fp.fileName=="Doc_Roshi_Horror_Audio_Demo" )
+					matches = true;
+				if( !matches )
+					continue;
+
+				out.push({
+					name: StringTools.replace(fp.fileName, "_", " "),
+					relPath: fp.fileWithExt,
+					absPath: fp.full,
+				});
+			}
+		}
+		catch(_) {}
+
+		out.sort((a,b)->Reflect.compare(a.name, b.name));
+		packStarterCache.set(cacheKey, out);
+		return out;
 	}
 
 	public static function getExtensionLabel(pack:AssetLibraryPack, limit=5) {
