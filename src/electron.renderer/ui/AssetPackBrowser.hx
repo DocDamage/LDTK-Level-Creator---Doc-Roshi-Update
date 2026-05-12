@@ -13,6 +13,7 @@ class AssetPackBrowser {
 		var folder = AssetLibrary.getPackAbsPath(pack);
 		var previewLimit = PREVIEW_PAGE_SIZE;
 		var kindFilter = "*";
+		var selectedAudio : Array<String> = [];
 		var w = new ui.modal.Dialog(null, "assetBrowser");
 		w.addTitle(L.untranslated(pack.name), true);
 
@@ -28,6 +29,8 @@ class AssetPackBrowser {
 			new J('<span/>').text(pack.license).appendTo(jMeta);
 		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
 			new J('<span/>').text(pack.suggestedUse).appendTo(jMeta);
+		for(tag in AssetLibraryState.getPackTags(pack.path))
+			new J('<span/>').text("#"+tag).appendTo(jMeta);
 		if( pack.summary!=null && pack.summary.length>0 )
 			new J('<p/>').text(pack.summary).appendTo(jSummary);
 
@@ -45,6 +48,16 @@ class AssetPackBrowser {
 			AssetLibraryState.toggleFavoritePack(pack.path);
 			syncPackFavorite();
 		});
+		for(tag in [ "rpg", "platformer", "topdown", "horror", "characters", "audio", "ui", "needs-review" ]) {
+			var jTag = new J('<button type="button" class="gray"><span class="label"></span></button>');
+			jTag.find(".label").text("#"+tag);
+			jTag.toggleClass("active", AssetLibraryState.isPackTagged(pack.path, tag));
+			jTag.appendTo(jActions);
+			jTag.click((ev)->{
+				var active = AssetLibraryState.togglePackTag(pack.path, tag);
+				jTag.toggleClass("active", active);
+			});
+		}
 		var jOpen = new J('<button type="button"><span class="icon open"></span>Open folder</button>');
 		jOpen.appendTo(jActions);
 		jOpen.click((ev)->JsTools.locateFile(folder, false));
@@ -127,6 +140,21 @@ class AssetPackBrowser {
 				audio.currentTime = 0;
 			});
 		});
+		var jVolume = new J('<input class="audioVolume" type="range" min="0" max="100" value="80" title="Audio preview volume"/>');
+		jVolume.appendTo(jTools);
+		jVolume.on("input", (_)->{
+			var volume = Std.parseInt(jVolume.val()) / 100;
+			jGrid.find("audio").each((idx, e)->{
+				var audio : js.html.AudioElement = cast e;
+				audio.volume = volume;
+			});
+		});
+		var jCopySelectedAudio = new J('<button type="button" class="gray"><span class="icon copy"></span>Copy selected audio</button>');
+		jCopySelectedAudio.appendTo(jTools);
+		jCopySelectedAudio.click((ev)->{
+			App.ME.clipboard.copyStr(selectedAudio.join("\n"));
+			N.copied("selected audio paths");
+		});
 		var jEmpty = new J('<div class="empty"/>');
 		jEmpty.appendTo(w.jContent);
 		var jMorePreviews = new J('<button type="button" class="gray"><span class="icon down"></span>Show more previews</button>');
@@ -145,7 +173,7 @@ class AssetPackBrowser {
 			var files = previewLimit>0 && allMatches.length>previewLimit ? allMatches.slice(0, previewLimit) : allMatches;
 			jGrid.empty();
 			for(file in files)
-				appendAssetPreview(jGrid, file, renderPreviews);
+				appendAssetPreview(jGrid, file, renderPreviews, selectedAudio, Std.parseInt(jVolume.val()) / 100);
 
 			jGrid.toggle(total>0);
 			jEmpty.toggle(total==0);
@@ -156,6 +184,8 @@ class AssetPackBrowser {
 			jCount.text(total==0 ? "0 previews" : files.length+" / "+total+" previews");
 			jMorePreviews.toggle(total>files.length);
 			jStopAudio.toggle(AssetLibrary.hasAudioFiles(pack));
+			jVolume.toggle(AssetLibrary.hasAudioFiles(pack));
+			jCopySelectedAudio.toggle(selectedAudio.length>0);
 			jKinds.find("button").each((idx, e)->{
 				var jButton = new J(e);
 				jButton.toggleClass("active", jButton.attr("data-kind")==kindFilter);
@@ -175,7 +205,7 @@ class AssetPackBrowser {
 		w.addClose();
 	}
 
-	static function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile, refresh:Void->Void) {
+	static function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile, refresh:Void->Void, selectedAudio:Array<String>, audioVolume:Float) {
 		var jItem = new J('<div class="assetPreview ${file.kind}"/>');
 		jItem.appendTo(jGrid);
 		var jFavorite = new J('<button type="button" class="favoriteFile" title="Favorite file"><span class="icon love"></span></button>');
@@ -196,6 +226,10 @@ class AssetPackBrowser {
 			var jPreview = new J('<div class="preview audio"><span class="icon doc"></span><audio controls></audio></div>');
 			jPreview.appendTo(jItem);
 			jPreview.find("audio").attr("src", fileUrl);
+			jPreview.find("audio").each((idx, e)->{
+				var audio : js.html.AudioElement = cast e;
+				audio.volume = audioVolume;
+			});
 		}
 		new J('<div class="name"/>').text(file.name).appendTo(jItem);
 		new J('<small/>').text(file.relPath).appendTo(jItem);
@@ -217,6 +251,28 @@ class AssetPackBrowser {
 			N.copied("absolute path");
 			AssetLibraryState.rememberFile(file.absPath);
 		});
+		if( file.kind=="image" && ui.AssetImportTools.canImportImageToCurrentEditor() ) {
+			var jImport = new J('<button type="button" title="Import as tileset"><span class="icon add"></span></button>');
+			jImport.appendTo(jActions);
+			jImport.click((ev:js.jquery.Event)->{
+				ev.stopPropagation();
+				ui.AssetImportTools.importImageAsTileset(file.absPath);
+			});
+		}
+		if( file.kind=="audio" ) {
+			var jSelect = new J('<button type="button" class="gray" title="Select audio path"><span class="icon check"></span></button>');
+			jSelect.appendTo(jActions);
+			jSelect.toggleClass("active", selectedAudio.indexOf(file.relPath)>=0);
+			jSelect.click((ev:js.jquery.Event)->{
+				ev.stopPropagation();
+				var idx = selectedAudio.indexOf(file.relPath);
+				if( idx>=0 )
+					selectedAudio.splice(idx, 1);
+				else
+					selectedAudio.push(file.relPath);
+				refresh();
+			});
+		}
 		jItem.click((ev)->{
 			AssetLibraryState.rememberFile(file.absPath);
 			JsTools.locateFile(file.absPath, true);

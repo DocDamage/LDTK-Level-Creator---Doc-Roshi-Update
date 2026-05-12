@@ -55,7 +55,8 @@ class AssetLibraryPanel {
 		jPack.appendTo(jScroller);
 		jPack.attr("data-kind", pack.kind);
 		jPack.attr("data-path", pack.path);
-		jPack.attr("data-search", AssetLibrary.getSearchText(pack));
+		var tags = AssetLibraryState.getPackTags(pack.path);
+		jPack.attr("data-search", AssetLibrary.getSearchText(pack)+" "+tags.join(" "));
 		var jThumb = new J('<div class="thumb"></div>');
 		jThumb.appendTo(jPack);
 		if( pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb) )
@@ -89,6 +90,12 @@ class AssetLibraryPanel {
 			new J('<small class="credit"/>').text("by "+pack.author).appendTo(jName);
 		if( pack.license!=null && pack.license.length>0 )
 			new J('<small class="license"/>').text(pack.license).appendTo(jName);
+		if( tags.length>0 ) {
+			var jTags = new J('<div class="tagChips"/>');
+			jTags.appendTo(jName);
+			for(tag in tags)
+				new J('<span/>').text(tag).appendTo(jTags);
+		}
 		if( pack.summary!=null && pack.summary.length>0 )
 			jPack.attr("title", pack.summary);
 		jPack.click((ev)->openBrowser(pack));
@@ -128,8 +135,12 @@ class AssetLibraryPanel {
 		addFilter(L.untranslated("Recent"), "recent");
 		for(kind in kinds)
 			addFilter(kind, kind);
+		var paths = packs.map((pack)->pack.path);
+		for(tag in AssetLibraryState.getAllPackTags(paths))
+			addFilter("#"+tag, "tag:"+tag);
 
 		jRoot.find(".assetSearch").off().on("input", (_)->updateFilter());
+		jRoot.find(".assetHealth").off().click((ev)->ui.AssetHealthDashboard.open());
 	}
 
 	function updateFilter() {
@@ -168,6 +179,7 @@ class AssetLibraryPanel {
 			case "*": true;
 			case "favorites": AssetLibraryState.isFavoritePack(path);
 			case "recent": AssetLibraryState.getRecentPacks().indexOf(path)>=0;
+			case _ if( StringTools.startsWith(kindFilter, "tag:") ): AssetLibraryState.isPackTagged(path, kindFilter.substr(4));
 			case _: jPack.attr("data-kind")==kindFilter;
 		}
 		var haystack = jPack.attr("data-search");
@@ -221,6 +233,21 @@ class AssetLibraryPanel {
 			iconId: "search",
 			cb: ()->openBrowser(pack),
 		});
+		for(tag in [ "rpg", "platformer", "topdown", "horror", "characters", "audio", "ui", "needs-review" ]) {
+			ctx.addAction({
+				label: L.untranslated((AssetLibraryState.isPackTagged(pack.path, tag) ? "Remove tag " : "Add tag ")+"#"+tag),
+				iconId: "edit",
+				cb: ()->{
+					AssetLibraryState.togglePackTag(pack.path, tag);
+					jRoot.find(".scroller").empty();
+					createFilters(packs);
+					renderRecentPacks();
+					for(p in packs)
+						appendPack(jRoot.find(".scroller"), p);
+					updateFilter();
+				},
+			});
+		}
 		var starters = AssetLibrary.getStarterSamples(pack);
 		ctx.addAction({
 			label: starters.length==1 ? L.t._("Open starter template") : L.t._("Open first starter template"),

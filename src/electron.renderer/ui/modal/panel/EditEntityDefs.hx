@@ -690,6 +690,12 @@ class EditEntityDefs extends ui.modal.Panel {
 
 		var jButton = new J('<button type="button" class="recall assetLibrary" title="Create tileset from bundled asset library"><span class="icon folder"/></button>');
 		jButton.insertAfter(jRenderSelect);
+		ui.AssetImportTools.appendRecentImageButton(jButton, (absPath)->{
+			App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+			var td = createTilesetFromAssetImage(absPath);
+			if( td!=null )
+				useTilesetForEntityRender(td);
+		});
 		jButton.click((ev:js.jquery.Event)->{
 			ev.stopPropagation();
 			var ctx = new ContextMenu(ev);

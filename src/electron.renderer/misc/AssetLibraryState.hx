@@ -7,6 +7,7 @@ class AssetLibraryState {
 	static inline var FILE_FAVORITES = "docRoshi.assetLibrary.favoriteFiles";
 	static inline var FILE_RECENTS = "docRoshi.assetLibrary.recentFiles";
 	static inline var STARTER_RECENTS = "docRoshi.assetLibrary.recentStarters";
+	static inline var PACK_TAG_PREFIX = "docRoshi.assetLibrary.packTags.";
 
 	static function readList(key:String) : Array<String> {
 		var raw = try js.Browser.window.localStorage.getItem(key) catch(e:Dynamic) null;
@@ -79,4 +80,38 @@ class AssetLibraryState {
 
 	public static function rememberStarter(path:String) remember(STARTER_RECENTS, path);
 	public static function getRecentStarters() return readList(STARTER_RECENTS);
+
+	static function tagKey(path:String) {
+		return PACK_TAG_PREFIX + haxe.crypto.Base64.encode(haxe.io.Bytes.ofString(path));
+	}
+
+	public static function getPackTags(path:String) {
+		var tags = readList(tagKey(path));
+		tags.sort(Reflect.compare);
+		return tags;
+	}
+
+	public static function togglePackTag(path:String, tag:String) {
+		tag = StringTools.trim(tag.toLowerCase());
+		if( tag.length==0 )
+			return false;
+		return toggle(tagKey(path), tag);
+	}
+
+	public static function isPackTagged(path:String, tag:String) {
+		return contains(tagKey(path), StringTools.trim(tag.toLowerCase()));
+	}
+
+	public static function getAllPackTags(paths:Array<String>) {
+		var seen = new Map<String,Bool>();
+		var out = [];
+		for(path in paths)
+			for(tag in getPackTags(path))
+				if( !seen.exists(tag) ) {
+					seen.set(tag, true);
+					out.push(tag);
+				}
+		out.sort(Reflect.compare);
+		return out;
+	}
 }

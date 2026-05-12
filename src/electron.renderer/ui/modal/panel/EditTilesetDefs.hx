@@ -395,6 +395,10 @@ class EditTilesetDefs extends ui.modal.Panel {
 
 		var jButton = new J('<button class="recall assetLibrary" title="Pick from bundled asset library"><span class="icon folder"/></button>');
 		jButton.insertAfter(jImg.find("button.pick"));
+		ui.AssetImportTools.appendRecentImageButton(jButton, (absPath)->{
+			App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+			onPick(project.makeRelativeFilePath(absPath));
+		});
 		jButton.click((ev:js.jquery.Event)->{
 			ev.stopPropagation();
 			var ctx = new ui.modal.ContextMenu(ev);

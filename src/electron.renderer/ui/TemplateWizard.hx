@@ -2,6 +2,7 @@ package ui;
 
 import misc.AssetLibrary;
 import misc.AssetLibrary.AssetLibraryStarterEntry;
+import misc.AssetLibraryDiagnostics;
 import misc.AssetLibraryState;
 
 class TemplateWizard {
@@ -29,6 +30,7 @@ class TemplateWizard {
 		jGrid.appendTo(w.jContent);
 		var jEmpty = new J('<div class="empty"/>').text("No matching templates").appendTo(w.jContent);
 		var render : Void->Void = null;
+		var showDependencies : (AssetLibraryStarterEntry, misc.AssetLibraryDiagnostics.AssetLibraryTemplateSummary)->Void = null;
 
 		function addFilter(label:String, kind:String) {
 			var jButton = new J('<button type="button"><span class="label"></span><span class="count"></span></button>');
@@ -73,6 +75,7 @@ class TemplateWizard {
 			dn.js.ElectronDialogs.saveFileAs(["."+Const.FILE_EXTENSION], openPath, function(filePath:String) {
 				try {
 					var created = AssetLibrary.cloneStarterTo(entry.starter, filePath);
+					AssetLibraryDiagnostics.writeCloneManifest(entry.starter, created);
 					App.ME.settings.storeUiDir("TemplateWizard", dn.FilePath.extractDirectoryWithoutSlash(created, true));
 					AssetLibraryState.rememberStarter(entry.starter.absPath);
 					N.success("Template project created");
@@ -87,6 +90,7 @@ class TemplateWizard {
 		}
 
 		function appendEntry(entry:AssetLibraryStarterEntry) {
+			var deps = AssetLibraryDiagnostics.getStarterSummary(entry.starter);
 			var jItem = new J('<div class="sample template templateWizardItem"/>');
 			jItem.attr("title", entry.starter.absPath);
 			jItem.appendTo(jGrid);
@@ -103,6 +107,12 @@ class TemplateWizard {
 			jName.find(".kind").text(entry.category);
 			new J('<strong/>').text(entry.starter.name).appendTo(jName);
 			new J('<small/>').text(entry.pack.name).appendTo(jName);
+			var depLabel = deps.imageCount+" img";
+			if( deps.audioCount>0 )
+				depLabel += " / "+deps.audioCount+" audio";
+			if( deps.missingCount>0 )
+				depLabel += " / "+deps.missingCount+" missing";
+			new J('<small class="templateDepsLabel"/>').text(depLabel).appendTo(jName);
 
 			var jActions = new J('<div class="templateItemActions"/>');
 			jActions.appendTo(jName);
@@ -118,12 +128,45 @@ class TemplateWizard {
 				ev.stopPropagation();
 				JsTools.locateFile(entry.starter.absPath, true);
 			});
+			var jDeps = new J('<button type="button" class="gray" title="Show template dependencies"><span class="icon search"></span></button>');
+			jDeps.appendTo(jActions);
+			jDeps.click((ev:js.jquery.Event)->{
+				ev.stopPropagation();
+				showDependencies(entry, deps);
+			});
 
 			jItem.click((ev)->{
 				AssetLibraryState.rememberStarter(entry.starter.absPath);
 				App.ME.loadProject(entry.starter.absPath);
 				w.close();
 			});
+		}
+
+		showDependencies = function(entry:AssetLibraryStarterEntry, deps:misc.AssetLibraryDiagnostics.AssetLibraryTemplateSummary) {
+			var d = new ui.modal.Dialog(null, "templateDependencies");
+			d.addTitle(L.untranslated(entry.starter.name), true);
+			var jMeta = new J('<div class="summary"><div class="meta"></div></div>');
+			jMeta.appendTo(d.jContent);
+			jMeta.find(".meta").append('<span>${deps.imageCount} image refs</span>');
+			jMeta.find(".meta").append('<span>${deps.audioCount} audio refs</span>');
+			jMeta.find(".meta").append('<span>${deps.otherCount} other refs</span>');
+			jMeta.find(".meta").append('<span>${deps.missingCount} missing</span>');
+
+			var jList = new J('<div class="dependencyList"/>');
+			jList.appendTo(d.jContent);
+			for(ref in deps.refs) {
+				var jRef = new J('<div class="dependencyRef"/>');
+				jRef.toggleClass("missing", ref.missing);
+				jRef.appendTo(jList);
+				new J('<strong/>').text(ref.kind).appendTo(jRef);
+				new J('<span/>').text(ref.rawPath).appendTo(jRef);
+				var jLocate = new J('<button type="button" class="gray"><span class="icon locate"></span></button>');
+				jLocate.appendTo(jRef);
+				jLocate.click((ev)->JsTools.locateFile(ref.absPath, true));
+			}
+			if( deps.refs.length==0 )
+				new J('<div class="empty">No atlas references found in this template.</div>').appendTo(d.jContent);
+			d.addClose();
 		}
 
 		render = function() {

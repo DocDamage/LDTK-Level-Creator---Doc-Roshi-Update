@@ -3980,7 +3980,9 @@ textarea {
 }
 
 .window.dialog.assetBrowser,
-.window.dialog.templateWizard {
+.window.dialog.templateWizard,
+.window.dialog.templateDependencies,
+.window.dialog.assetHealthDashboard {
 	>.wrapper {
 		width: min(960px, 92vw);
 		max-width: none;
@@ -4032,6 +4034,11 @@ textarea {
 		input {
 			flex: 1 1 220px;
 			min-width: 180px;
+		}
+
+		input.audioVolume {
+			flex: 0 0 110px;
+			min-width: 110px;
 		}
 	}
 
@@ -4187,6 +4194,141 @@ textarea {
 				height: 26px;
 				padding: 4px;
 			}
+		}
+	}
+
+	.templateDepsLabel {
+		color: $help !important;
+	}
+
+	.dependencyList {
+		display: grid;
+		gap: 3px;
+		max-height: 55vh;
+		overflow: auto;
+		padding: 4px;
+		background-color: $bgDark;
+	}
+
+	.dependencyRef {
+		display: grid;
+		grid-template-columns: 62px auto min-content;
+		gap: 6px;
+		align-items: center;
+		padding: 5px;
+		background-color: black;
+
+		strong {
+			color: $help;
+			font-family: Roboto;
+			font-size: 8pt;
+			text-transform: uppercase;
+		}
+
+		span {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			color: $almostWhite;
+			font-size: 8pt;
+		}
+
+		button {
+			width: 28px;
+			height: 24px;
+			padding: 3px;
+		}
+
+		&.missing {
+			outline: 1px solid $red;
+
+			strong {
+				color: $orange;
+			}
+		}
+	}
+
+	.healthStats {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+		gap: 5px;
+	}
+
+	.healthStat {
+		display: grid;
+		gap: 2px;
+		padding: 8px;
+		border-radius: 3px;
+		font-family: Roboto;
+		text-align: center;
+		background-color: $bgDark;
+
+		strong {
+			font-size: 16pt;
+			color: white;
+		}
+
+		span {
+			font-size: 8pt;
+			color: $almostWhite;
+			text-transform: uppercase;
+		}
+
+		&.warning strong {
+			color: $orange;
+		}
+	}
+
+	.healthList {
+		display: grid;
+		gap: 5px;
+		max-height: 48vh;
+		overflow: auto;
+		padding: 4px;
+		background-color: $bgDark;
+	}
+
+	.healthItem {
+		display: grid;
+		gap: 6px;
+		padding: 8px;
+		background-color: black;
+	}
+
+	.healthHeader {
+		display: grid;
+		grid-template-columns: auto min-content;
+		gap: 3px 8px;
+		align-items: center;
+
+		strong {
+			color: white;
+		}
+
+		>span {
+			grid-column: 1/2;
+			color: $almostWhite;
+			font-size: 8pt;
+		}
+
+		.previewActions {
+			grid-column: 2/3;
+			grid-row: 1/3;
+		}
+	}
+
+	.healthIssues {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 3px;
+
+		span {
+			padding: 3px 6px;
+			border-radius: 2px;
+			font-family: Roboto;
+			font-size: 8pt;
+			color: $orangeLight;
+			background-color: $darkRed;
 		}
 	}
 
@@ -6298,7 +6440,7 @@ canvas#webgl {
 				.sampleTools,
 				.assetTools {
 					display: grid;
-					grid-template-columns: 180px auto;
+					grid-template-columns: 180px min-content auto;
 					gap: 4px;
 					align-items: center;
 					padding: 4px;
@@ -6307,6 +6449,13 @@ canvas#webgl {
 					input[type=text] {
 						width: 100%;
 						box-sizing: border-box;
+					}
+
+					>.assetHealth {
+						width: auto;
+						padding: 5px 8px;
+						font-size: 8pt;
+						white-space: nowrap;
 					}
 
 					.sampleFilters,
@@ -6509,6 +6658,21 @@ canvas#webgl {
 
 							&.license {
 								opacity: 0.55;
+							}
+						}
+
+						.tagChips {
+							display: flex;
+							flex-wrap: wrap;
+							gap: 2px;
+
+							span {
+								padding: 2px 5px;
+								border-radius: 2px;
+								font-family: Roboto;
+								font-size: 7pt;
+								color: $help;
+								background-color: $helpDarker;
 							}
 						}
 					}
