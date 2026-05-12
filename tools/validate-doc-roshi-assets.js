@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const childProcess = require("child_process");
 
 const root = path.resolve(__dirname, "..");
 const samplesDir = path.join(root, "app", "extraFiles", "samples");
@@ -11,6 +12,7 @@ const manifestPath = path.join(atlasDir, "assetLibrary.json");
 const EXPECTED_ASSET_STARTERS = 151;
 const EXPECTED_CUTESCKR_STARTERS = 78;
 const EXPECTED_DOC_ROSHI_STARTERS = 233;
+const BLOCKED_TRACKED_ATLAS_EXTENSIONS = new Set([".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh"]);
 
 const errors = [];
 
@@ -44,6 +46,20 @@ function listSamples(prefix) {
 	return fs.readdirSync(samplesDir)
 		.filter((name) => name.startsWith(prefix) && name.endsWith(".ldtk"))
 		.sort();
+}
+
+function listTrackedAtlasFiles() {
+	try {
+		const output = childProcess.execFileSync("git", ["ls-files", "app/extraFiles/samples/atlas"], {
+			cwd: root,
+			encoding: "utf8",
+			stdio: ["ignore", "pipe", "ignore"],
+		});
+		return output.split(/\r?\n/).filter(Boolean);
+	}
+	catch (_) {
+		return [];
+	}
 }
 
 function sanitizeStarterPath(packPath) {
@@ -125,6 +141,14 @@ function validateManifest() {
 	}
 
 	return manifest;
+}
+
+function validateTrackedAtlasFiles() {
+	for (const fileName of listTrackedAtlasFiles()) {
+		const ext = path.extname(fileName).toLowerCase();
+		if (BLOCKED_TRACKED_ATLAS_EXTENSIONS.has(ext))
+			fail(`Tracked atlas file should stay ignored as raw runtime output: ${fileName}`);
+	}
 }
 
 function validateStarterCounts(allDocRoshi, assetStarters, cuteSckrStarters) {
@@ -288,6 +312,7 @@ function main() {
 		fail(`Atlas directory does not exist: ${rel(atlasDir)}`);
 
 	const manifest = validateManifest();
+	validateTrackedAtlasFiles();
 	const allDocRoshi = listSamples("Doc_Roshi_");
 	const assetStarters = listSamples("Doc_Roshi_Asset_");
 	const cuteSckrStarters = listSamples("Doc_Roshi_CuteSCKR_");

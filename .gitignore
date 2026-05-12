@@ -32,3 +32,14 @@ tests/*.txt
 
 # Converted to MP3 for GitHub distribution.
 app/extraFiles/samples/atlas/sound effects/Horror SFX Free/Ambient/Suburban Neighborhood_morning.wav
+
+# Raw executable/runtime files from asset-pack source drops are not app-known art/audio assets.
+app/extraFiles/samples/atlas/**/*.exe
+app/extraFiles/samples/atlas/**/*.dll
+app/extraFiles/samples/atlas/**/*.pdb
+app/extraFiles/samples/atlas/**/*.so
+app/extraFiles/samples/atlas/**/*.dylib
+app/extraFiles/samples/atlas/**/*.msi
+app/extraFiles/samples/atlas/**/*.bat
+app/extraFiles/samples/atlas/**/*.cmd
+app/extraFiles/samples/atlas/**/*.sh
