@@ -8,6 +8,7 @@ class Home extends Page {
 
 	var pendingBackupChecks : Array<{ projectFp:dn.FilePath, jTarget:js.jquery.JQuery }> = [];
 	var assetFilter = "*";
+	var sampleFilter = "*";
 
 	public function new() {
 		super();
@@ -134,8 +135,11 @@ class Home extends Page {
 
 			var jSample = new J('<div class="sample"/>');
 			jSample.appendTo(jScroller);
-			jSample.append('<div class="thumb" style="background-image:url($path/thumbs/${fp.fileName}.png)"></div>');
 			var name = StringTools.replace( fp.fileName, "_", " " );
+			var sampleKind = getSampleKind(fp.fileName);
+			jSample.attr("data-kind", sampleKind);
+			jSample.attr("data-search", getSampleSearchText(fp.fileName, name, sampleKind));
+			jSample.append('<div class="thumb" style="background-image:url($path/thumbs/${fp.fileName}.png)"></div>');
 			if( StringTools.startsWith(fp.fileName, "Doc_Roshi_") ) {
 				jSample.addClass("template");
 				jSample.append('<div class="name"><span class="badge">Template</span><strong>$name</strong><small>Bundled asset starter</small></div>');
@@ -149,8 +153,74 @@ class Home extends Page {
 			if( App.ME.recentProjectsContains(fp.full) )
 				jSample.addClass("seen");
 		}
+		createSampleFilters();
+		updateSampleFilter();
 
 		loadAssetLibrary();
+	}
+
+	function getSampleKind(fileName:String) {
+		if( StringTools.startsWith(fileName, "Doc_Roshi_CuteSCKR_") )
+			return "cutesckr";
+		if( StringTools.startsWith(fileName, "Doc_Roshi_") )
+			return "template";
+		return "core";
+	}
+
+	function getSampleSearchText(fileName:String, name:String, kind:String) {
+		var labels = switch kind {
+			case "cutesckr": "template cutesckr bundled asset starter tileset";
+			case "template": "template bundled asset starter";
+			case _: "core example sample";
+		}
+		return (fileName+" "+name+" "+labels).toLowerCase();
+	}
+
+	function createSampleFilters() {
+		var jFilters = jPage.find(".sampleProjects .sampleFilters");
+		jFilters.empty();
+
+		function addFilter(label:String, kind:String) {
+			var jButton = new J('<button type="button"/>');
+			jButton.appendTo(jFilters);
+			jButton.text(label);
+			jButton.attr("data-kind", kind);
+			jButton.click((ev)->{
+				sampleFilter = kind;
+				updateSampleFilter();
+			});
+		}
+
+		addFilter(L.t._("All"), "*");
+		addFilter(L.t._("Templates"), "template");
+		addFilter(L.untranslated("CuteSCKR"), "cutesckr");
+		addFilter(L.t._("Core"), "core");
+
+		jPage.find(".sampleProjects .sampleSearch").off().on("input", (_)->updateSampleFilter());
+	}
+
+	function updateSampleFilter() {
+		var query = (jPage.find(".sampleProjects .sampleSearch").val():String);
+		query = query==null ? "" : query.toLowerCase();
+
+		jPage.find(".sampleProjects .sampleFilters button").each( function(idx, e) {
+			var jButton = new J(e);
+			jButton.toggleClass("active", jButton.attr("data-kind")==sampleFilter);
+		});
+
+		var visibleCount = 0;
+		jPage.find(".sampleProjects .sample").each( function(idx, e) {
+			var jSample = new J(e);
+			var kind = jSample.attr("data-kind");
+			var matchesKind = sampleFilter=="*" || kind==sampleFilter || ( sampleFilter=="template" && (kind=="template" || kind=="cutesckr") );
+			var haystack = jSample.attr("data-search");
+			var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
+			var visible = matchesKind && matchesQuery;
+			if( visible )
+				visibleCount++;
+			jSample.toggle(visible);
+		});
+		jPage.find(".sampleProjects .sampleEmpty").toggle(visibleCount==0);
 	}
 
 	function loadAssetLibrary() {

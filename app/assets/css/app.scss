@@ -6073,6 +6073,7 @@ canvas#webgl {
 					background-color: $helpDark;
 				}
 
+				.sampleTools,
 				.assetTools {
 					display: grid;
 					grid-template-columns: 180px auto;
@@ -6086,6 +6087,7 @@ canvas#webgl {
 						box-sizing: border-box;
 					}
 
+					.sampleFilters,
 					.assetFilters {
 						display: flex;
 						gap: 2px;
@@ -6107,6 +6109,11 @@ canvas#webgl {
 					}
 				}
 
+				.sampleTools {
+					padding-bottom: 0;
+				}
+
+				.sampleEmpty,
 				.assetEmpty {
 					display: none;
 					padding: 12px;
