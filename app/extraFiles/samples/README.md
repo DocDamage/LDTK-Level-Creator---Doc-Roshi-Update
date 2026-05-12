@@ -11,6 +11,8 @@ When adding more packs, keep the files inside `atlas/`, add a representative thu
 
 Generated contact-sheet previews for the home-screen asset library live in `atlas/_libraryThumbs/`.
 
+Bundled asset attribution and release verification notes are tracked in `../../../docs/DOC_ROSHI_ASSET_CREDITS.md`.
+
 ## Doc Roshi asset starter update
 
 This branch adds a large bundled starter library on top of the original LDtk samples:

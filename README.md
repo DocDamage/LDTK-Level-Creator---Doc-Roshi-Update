@@ -9,6 +9,19 @@ Links: [Official website](https://ldtk.io/) | [Haxe API (on GitHub)](https://git
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/deepnight/ldtk/test-windows.yml?label=LDtk%20build)](https://github.com/deepnight/ldtk/actions/workflows/test-windows.yml)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/deepnight/ldtk-haxe-api/unitTests.yml?label=Unit%20tests)](https://github.com/deepnight/ldtk-haxe-api/actions/workflows/unitTests.yml)
 
+# Doc Roshi update
+
+This branch adds a bundled asset-library workflow on top of LDtk 1.5.4:
+
+ - Home screen asset-library browsing with searchable pack cards, filters, thumbnails, suggested use, and direct links to matching starter templates.
+ - Bundled sample coverage for the imported asset library, including 151 generated asset-pack starters, 78 CuteSCKR starters, RPG room, platformer, top-down, and horror/audio demo templates.
+ - Asset picker integrations for bundled images and audio from tileset, entity visual, and file-path workflows.
+ - A repository validator and GitHub Actions workflow that check the app-known imported assets and starter templates stay present and usable.
+
+Run `node tools/validate-doc-roshi-assets.js` from the repository root to verify the bundled asset library. Release packaging has also been checked with `cd app && npm run pack-test`.
+
+Bundled asset attribution and license notes are tracked in [Doc Roshi asset credits](docs/DOC_ROSHI_ASSET_CREDITS.md).
+
 # Getting LDtk latest version
 
 Visit [LDtk.io](https://ldtk.io) to get latest version.
