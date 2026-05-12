@@ -6137,6 +6137,26 @@ canvas#webgl {
 						}
 					}
 
+					&.template {
+						outline: 1px solid $help;
+						box-shadow: 0px 0px 14px rgba($help, 0.28);
+
+						.name {
+							background-color: $helpDarker;
+
+							.badge {
+								justify-self: start;
+								padding: 2px 5px;
+								border-radius: 2px;
+								color: black;
+								font-family: Roboto;
+								font-size: 7pt;
+								text-transform: uppercase;
+								background-color: $help;
+							}
+						}
+					}
+
 					.thumb {
 						background-position: center;
 						background-size: cover;

@@ -112,6 +112,13 @@ class Home extends Page {
 		var path = JsTools.getSamplesDir();
 		App.LOG.debug("samplesDir="+path);
 		var files = NT.readDir(path);
+		files.sort( (a,b)->{
+			var aTemplate = StringTools.startsWith(a, "Doc_Roshi_");
+			var bTemplate = StringTools.startsWith(b, "Doc_Roshi_");
+			if( aTemplate!=bTemplate )
+				return aTemplate ? -1 : 1;
+			return Reflect.compare(a,b);
+		});
 		var jSamples = jPage.find(".sampleProjects");
 		var jScroller = jSamples.children(".scroller");
 		jPage.find(".allSamples .scroller").on( "wheel", (ev:js.html.WheelEvent)->{
@@ -129,7 +136,12 @@ class Home extends Page {
 			jSample.appendTo(jScroller);
 			jSample.append('<div class="thumb" style="background-image:url($path/thumbs/${fp.fileName}.png)"></div>');
 			var name = StringTools.replace( fp.fileName, "_", " " );
-			jSample.append('<div class="name">$name</div>');
+			if( StringTools.startsWith(fp.fileName, "Doc_Roshi_") ) {
+				jSample.addClass("template");
+				jSample.append('<div class="name"><span class="badge">Template</span><strong>$name</strong><small>Bundled asset starter</small></div>');
+			}
+			else
+				jSample.append('<div class="name">$name</div>');
 			jSample.click(_->{
 				App.ME.loadProject( fp.full );
 			});
