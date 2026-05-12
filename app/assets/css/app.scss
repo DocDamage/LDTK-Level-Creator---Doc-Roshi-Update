@@ -6094,6 +6094,9 @@ canvas#webgl {
 						overflow-x: auto;
 
 						button {
+							display: flex;
+							align-items: center;
+							gap: 5px;
 							flex: 0 0 auto;
 							width: auto;
 							padding: 5px 8px;
@@ -6104,6 +6107,22 @@ canvas#webgl {
 							&.active {
 								color: black;
 								background-color: $help;
+							}
+
+							.count {
+								min-width: 1.5em;
+								padding: 1px 4px;
+								border-radius: 2px;
+								font-family: Roboto;
+								font-size: 7pt;
+								text-align: center;
+								color: $help;
+								background-color: rgba(black, 0.35);
+							}
+
+							&.active .count {
+								color: black;
+								background-color: rgba(black, 0.15);
 							}
 						}
 					}

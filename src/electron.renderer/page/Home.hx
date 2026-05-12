@@ -183,7 +183,8 @@ class Home extends Page {
 		function addFilter(label:String, kind:String) {
 			var jButton = new J('<button type="button"/>');
 			jButton.appendTo(jFilters);
-			jButton.text(label);
+			jButton.append('<span class="label"></span><span class="count"></span>');
+			jButton.find(".label").text(label);
 			jButton.attr("data-kind", kind);
 			jButton.click((ev)->{
 				sampleFilter = kind;
@@ -206,21 +207,35 @@ class Home extends Page {
 		jPage.find(".sampleProjects .sampleFilters button").each( function(idx, e) {
 			var jButton = new J(e);
 			jButton.toggleClass("active", jButton.attr("data-kind")==sampleFilter);
+			jButton.find(".count").text( Std.string(countMatchingSamples(jButton.attr("data-kind"), query)) );
 		});
 
 		var visibleCount = 0;
 		jPage.find(".sampleProjects .sample").each( function(idx, e) {
 			var jSample = new J(e);
-			var kind = jSample.attr("data-kind");
-			var matchesKind = sampleFilter=="*" || kind==sampleFilter || ( sampleFilter=="template" && (kind=="template" || kind=="cutesckr") );
-			var haystack = jSample.attr("data-search");
-			var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
-			var visible = matchesKind && matchesQuery;
+			var visible = sampleMatchesFilter(jSample, sampleFilter, query);
 			if( visible )
 				visibleCount++;
 			jSample.toggle(visible);
 		});
 		jPage.find(".sampleProjects .sampleEmpty").toggle(visibleCount==0);
+	}
+
+	function countMatchingSamples(kindFilter:String, query:String) {
+		var count = 0;
+		jPage.find(".sampleProjects .sample").each( function(idx, e) {
+			if( sampleMatchesFilter(new J(e), kindFilter, query) )
+				count++;
+		});
+		return count;
+	}
+
+	function sampleMatchesFilter(jSample:js.jquery.JQuery, kindFilter:String, query:String) {
+		var kind = jSample.attr("data-kind");
+		var matchesKind = kindFilter=="*" || kind==kindFilter || ( kindFilter=="template" && (kind=="template" || kind=="cutesckr") );
+		var haystack = jSample.attr("data-search");
+		var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
+		return matchesKind && matchesQuery;
 	}
 
 	function loadAssetLibrary() {
@@ -296,7 +311,8 @@ class Home extends Page {
 		function addFilter(label:String, kind:String) {
 			var jButton = new J('<button type="button"/>');
 			jButton.appendTo(jFilters);
-			jButton.text(label);
+			jButton.append('<span class="label"></span><span class="count"></span>');
+			jButton.find(".label").text(label);
 			jButton.attr("data-kind", kind);
 			jButton.click((ev)->{
 				assetFilter = kind;
@@ -318,20 +334,34 @@ class Home extends Page {
 		jPage.find(".assetLibrary .assetFilters button").each( function(idx, e) {
 			var jButton = new J(e);
 			jButton.toggleClass("active", jButton.attr("data-kind")==assetFilter);
+			jButton.find(".count").text( Std.string(countMatchingAssetPacks(jButton.attr("data-kind"), query)) );
 		});
 
 		var visibleCount = 0;
 		jPage.find(".assetLibrary .assetPack").each( function(idx, e) {
 			var jPack = new J(e);
-			var matchesKind = assetFilter=="*" || jPack.attr("data-kind")==assetFilter;
-			var haystack = jPack.attr("data-search");
-			var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
-			var visible = matchesKind && matchesQuery;
+			var visible = assetPackMatchesFilter(jPack, assetFilter, query);
 			if( visible )
 				visibleCount++;
 			jPack.toggle(visible);
 		});
 		jPage.find(".assetLibrary .assetEmpty").toggle(visibleCount==0);
+	}
+
+	function countMatchingAssetPacks(kindFilter:String, query:String) {
+		var count = 0;
+		jPage.find(".assetLibrary .assetPack").each( function(idx, e) {
+			if( assetPackMatchesFilter(new J(e), kindFilter, query) )
+				count++;
+		});
+		return count;
+	}
+
+	function assetPackMatchesFilter(jPack:js.jquery.JQuery, kindFilter:String, query:String) {
+		var matchesKind = kindFilter=="*" || jPack.attr("data-kind")==kindFilter;
+		var haystack = jPack.attr("data-search");
+		var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
+		return matchesKind && matchesQuery;
 	}
 
 	function openAssetPackMenu(ev:js.jquery.Event, pack:AssetLibraryPack, folder:String, thumb:String) {
