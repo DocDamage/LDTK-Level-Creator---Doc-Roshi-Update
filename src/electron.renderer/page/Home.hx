@@ -163,6 +163,8 @@ class Home extends Page {
 	function getSampleKind(fileName:String) {
 		if( StringTools.startsWith(fileName, "Doc_Roshi_CuteSCKR_") )
 			return "cutesckr";
+		if( StringTools.startsWith(fileName, "Doc_Roshi_Asset_") )
+			return "asset";
 		if( StringTools.startsWith(fileName, "Doc_Roshi_") )
 			return "template";
 		return "core";
@@ -171,6 +173,7 @@ class Home extends Page {
 	function getSampleSearchText(fileName:String, name:String, kind:String) {
 		var labels = switch kind {
 			case "cutesckr": "template cutesckr bundled asset starter tileset";
+			case "asset": "template asset pack bundled starter atlas";
 			case "template": "template bundled asset starter";
 			case _: "core example sample";
 		}
@@ -196,6 +199,7 @@ class Home extends Page {
 		addFilter(L.t._("All"), "*");
 		addFilter(L.t._("Templates"), "template");
 		addFilter(L.untranslated("CuteSCKR"), "cutesckr");
+		addFilter(L.untranslated("Assets"), "asset");
 		addFilter(L.t._("Core"), "core");
 
 		jPage.find(".sampleProjects .sampleSearch").off().on("input", (_)->updateSampleFilter());
@@ -233,7 +237,7 @@ class Home extends Page {
 
 	function sampleMatchesFilter(jSample:js.jquery.JQuery, kindFilter:String, query:String) {
 		var kind = jSample.attr("data-kind");
-		var matchesKind = kindFilter=="*" || kind==kindFilter || ( kindFilter=="template" && (kind=="template" || kind=="cutesckr") );
+		var matchesKind = kindFilter=="*" || kind==kindFilter || ( kindFilter=="template" && (kind=="template" || kind=="cutesckr" || kind=="asset") );
 		var haystack = jSample.attr("data-search");
 		var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
 		return matchesKind && matchesQuery;
