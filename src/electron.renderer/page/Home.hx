@@ -324,31 +324,36 @@ class Home extends Page {
 			var folder = AssetLibrary.getPackAbsPath(pack);
 			var thumb = AssetLibrary.getThumbAbsPath(pack);
 			var starters = AssetLibrary.getStarterSamples(pack);
-			thumb = StringTools.replace(thumb, "\\", "/");
 
 			var jPack = new J('<div class="sample assetPack"/>');
 			jPack.appendTo(jScroller);
 			jPack.attr("data-kind", pack.kind);
 			jPack.attr("data-search", AssetLibrary.getSearchText(pack));
+			var jThumb = new J('<div class="thumb"></div>');
+			jThumb.appendTo(jPack);
 			if( pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb) )
-				jPack.append('<div class="thumb" style="background-image:url(\'$thumb\')"></div>');
-			else
-				jPack.append('<div class="thumb"></div>');
+				jThumb.css("background-image", 'url("${AssetLibrary.toFileUrl(thumb)}")');
 
 			var jName = new J('<div class="name"/>');
 			jName.appendTo(jPack);
-			jName.append('<div class="packHeader"><span class="kind">${pack.kind}</span><span class="count">${pack.files}</span></div>');
-			jName.append('<strong>${pack.name}</strong>');
-			jName.append('<small class="exts">${AssetLibrary.getExtensionLabel(pack)}</small>');
-			if( starters.length>0 )
-				jName.append('<small class="use">${starters.length} starter template${starters.length==1 ? "" : "s"}</small>');
+			var jHeader = new J('<div class="packHeader"><span class="kind"></span><span class="count"></span></div>');
+			jHeader.appendTo(jName);
+			jHeader.find(".kind").text(pack.kind);
+			jHeader.find(".count").text(Std.string(pack.files));
+			new J('<strong/>').text(pack.name).appendTo(jName);
+			new J('<small class="exts"/>').text(AssetLibrary.getExtensionLabel(pack)).appendTo(jName);
+			if( starters.length>0 ) {
+				var label = starters.length+" starter template"+(starters.length==1 ? "" : "s");
+				new J('<small class="use"/>').text(label).appendTo(jName);
+			}
 			if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
-				jName.append('<small class="use">${pack.suggestedUse}</small>');
+				new J('<small class="use"/>').text(pack.suggestedUse).appendTo(jName);
 			if( pack.author!=null && pack.author.length>0 )
-				jName.append('<small class="credit">by ${pack.author}</small>');
+				new J('<small class="credit"/>').text("by "+pack.author).appendTo(jName);
 			if( pack.license!=null && pack.license.length>0 )
-				jName.append('<small class="license">${pack.license}</small>');
-			jPack.attr("title", pack.summary);
+				new J('<small class="license"/>').text(pack.license).appendTo(jName);
+			if( pack.summary!=null && pack.summary.length>0 )
+				jPack.attr("title", pack.summary);
 			jPack.click((ev)->openAssetPackBrowser(pack));
 			jPack.on("contextmenu", (ev:js.jquery.Event)->{
 				ev.preventDefault();
@@ -506,11 +511,11 @@ class Home extends Page {
 		jSummary.appendTo(w.jContent);
 		var jMeta = new J('<div class="meta"/>');
 		jMeta.appendTo(jSummary);
-		jMeta.append('<span>${AssetLibrary.getPackSubtitle(pack)}</span>');
+		new J('<span/>').text(AssetLibrary.getPackSubtitle(pack)).appendTo(jMeta);
 		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
-			jMeta.append('<span>${pack.suggestedUse}</span>');
+			new J('<span/>').text(pack.suggestedUse).appendTo(jMeta);
 		if( pack.summary!=null && pack.summary.length>0 )
-			jSummary.append('<p>${pack.summary}</p>');
+			new J('<p/>').text(pack.summary).appendTo(jSummary);
 
 		var jActions = new J('<div class="assetBrowserActions"/>');
 		jActions.appendTo(w.jContent);
@@ -533,7 +538,7 @@ class Home extends Page {
 			jStarters.css("padding", "4px");
 			var shown = starters.length>10 ? starters.slice(0, 10) : starters;
 			for(starter in shown) {
-				var jStarter = new J('<button type="button" class="help"><span class="icon doc"></span>${starter.name}</button>');
+				var jStarter = new J('<button type="button" class="help"><span class="icon doc"></span><span class="label"></span></button>');
 				jStarter.appendTo(jStarters);
 				jStarter.css("flex", "1 1 210px");
 				jStarter.css("min-width", "0");
@@ -541,11 +546,13 @@ class Home extends Page {
 				jStarter.css("text-overflow", "ellipsis");
 				jStarter.css("text-transform", "none");
 				jStarter.css("white-space", "nowrap");
+				jStarter.find(".label").text(starter.name);
 				jStarter.attr("title", starter.absPath);
 				jStarter.click((ev)->App.ME.loadProject(starter.absPath));
 			}
 			if( starters.length>shown.length ) {
-				var jMore = new J('<button type="button" class="gray">+${starters.length-shown.length} more</button>');
+				var jMore = new J('<button type="button" class="gray"/>');
+				jMore.text("+"+(starters.length-shown.length)+" more");
 				jMore.appendTo(jStarters);
 				jMore.css("flex", "0 0 auto");
 				jMore.click((ev)->{
@@ -559,7 +566,7 @@ class Home extends Page {
 		}
 
 		if( files.length==0 ) {
-			w.jContent.append('<div class="empty">No previewable images or audio files in this pack.</div>');
+			new J('<div class="empty"/>').text("No previewable images or audio files were found in this pack. Use Open folder to inspect the source files.").appendTo(w.jContent);
 			w.addClose();
 			return;
 		}
@@ -570,21 +577,27 @@ class Home extends Page {
 			appendAssetPreview(jGrid, file);
 
 		if( pack.files>files.length )
-			w.jContent.append('<div class="more">Showing ${files.length} previewable files from this pack.</div>');
+			new J('<div class="more"/>').text("Showing the first "+files.length+" previewable files from this pack. Use Open folder for the complete set.").appendTo(w.jContent);
 
 		w.addClose();
 	}
 
 	function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile) {
-		var abs = StringTools.replace(file.absPath, "\\", "/");
 		var jItem = new J('<div class="assetPreview ${file.kind}"/>');
 		jItem.appendTo(jGrid);
-		if( file.kind=="image" )
-			jItem.append('<div class="preview" style="background-image:url(\'$abs\')"></div>');
-		else
-			jItem.append('<div class="preview audio"><span class="icon doc"></span><audio controls src="file:///$abs"></audio></div>');
-		jItem.append('<div class="name">${file.name}</div>');
-		jItem.append('<small>${file.relPath}</small>');
+		var fileUrl = AssetLibrary.toFileUrl(file.absPath);
+		if( file.kind=="image" ) {
+			var jPreview = new J('<div class="preview"></div>');
+			jPreview.appendTo(jItem);
+			jPreview.css("background-image", 'url("$fileUrl")');
+		}
+		else {
+			var jPreview = new J('<div class="preview audio"><span class="icon doc"></span><audio controls></audio></div>');
+			jPreview.appendTo(jItem);
+			jPreview.find("audio").attr("src", fileUrl);
+		}
+		new J('<div class="name"/>').text(file.name).appendTo(jItem);
+		new J('<small/>').text(file.relPath).appendTo(jItem);
 		jItem.click((ev)->JsTools.locateFile(file.absPath, true));
 		jItem.find("audio").click((ev:js.jquery.Event)->ev.stopPropagation());
 	}

@@ -30,13 +30,13 @@
 		"url": "https://github.com/deepnight/ldtk.git"
 	},
 	"dependencies": {
-		"codemirror": "^5.64.0",
-		"electron-updater": "^6.8.3",
-		"simple-color-picker": "^1.0.5",
-		"sortablejs": "^1.15.0"
+		"codemirror": "5.65.21",
+		"electron-updater": "6.8.3",
+		"simple-color-picker": "1.0.5",
+		"sortablejs": "1.15.7"
 	},
 	"devDependencies": {
-		"electron": "^42.0.1",
-		"electron-builder": "^26.8.1"
+		"electron": "42.0.1",
+		"electron-builder": "26.8.1"
 	}
 }

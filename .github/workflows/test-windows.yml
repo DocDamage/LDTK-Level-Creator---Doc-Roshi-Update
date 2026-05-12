@@ -28,7 +28,7 @@ jobs:
         id: branch
 
       # Checkout & install haxe
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: krdlab/setup-haxe@v1
         with:
           haxe-version: ${{ matrix.haxe }}
@@ -59,9 +59,9 @@ jobs:
       - run: haxelib list
 
       # Node/NPM commands
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
       - run: cd app && npm install
       - run: cd app && npm run compile
 

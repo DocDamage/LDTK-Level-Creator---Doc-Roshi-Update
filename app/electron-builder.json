@@ -10,7 +10,22 @@
 	"extraFiles": [
 		"extraFiles/embedAtlas",
 		"extraFiles/changelogImg",
-		"extraFiles/samples",
+		{
+			"from": "extraFiles/samples",
+			"to": "extraFiles/samples",
+			"filter": [
+				"**/*",
+				"!atlas/**/*.exe",
+				"!atlas/**/*.dll",
+				"!atlas/**/*.pdb",
+				"!atlas/**/*.so",
+				"!atlas/**/*.dylib",
+				"!atlas/**/*.msi",
+				"!atlas/**/*.bat",
+				"!atlas/**/*.cmd",
+				"!atlas/**/*.sh"
+			]
+		},
 		{
 			"from": "extraFiles/README.txt",
 			"to": "README.txt"

@@ -33,6 +33,17 @@ typedef AssetLibraryStarterSample = {
 class AssetLibrary {
 	static var packExtCache = new Map<String,Array<String>>();
 	static var packStarterCache = new Map<String,Array<AssetLibraryStarterSample>>();
+	static var blockedRuntimeExtensions = [
+		".exe" => true,
+		".dll" => true,
+		".pdb" => true,
+		".so" => true,
+		".dylib" => true,
+		".msi" => true,
+		".bat" => true,
+		".cmd" => true,
+		".sh" => true,
+	];
 
 	public static function getDir() {
 		return JsTools.getSamplesDir()+"/atlas";
@@ -47,6 +58,8 @@ class AssetLibrary {
 	}
 
 	public static function getThumbAbsPath(pack:AssetLibraryPack) {
+		if( pack.thumb==null || pack.thumb.length==0 )
+			return "";
 		return getDir()+"/"+pack.thumb;
 	}
 
@@ -56,6 +69,31 @@ class AssetLibrary {
 
 	public static function isAudioPack(pack:AssetLibraryPack) {
 		return pack.kind=="Audio";
+	}
+
+	public static function normalizeExtension(ext:String) {
+		if( ext==null )
+			return "";
+		ext = ext.toLowerCase();
+		if( ext.length>0 && ext.charAt(0)!="." )
+			ext = "."+ext;
+		return ext==".ds_store" ? "" : ext;
+	}
+
+	public static function isBlockedRuntimeExtension(ext:String) {
+		return blockedRuntimeExtensions.exists(normalizeExtension(ext));
+	}
+
+	public static function toFileUrl(absPath:String) {
+		var p = StringTools.replace(absPath, "\\", "/");
+		var parts = p.split("/");
+		for(i in 0...parts.length) {
+			if( i==0 && parts[i].indexOf(":")>=0 )
+				parts[i] = StringTools.replace(parts[i], " ", "%20");
+			else
+				parts[i] = StringTools.urlEncode(parts[i]);
+		}
+		return "file:///"+parts.join("/");
 	}
 
 	public static function getPackExtensions(pack:AssetLibraryPack) {
@@ -68,12 +106,10 @@ class AssetLibrary {
 		if( NT.fileExists(folder) ) {
 			try {
 				for(fp in JsTools.findFilesRec(folder)) {
-					var ext = fp.extension.toLowerCase();
+					var ext = normalizeExtension(fp.extension);
 					if( ext.length==0 )
 						continue;
-					if( ext.charAt(0)!="." )
-						ext = "."+ext;
-					if( ext==".ds_store" )
+					if( isBlockedRuntimeExtension(ext) )
 						continue;
 					if( !found.exists(ext) ) {
 						found.set(ext, true);
@@ -119,9 +155,9 @@ class AssetLibrary {
 		var out : Array<AssetLibraryPreviewFile> = [];
 		try {
 			for(fp in JsTools.findFilesRec(folder)) {
-				var ext = fp.extension.toLowerCase();
-				if( ext.length>0 && ext.charAt(0)!="." )
-					ext = "."+ext;
+				var ext = normalizeExtension(fp.extension);
+				if( ext.length==0 || isBlockedRuntimeExtension(ext) )
+					continue;
 				var kind = isImageExtension(ext) ? "image" : isAudioExtension(ext) ? "audio" : null;
 				if( kind==null )
 					continue;

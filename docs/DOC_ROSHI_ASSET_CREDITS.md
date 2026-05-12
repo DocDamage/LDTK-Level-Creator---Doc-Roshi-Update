@@ -27,6 +27,7 @@ Before publishing a release from this branch, run:
 
 ```powershell
 node tools\validate-doc-roshi-assets.js
+node tools\validate-release-config.js
 cd app
 npm install
 npm run compile

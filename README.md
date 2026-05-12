@@ -18,7 +18,7 @@ This branch adds a bundled asset-library workflow on top of LDtk 1.5.4:
  - Asset picker integrations for bundled images and audio from tileset, entity visual, and file-path workflows.
  - A repository validator and GitHub Actions workflow that check the app-known imported assets and starter templates stay present and usable.
 
-Run `node tools/validate-doc-roshi-assets.js` from the repository root to verify the bundled asset library. Release packaging has also been checked with `cd app && npm run pack-test`.
+Run `node tools/validate-doc-roshi-assets.js` and `node tools/validate-release-config.js` from the repository root to verify the bundled asset library and release configuration. Release packaging has also been checked with `cd app && npm run pack-test`.
 
 Bundled asset attribution and license notes are tracked in [Doc Roshi asset credits](docs/DOC_ROSHI_ASSET_CREDITS.md).
 

@@ -27,3 +27,6 @@ jobs:
 
       - name: Validate bundled Doc Roshi assets
         run: node tools/validate-doc-roshi-assets.js
+
+      - name: Validate release configuration
+        run: node tools/validate-release-config.js
