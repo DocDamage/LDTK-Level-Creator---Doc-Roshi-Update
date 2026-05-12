@@ -1,0 +1,29 @@
+name: doc-roshi-assets
+
+on:
+  push:
+    branches:
+      - master
+      - dev*
+  pull_request:
+    branches:
+      - master
+      - dev*
+    paths:
+      - app/extraFiles/samples/**
+      - tools/validate-doc-roshi-assets.js
+      - .github/workflows/doc-roshi-assets.yml
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate bundled Doc Roshi assets
+        run: node tools/validate-doc-roshi-assets.js
