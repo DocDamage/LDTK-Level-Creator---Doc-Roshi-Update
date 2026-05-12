@@ -1031,6 +1031,12 @@ class JsTools {
 		if( fp.getLastDirectory()=="MacOS" )
 			fp.removeLastDirectory();
 		fp.appendDirectory("extraFiles");
+		if( !NT.fileExists(fp.full) ) {
+			var devFp = dn.FilePath.fromDir( ET.getAppResourceDir()+"/extraFiles" );
+			devFp.useSlashes();
+			if( NT.fileExists(devFp.full) )
+				fp = devFp;
+		}
 		if( subDir!=null && subDir.length>0 )
 			fp.appendDirectory(subDir);
 		return fp.full;
