@@ -171,21 +171,23 @@ class Home extends Page {
 			var jPack = new J('<div class="sample assetPack"/>');
 			jPack.appendTo(jScroller);
 			jPack.attr("data-kind", pack.kind);
-			jPack.attr("data-search", (pack.name+" "+pack.kind+" "+pack.summary+" "+pack.suggestedUse+" "+pack.author).toLowerCase());
+			jPack.attr("data-search", AssetLibrary.getSearchText(pack));
 			if( pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb) )
 				jPack.append('<div class="thumb" style="background-image:url(\'$thumb\')"></div>');
 			else
 				jPack.append('<div class="thumb"></div>');
 
-			var details = pack.kind+" - "+pack.files+" files";
-			if( pack.author!=null && pack.author.length>0 )
-				details += "<br/>by "+pack.author;
-			if( pack.license!=null && pack.license.length>0 )
-				details += "<br/>"+pack.license;
+			var jName = new J('<div class="name"/>');
+			jName.appendTo(jPack);
+			jName.append('<div class="packHeader"><span class="kind">${pack.kind}</span><span class="count">${pack.files}</span></div>');
+			jName.append('<strong>${pack.name}</strong>');
+			jName.append('<small class="exts">${AssetLibrary.getExtensionLabel(pack)}</small>');
 			if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
-				details += "<br/>"+pack.suggestedUse;
-
-			jPack.append('<div class="name">${pack.name}<br/><small>$details</small></div>');
+				jName.append('<small class="use">${pack.suggestedUse}</small>');
+			if( pack.author!=null && pack.author.length>0 )
+				jName.append('<small class="credit">by ${pack.author}</small>');
+			if( pack.license!=null && pack.license.length>0 )
+				jName.append('<small class="license">${pack.license}</small>');
 			jPack.attr("title", pack.summary);
 			jPack.click((ev)->openAssetPackMenu(ev, pack, folder, thumb));
 			jPack.on("contextmenu", (ev:js.jquery.Event)->{
@@ -256,6 +258,10 @@ class Home extends Page {
 		var ctx = new ui.modal.ContextMenu(ev);
 		ctx.addTitle(L.untranslated(pack.name));
 		ctx.addAction({
+			label: L.untranslated(AssetLibrary.getPackSubtitle(pack)),
+			subText: pack.summary==null ? null : L.untranslated(pack.summary),
+		});
+		ctx.addAction({
 			label: L.t._("Open asset folder"),
 			iconId: "open",
 			cb: ()->JsTools.locateFile(folder, false),
@@ -273,6 +279,26 @@ class Home extends Page {
 			iconId: "locate",
 			show: ()->pack.thumb!=null && pack.thumb.length>0 && NT.fileExists(thumb),
 			cb: ()->JsTools.locateFile(thumb, true),
+		});
+		ctx.addAction({
+			label: L.t._("Copy image import folder"),
+			iconId: "copy",
+			subText: L.untranslated(AssetLibrary.getExtensionLabel(pack)),
+			show: ()->AssetLibrary.hasImageFiles(pack),
+			cb: ()->{
+				App.ME.clipboard.copyStr(folder);
+				N.copied("image import folder");
+			},
+		});
+		ctx.addAction({
+			label: L.t._("Copy audio folder"),
+			iconId: "copy",
+			subText: L.untranslated(AssetLibrary.getExtensionLabel(pack)),
+			show: ()->AssetLibrary.hasAudioFiles(pack),
+			cb: ()->{
+				App.ME.clipboard.copyStr(folder);
+				N.copied("audio folder");
+			},
 		});
 		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
 			ctx.addAction({

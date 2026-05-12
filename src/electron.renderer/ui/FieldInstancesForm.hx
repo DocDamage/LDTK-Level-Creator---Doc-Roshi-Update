@@ -794,9 +794,14 @@ class FieldInstancesForm {
 			for(pack in packs) {
 				var folder = AssetLibrary.getPackAbsPath(pack);
 				var exts = AssetLibrary.getMatchingPackExtensions(pack, fi.def.acceptFileTypes);
+				var details = pack.kind+" - "+pack.files+" files";
+				if( exts.length>0 )
+					details += " - "+exts.join(", ");
+				if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
+					details += " - "+pack.suggestedUse;
 				ctx.addAction({
 					label: L.untranslated(pack.name),
-					subText: L.untranslated(pack.kind+" - "+pack.files+" files"+(exts.length>0 ? " - "+exts.join(", ") : "")),
+					subText: L.untranslated(details),
 					iconId: "folder",
 					cb: ()->{
 						dn.js.ElectronDialogs.openFile(fi.def.acceptFileTypes, folder, function(absPath) {

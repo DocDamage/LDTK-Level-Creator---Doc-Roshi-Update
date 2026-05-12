@@ -408,7 +408,7 @@ class EditTilesetDefs extends ui.modal.Panel {
 
 				ctx.addAction({
 					label: L.untranslated(pack.name),
-					subText: L.untranslated(pack.kind+" - "+pack.files+" files"),
+					subText: L.untranslated(AssetLibrary.getPackSubtitle(pack)),
 					iconId: "folder",
 					cb: ()->{
 						dn.js.ElectronDialogs.openFile([".png", ".gif", ".jpg", ".jpeg", ".aseprite", ".ase"], folder, function(absPath) {

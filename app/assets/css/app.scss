@@ -6119,10 +6119,10 @@ canvas#webgl {
 
 				.sample {
 					display: grid;
-					flex: 0 0 128px;
+					flex: 0 0 160px;
 					border-radius: 4px;
 					overflow: hidden;
-					grid-template-rows: 96px auto;
+					grid-template-rows: 104px auto;
 					cursor: pointer;
 					background-color: black;
 
@@ -6146,11 +6146,61 @@ canvas#webgl {
 
 					.name {
 						display: grid;
-						align-content: center;
-						padding: 4px 2px;
+						align-content: start;
+						gap: 3px;
+						padding: 6px;
 						font-size: 8.5pt;
-						text-align: center;
+						text-align: left;
 						color: white;
+
+						.packHeader {
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+							gap: 4px;
+							margin-bottom: 2px;
+
+							.kind,
+							.count {
+								display: inline-block;
+								padding: 2px 4px;
+								border-radius: 2px;
+								color: black;
+								font-size: 7pt;
+								font-family: Roboto;
+								background-color: $help;
+								white-space: nowrap;
+							}
+
+							.count {
+								color: $help;
+								background-color: $helpDarker;
+							}
+						}
+
+						strong {
+							font-size: 9.5pt;
+							line-height: 1.05;
+						}
+
+						small {
+							display: block;
+							line-height: 1.05;
+							color: $almostWhite;
+							opacity: 0.85;
+
+							&.exts {
+								color: $help;
+							}
+
+							&.use {
+								color: white;
+							}
+
+							&.license {
+								opacity: 0.55;
+							}
+						}
 					}
 
 					&+.sample {

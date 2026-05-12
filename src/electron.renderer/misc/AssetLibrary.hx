@@ -39,6 +39,10 @@ class AssetLibrary {
 		return pack.kind!="Audio";
 	}
 
+	public static function isAudioPack(pack:AssetLibraryPack) {
+		return pack.kind=="Audio";
+	}
+
 	public static function getPackExtensions(pack:AssetLibraryPack) {
 		var folder = getPackAbsPath(pack);
 		if( packExtCache.exists(folder) )
@@ -46,22 +50,65 @@ class AssetLibrary {
 
 		var found = new Map<String,Bool>();
 		var out = [];
-		for(fp in JsTools.findFilesRec(folder)) {
-			var ext = fp.extension.toLowerCase();
-			if( ext.length==0 )
-				continue;
-			if( ext.charAt(0)!="." )
-				ext = "."+ext;
-			if( ext==".ds_store" )
-				continue;
-			if( !found.exists(ext) ) {
-				found.set(ext, true);
-				out.push(ext);
+		if( NT.fileExists(folder) ) {
+			try {
+				for(fp in JsTools.findFilesRec(folder)) {
+					var ext = fp.extension.toLowerCase();
+					if( ext.length==0 )
+						continue;
+					if( ext.charAt(0)!="." )
+						ext = "."+ext;
+					if( ext==".ds_store" )
+						continue;
+					if( !found.exists(ext) ) {
+						found.set(ext, true);
+						out.push(ext);
+					}
+				}
 			}
+			catch(_) {}
 		}
 		out.sort(Reflect.compare);
 		packExtCache.set(folder, out);
 		return out;
+	}
+
+	public static function hasImageFiles(pack:AssetLibraryPack) {
+		for(ext in getPackExtensions(pack))
+			if( ext==".png" || ext==".jpg" || ext==".jpeg" || ext==".gif" || ext==".webp" )
+				return true;
+		return false;
+	}
+
+	public static function hasAudioFiles(pack:AssetLibraryPack) {
+		for(ext in getPackExtensions(pack))
+			if( ext==".wav" || ext==".ogg" || ext==".mp3" )
+				return true;
+		return false;
+	}
+
+	public static function getExtensionLabel(pack:AssetLibraryPack, limit=5) {
+		var exts = getPackExtensions(pack);
+		if( exts.length==0 )
+			return "mixed files";
+
+		var shown = exts.slice(0, limit);
+		var label = shown.join(", ");
+		if( exts.length>shown.length )
+			label += " +" + (exts.length-shown.length);
+		return label;
+	}
+
+	public static function getPackSubtitle(pack:AssetLibraryPack) {
+		var bits = [ pack.kind, pack.files+" files" ];
+		var exts = getExtensionLabel(pack);
+		if( exts.length>0 )
+			bits.push(exts);
+		return bits.join(" - ");
+	}
+
+	public static function getSearchText(pack:AssetLibraryPack) {
+		return (pack.name+" "+pack.kind+" "+pack.summary+" "+pack.suggestedUse+" "+pack.author+" "+pack.license+" "+getExtensionLabel(pack, 20)).toLowerCase();
 	}
 
 	public static function getMatchingPackExtensions(pack:AssetLibraryPack, acceptFileTypes:Null<Array<String>>) {
