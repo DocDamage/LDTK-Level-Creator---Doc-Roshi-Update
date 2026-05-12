@@ -3,6 +3,7 @@ package ui;
 import misc.AssetLibrary;
 import misc.AssetLibrary.AssetLibraryPack;
 import misc.AssetLibrary.AssetLibraryPreviewFile;
+import misc.AssetLibraryState;
 
 class AssetPackBrowser {
 	static inline var PREVIEW_PAGE_SIZE = 60;
@@ -11,14 +12,20 @@ class AssetPackBrowser {
 		var starters = AssetLibrary.getStarterSamples(pack);
 		var folder = AssetLibrary.getPackAbsPath(pack);
 		var previewLimit = PREVIEW_PAGE_SIZE;
+		var kindFilter = "*";
 		var w = new ui.modal.Dialog(null, "assetBrowser");
 		w.addTitle(L.untranslated(pack.name), true);
 
+		new J('<div class="privateUseBanner">Private asset mode: inspect and prototype with bundled assets locally; verify licenses before public redistribution.</div>').appendTo(w.jContent);
 		var jSummary = new J('<div class="summary"/>');
 		jSummary.appendTo(w.jContent);
 		var jMeta = new J('<div class="meta"/>');
 		jMeta.appendTo(jSummary);
 		new J('<span/>').text(AssetLibrary.getPackSubtitle(pack)).appendTo(jMeta);
+		if( pack.author!=null && pack.author.length>0 )
+			new J('<span/>').text("by "+pack.author).appendTo(jMeta);
+		if( pack.license!=null && pack.license.length>0 )
+			new J('<span/>').text(pack.license).appendTo(jMeta);
 		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
 			new J('<span/>').text(pack.suggestedUse).appendTo(jMeta);
 		if( pack.summary!=null && pack.summary.length>0 )
@@ -26,6 +33,18 @@ class AssetPackBrowser {
 
 		var jActions = new J('<div class="assetBrowserActions"/>');
 		jActions.appendTo(w.jContent);
+		var jFavoritePack = new J('<button type="button" class="gray"><span class="icon love"></span><span class="label"></span></button>');
+		jFavoritePack.appendTo(jActions);
+		function syncPackFavorite() {
+			var active = AssetLibraryState.isFavoritePack(pack.path);
+			jFavoritePack.toggleClass("active", active);
+			jFavoritePack.find(".label").text(active ? "Favorited" : "Favorite");
+		}
+		syncPackFavorite();
+		jFavoritePack.click((ev)->{
+			AssetLibraryState.toggleFavoritePack(pack.path);
+			syncPackFavorite();
+		});
 		var jOpen = new J('<button type="button"><span class="icon open"></span>Open folder</button>');
 		jOpen.appendTo(jActions);
 		jOpen.click((ev)->JsTools.locateFile(folder, false));
@@ -75,24 +94,58 @@ class AssetPackBrowser {
 		jSearch.appendTo(jTools);
 		jSearch.css("flex", "1 1 auto");
 		jSearch.css("min-width", "220px");
+		var jKinds = new J('<div class="assetFilters inlineFilters"/>');
+		jKinds.appendTo(jTools);
+		var renderPreviews : Void->Void = null;
+		function addKind(label:String, kind:String) {
+			var jButton = new J('<button type="button"><span class="label"></span></button>');
+			jButton.find(".label").text(label);
+			jButton.attr("data-kind", kind);
+			jButton.appendTo(jKinds);
+			jButton.click((ev)->{
+				kindFilter = kind;
+				previewLimit = PREVIEW_PAGE_SIZE;
+				renderPreviews();
+			});
+		}
+		addKind("All", "*");
+		addKind("Images", "image");
+		addKind("Audio", "audio");
+		addKind("Favorites", "favorites");
 		var jCount = new J('<button type="button" class="gray" disabled/>');
 		jCount.appendTo(jTools);
 		jCount.css("flex", "0 0 auto");
 
 		var jGrid = new J('<div class="assetBrowserGrid"/>');
 		jGrid.appendTo(w.jContent);
+		var jStopAudio = new J('<button type="button" class="gray"><span class="icon close"></span>Stop audio</button>');
+		jStopAudio.appendTo(jTools);
+		jStopAudio.click((ev)->{
+			jGrid.find("audio").each((idx, e)->{
+				var audio : js.html.AudioElement = cast e;
+				audio.pause();
+				audio.currentTime = 0;
+			});
+		});
 		var jEmpty = new J('<div class="empty"/>');
 		jEmpty.appendTo(w.jContent);
 		var jMorePreviews = new J('<button type="button" class="gray"><span class="icon down"></span>Show more previews</button>');
 		jMorePreviews.appendTo(w.jContent);
 
-		var renderPreviews = function() {
+		renderPreviews = function() {
 			var query : String = jSearch.val();
-			var total = AssetLibrary.getPreviewFileCount(pack, query);
-			var files = AssetLibrary.getPreviewFiles(pack, previewLimit, query);
+			var allMatches = AssetLibrary.getPreviewFiles(pack, 0, query).filter((file)->{
+				return switch kindFilter {
+					case "*": true;
+					case "favorites": AssetLibraryState.isFavoriteFile(file.absPath);
+					case _: file.kind==kindFilter;
+				}
+			});
+			var total = allMatches.length;
+			var files = previewLimit>0 && allMatches.length>previewLimit ? allMatches.slice(0, previewLimit) : allMatches;
 			jGrid.empty();
 			for(file in files)
-				appendAssetPreview(jGrid, file);
+				appendAssetPreview(jGrid, file, renderPreviews);
 
 			jGrid.toggle(total>0);
 			jEmpty.toggle(total==0);
@@ -102,6 +155,11 @@ class AssetPackBrowser {
 					: "No previewable files match this search.");
 			jCount.text(total==0 ? "0 previews" : files.length+" / "+total+" previews");
 			jMorePreviews.toggle(total>files.length);
+			jStopAudio.toggle(AssetLibrary.hasAudioFiles(pack));
+			jKinds.find("button").each((idx, e)->{
+				var jButton = new J(e);
+				jButton.toggleClass("active", jButton.attr("data-kind")==kindFilter);
+			});
 		}
 
 		jSearch.on("input", (_)->{
@@ -117,9 +175,17 @@ class AssetPackBrowser {
 		w.addClose();
 	}
 
-	static function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile) {
+	static function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile, refresh:Void->Void) {
 		var jItem = new J('<div class="assetPreview ${file.kind}"/>');
 		jItem.appendTo(jGrid);
+		var jFavorite = new J('<button type="button" class="favoriteFile" title="Favorite file"><span class="icon love"></span></button>');
+		jFavorite.appendTo(jItem);
+		jFavorite.toggleClass("active", AssetLibraryState.isFavoriteFile(file.absPath));
+		jFavorite.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			AssetLibraryState.toggleFavoriteFile(file.absPath);
+			refresh();
+		});
 		var fileUrl = AssetLibrary.toFileUrl(file.absPath);
 		if( file.kind=="image" ) {
 			var jPreview = new J('<div class="preview"></div>');
@@ -133,7 +199,28 @@ class AssetPackBrowser {
 		}
 		new J('<div class="name"/>').text(file.name).appendTo(jItem);
 		new J('<small/>').text(file.relPath).appendTo(jItem);
-		jItem.click((ev)->JsTools.locateFile(file.absPath, true));
+		var jActions = new J('<div class="previewActions"/>');
+		jActions.appendTo(jItem);
+		var jCopyRel = new J('<button type="button" class="gray" title="Copy atlas-relative path"><span class="icon copy"></span></button>');
+		jCopyRel.appendTo(jActions);
+		jCopyRel.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			App.ME.clipboard.copyStr(file.relPath);
+			N.copied("atlas-relative path");
+			AssetLibraryState.rememberFile(file.absPath);
+		});
+		var jCopyAbs = new J('<button type="button" class="gray" title="Copy absolute path"><span class="icon doc"></span></button>');
+		jCopyAbs.appendTo(jActions);
+		jCopyAbs.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			App.ME.clipboard.copyStr(file.absPath);
+			N.copied("absolute path");
+			AssetLibraryState.rememberFile(file.absPath);
+		});
+		jItem.click((ev)->{
+			AssetLibraryState.rememberFile(file.absPath);
+			JsTools.locateFile(file.absPath, true);
+		});
 		jItem.find("audio").click((ev:js.jquery.Event)->ev.stopPropagation());
 	}
 }

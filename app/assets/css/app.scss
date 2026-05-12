@@ -3978,7 +3978,8 @@ textarea {
 	}
 }
 
-.window.dialog.assetBrowser {
+.window.dialog.assetBrowser,
+.window.dialog.templateWizard {
 	>.wrapper {
 		width: min(960px, 92vw);
 		max-width: none;
@@ -4018,11 +4019,46 @@ textarea {
 
 	.assetBrowserActions {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 4px;
 
 		button {
 			width: auto;
 			padding: 7px 10px;
+		}
+
+		&.templateTools input,
+		input {
+			flex: 1 1 220px;
+			min-width: 180px;
+		}
+	}
+
+	.privateUseBanner {
+		padding: 8px 10px;
+		border-left: 3px solid $help;
+		font-family: Roboto;
+		font-size: 9pt;
+		color: $almostWhite;
+		background-color: rgba($help, 0.14);
+	}
+
+	.assetFilters.inlineFilters,
+	>.wrapper .content>.assetFilters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 3px;
+
+		button {
+			width: auto;
+			padding: 6px 8px;
+			font-size: 8pt;
+			background-color: $helpDarker;
+
+			&.active {
+				color: black;
+				background-color: $help;
+			}
 		}
 	}
 
@@ -4037,8 +4073,9 @@ textarea {
 	}
 
 	.assetPreview {
+		position: relative;
 		display: grid;
-		grid-template-rows: 104px min-content min-content;
+		grid-template-rows: 104px min-content min-content min-content;
 		gap: 4px;
 		overflow: hidden;
 		padding: 4px;
@@ -4048,6 +4085,21 @@ textarea {
 
 		&:hover {
 			outline: 1px solid white;
+		}
+
+		.favoriteFile {
+			position: absolute;
+			top: 4px;
+			right: 4px;
+			width: 24px;
+			height: 24px;
+			padding: 3px;
+			background-color: rgba(black, 0.72);
+			box-shadow: none;
+
+			&.active {
+				background-color: $help;
+			}
 		}
 
 		.preview {
@@ -4095,6 +4147,45 @@ textarea {
 			text-overflow: ellipsis;
 			color: $almostWhite;
 			opacity: 0.65;
+		}
+
+		.previewActions {
+			display: flex;
+			gap: 3px;
+
+			button {
+				width: 28px;
+				height: 24px;
+				padding: 3px;
+				box-shadow: none;
+			}
+		}
+	}
+
+	.templateGrid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+		gap: 6px;
+		max-height: 58vh;
+		overflow: auto;
+		padding: 4px;
+		background-color: $bgDark;
+	}
+
+	.templateWizardItem {
+		flex: none;
+		position: relative;
+
+		.templateItemActions {
+			display: flex;
+			gap: 3px;
+			margin-top: 4px;
+
+			button {
+				width: 30px;
+				height: 26px;
+				padding: 4px;
+			}
 		}
 	}
 
@@ -6262,6 +6353,32 @@ canvas#webgl {
 					padding-bottom: 0;
 				}
 
+				.privateUseBanner {
+					padding: 7px 9px;
+					border-left: 3px solid $help;
+					font-family: Roboto;
+					font-size: 8.5pt;
+					color: $almostWhite;
+					background-color: rgba($help, 0.14);
+				}
+
+				.assetRecent {
+					display: flex;
+					gap: 3px;
+					overflow-x: auto;
+					padding: 4px;
+					background-color: $helpDark;
+
+					button {
+						flex: 0 0 auto;
+						width: auto;
+						padding: 5px 8px;
+						font-size: 8pt;
+						background-color: $helpDarker;
+						box-shadow: none;
+					}
+				}
+
 				.sampleEmpty,
 				.assetEmpty {
 					display: none;
@@ -6274,6 +6391,7 @@ canvas#webgl {
 				}
 
 				.sample {
+					position: relative;
 					display: grid;
 					flex: 0 0 160px;
 					border-radius: 4px;
@@ -6290,6 +6408,21 @@ canvas#webgl {
 						opacity: 0.6;
 						.name  {
 							color: $almostWhite;
+						}
+					}
+
+					.favoritePack {
+						position: absolute;
+						top: 5px;
+						right: 5px;
+						width: 25px;
+						height: 25px;
+						padding: 3px;
+						background-color: rgba(black, 0.7);
+						box-shadow: none;
+
+						&.active {
+							background-color: $help;
 						}
 					}
 

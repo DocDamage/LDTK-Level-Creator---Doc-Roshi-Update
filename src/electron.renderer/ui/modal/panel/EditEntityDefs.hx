@@ -1,6 +1,7 @@
 package ui.modal.panel;
 
 import data.DataTypes;
+import misc.AssetLibraryState;
 
 class EditEntityDefs extends ui.modal.Panel {
 	static var LAST_ENTITY_ID = -1;
@@ -708,6 +709,8 @@ class EditEntityDefs extends ui.modal.Panel {
 					cb: ()->{
 						dn.js.ElectronDialogs.openFile([".png", ".gif", ".jpg", ".jpeg", ".aseprite", ".ase"], folder, function(absPath) {
 							App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+							AssetLibraryState.rememberPack(pack.path);
+							AssetLibraryState.rememberFile(absPath);
 							var td = createTilesetFromAssetImage(absPath);
 							if( td!=null )
 								useTilesetForEntityRender(td);

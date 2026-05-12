@@ -30,6 +30,13 @@ typedef AssetLibraryStarterSample = {
 	var absPath : String;
 }
 
+typedef AssetLibraryStarterEntry = {
+	var pack : AssetLibraryPack;
+	var starter : AssetLibraryStarterSample;
+	var category : String;
+	var searchText : String;
+}
+
 class AssetLibrary {
 	static var packExtCache = new Map<String,Array<String>>();
 	static var packPreviewCache = new Map<String,Array<AssetLibraryPreviewFile>>();
@@ -238,17 +245,7 @@ class AssetLibrary {
 	}
 
 	static function previewMatches(file:AssetLibraryPreviewFile, query:String) {
-		if( query==null )
-			return true;
-
-		query = StringTools.trim(query.toLowerCase());
-		if( query.length==0 )
-			return true;
-
-		return file.name.toLowerCase().indexOf(query)>=0
-			|| file.relPath.toLowerCase().indexOf(query)>=0
-			|| file.extension.toLowerCase().indexOf(query)>=0
-			|| file.kind.toLowerCase().indexOf(query)>=0;
+		return matchesTokens(file.name+" "+file.relPath+" "+file.extension+" "+file.kind, query);
 	}
 
 	public static function getPreviewFiles(pack:AssetLibraryPack, limit=120, query="") : Array<AssetLibraryPreviewFile> {
@@ -269,6 +266,25 @@ class AssetLibrary {
 			if( previewMatches(file, query) )
 				count++;
 		return count;
+	}
+
+	public static function matchesTokens(rawHaystack:String, rawQuery:String) {
+		if( rawQuery==null )
+			return true;
+
+		var query = StringTools.trim(rawQuery.toLowerCase());
+		if( query.length==0 )
+			return true;
+
+		var haystack = rawHaystack==null ? "" : rawHaystack.toLowerCase();
+		for(token in ~/[\s,;]+/g.split(query)) {
+			token = StringTools.trim(token);
+			if( token.length==0 )
+				continue;
+			if( haystack.indexOf(token)<0 )
+				return false;
+		}
+		return true;
 	}
 
 	static function sanitizeStarterPath(path:String) {
@@ -332,6 +348,90 @@ class AssetLibrary {
 		out.sort((a,b)->Reflect.compare(a.name, b.name));
 		packStarterCache.set(cacheKey, out);
 		return out;
+	}
+
+	public static function getStarterCategory(pack:AssetLibraryPack, starter:AssetLibraryStarterSample) {
+		var s = (pack.name+" "+pack.path+" "+starter.name+" "+starter.relPath+" "+pack.kind+" "+pack.suggestedUse).toLowerCase();
+		if( pack.path=="CuteSCKR_uncut" || s.indexOf("cutesckr")>=0 )
+			return "cutesckr";
+		if( s.indexOf("audio")>=0 || s.indexOf("sound")>=0 || s.indexOf("sfx")>=0 || s.indexOf("horror")>=0 )
+			return "horror";
+		if( s.indexOf("platform")>=0 || s.indexOf("grotto")>=0 || s.indexOf("dungeon")>=0 || s.indexOf("side")>=0 )
+			return "platformer";
+		if( s.indexOf("rpg")>=0 || s.indexOf("room")>=0 || s.indexOf("interior")>=0 || s.indexOf("town")>=0 )
+			return "rpg";
+		return "topdown";
+	}
+
+	public static function getAllStarterEntries() : Array<AssetLibraryStarterEntry> {
+		var out : Array<AssetLibraryStarterEntry> = [];
+		var seen = new Map<String,Bool>();
+		for(pack in getPacks()) {
+			for(starter in getStarterSamples(pack)) {
+				if( seen.exists(starter.absPath) )
+					continue;
+				seen.set(starter.absPath, true);
+				var category = getStarterCategory(pack, starter);
+				out.push({
+					pack: pack,
+					starter: starter,
+					category: category,
+					searchText: (starter.name+" "+starter.relPath+" "+pack.name+" "+pack.path+" "+pack.kind+" "+pack.summary+" "+pack.suggestedUse+" "+category).toLowerCase(),
+				});
+			}
+		}
+		out.sort((a,b)->Reflect.compare(a.starter.name, b.starter.name));
+		return out;
+	}
+
+	public static function getAtlasRelativePath(absPath:String) {
+		if( absPath==null )
+			return "";
+
+		var rel = StringTools.replace(absPath, "\\", "/");
+		var atlas = StringTools.replace(getDir(), "\\", "/");
+		if( StringTools.startsWith(rel, atlas+"/") )
+			return rel.substr(atlas.length+1);
+		return rel;
+	}
+
+	static function makeRelativeToDir(absPath:String, targetDir:String) {
+		var fp = dn.FilePath.fromFile(absPath);
+		fp.useSlashes();
+		fp.makeRelativeTo(targetDir);
+		return fp.full;
+	}
+
+	static function rewriteStarterAtlasRefs(value:Dynamic, targetDir:String) : Dynamic {
+		if( Std.isOfType(value, String) ) {
+			var s : String = cast value;
+			var clean = StringTools.startsWith(s, "./") ? s.substr(2) : s;
+			if( StringTools.startsWith(clean, "atlas/") )
+				return makeRelativeToDir(JsTools.getSamplesDir()+"/"+clean, targetDir);
+			return value;
+		}
+
+		if( Std.isOfType(value, Array) ) {
+			var arr : Array<Dynamic> = cast value;
+			for(i in 0...arr.length)
+				arr[i] = rewriteStarterAtlasRefs(arr[i], targetDir);
+			return arr;
+		}
+
+		if( Reflect.isObject(value) ) {
+			for(field in Reflect.fields(value))
+				Reflect.setField(value, field, rewriteStarterAtlasRefs(Reflect.field(value, field), targetDir));
+		}
+		return value;
+	}
+
+	public static function cloneStarterTo(starter:AssetLibraryStarterSample, targetPath:String) {
+		var fp = dn.FilePath.fromFile(targetPath);
+		fp.extension = Const.FILE_EXTENSION;
+		var json = haxe.Json.parse(NT.readFileString(starter.absPath));
+		rewriteStarterAtlasRefs(json, fp.directory);
+		NT.writeFileString(fp.full, dn.data.JsonPretty.stringify(json, Full));
+		return fp.full;
 	}
 
 	public static function getExtensionLabel(pack:AssetLibraryPack, limit=5) {

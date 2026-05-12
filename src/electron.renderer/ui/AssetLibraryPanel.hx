@@ -2,11 +2,13 @@ package ui;
 
 import misc.AssetLibrary;
 import misc.AssetLibrary.AssetLibraryPack;
+import misc.AssetLibraryState;
 
 class AssetLibraryPanel {
 	var jRoot : js.jquery.JQuery;
 	var filter = "*";
 	var onShowMoreStarters : AssetLibraryPack->Void;
+	var packs : Array<AssetLibraryPack> = [];
 
 	public function new(jRoot:js.jquery.JQuery, onShowMoreStarters:AssetLibraryPack->Void) {
 		this.jRoot = jRoot;
@@ -27,13 +29,16 @@ class AssetLibraryPanel {
 			return;
 		}
 
-		var packs = AssetLibrary.getPacks();
+		packs = AssetLibrary.getPacks();
 		if( packs.length==0 ) {
 			jScroller.append('<div class="sample"><div class="name">No asset packs</div></div>');
 			return;
 		}
 
+		jRoot.find(".assetPrivateUse").remove();
+		new J('<div class="assetPrivateUse privateUseBanner">Private asset mode: bundled source packs are intended for this personal Doc Roshi build. Favorited and recent assets stay local to this computer.</div>').insertBefore(jRoot.find(".assetTools"));
 		createFilters(packs);
+		renderRecentPacks();
 
 		for(pack in packs)
 			appendPack(jScroller, pack);
@@ -49,6 +54,7 @@ class AssetLibraryPanel {
 		var jPack = new J('<div class="sample assetPack"/>');
 		jPack.appendTo(jScroller);
 		jPack.attr("data-kind", pack.kind);
+		jPack.attr("data-path", pack.path);
 		jPack.attr("data-search", AssetLibrary.getSearchText(pack));
 		var jThumb = new J('<div class="thumb"></div>');
 		jThumb.appendTo(jPack);
@@ -57,6 +63,16 @@ class AssetLibraryPanel {
 
 		var jName = new J('<div class="name"/>');
 		jName.appendTo(jPack);
+		var jFavorite = new J('<button type="button" class="favoritePack" title="Favorite pack"><span class="icon love"></span></button>');
+		jFavorite.appendTo(jPack);
+		jFavorite.toggleClass("active", AssetLibraryState.isFavoritePack(pack.path));
+		jFavorite.click((ev:js.jquery.Event)->{
+			ev.stopPropagation();
+			var active = AssetLibraryState.toggleFavoritePack(pack.path);
+			jFavorite.toggleClass("active", active);
+			updateFilter();
+			renderRecentPacks();
+		});
 		var jHeader = new J('<div class="packHeader"><span class="kind"></span><span class="count"></span></div>');
 		jHeader.appendTo(jName);
 		jHeader.find(".kind").text(pack.kind);
@@ -108,6 +124,8 @@ class AssetLibraryPanel {
 		}
 
 		addFilter(L.t._("All"), "*");
+		addFilter(L.untranslated("Favorites"), "favorites");
+		addFilter(L.untranslated("Recent"), "recent");
 		for(kind in kinds)
 			addFilter(kind, kind);
 
@@ -145,10 +163,48 @@ class AssetLibraryPanel {
 	}
 
 	function packMatchesFilter(jPack:js.jquery.JQuery, kindFilter:String, query:String) {
-		var matchesKind = kindFilter=="*" || jPack.attr("data-kind")==kindFilter;
+		var path = jPack.attr("data-path");
+		var matchesKind = switch kindFilter {
+			case "*": true;
+			case "favorites": AssetLibraryState.isFavoritePack(path);
+			case "recent": AssetLibraryState.getRecentPacks().indexOf(path)>=0;
+			case _: jPack.attr("data-kind")==kindFilter;
+		}
 		var haystack = jPack.attr("data-search");
-		var matchesQuery = query.length==0 || haystack.indexOf(query)>=0;
+		var matchesQuery = AssetLibrary.matchesTokens(haystack, query);
 		return matchesKind && matchesQuery;
+	}
+
+	function renderRecentPacks() {
+		var jRecent = jRoot.find(".assetRecent");
+		if( jRecent.length==0 )
+			return;
+
+		jRecent.empty();
+		var byPath = new Map<String,AssetLibraryPack>();
+		for(pack in packs)
+			byPath.set(pack.path, pack);
+
+		var added = 0;
+		var seen = new Map<String,Bool>();
+		function addChip(path:String, labelPrefix:String) {
+			if( !byPath.exists(path) || seen.exists(path) || added>=8 )
+				return;
+			seen.set(path, true);
+			var pack = byPath.get(path);
+			var jChip = new J('<button type="button"><span class="label"></span></button>');
+			jChip.find(".label").text(labelPrefix+pack.name);
+			jChip.appendTo(jRecent);
+			jChip.click((ev)->openBrowser(pack));
+			added++;
+		}
+
+		for(path in AssetLibraryState.getFavoritePacks())
+			addChip(path, "Fav ");
+		for(path in AssetLibraryState.getRecentPacks())
+			addChip(path, "");
+
+		jRecent.toggle(added>0);
 	}
 
 	function openPackMenu(ev:js.jquery.Event, pack:AssetLibraryPack, folder:String, thumb:String) {
@@ -220,6 +276,8 @@ class AssetLibraryPanel {
 	}
 
 	function openBrowser(pack:AssetLibraryPack) {
+		AssetLibraryState.rememberPack(pack.path);
+		renderRecentPacks();
 		ui.AssetPackBrowser.open(pack, ()->onShowMoreStarters(pack));
 	}
 }

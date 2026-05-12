@@ -64,6 +64,7 @@ class Home extends Page {
 				showAssetLibrary();
 		});
 		jPage.find(".assetLibrary .hide").click( (_)->hideAssetLibrary() );
+		jPage.find(".templates").click( (_)->ui.TemplateWizard.open() );
 		jPage.find(".import").click( (ev)->onImport(ev) );
 		jPage.find(".new").click( (_)->if( !cd.hasSetS("newLock",0.2) ) onNew() );
 

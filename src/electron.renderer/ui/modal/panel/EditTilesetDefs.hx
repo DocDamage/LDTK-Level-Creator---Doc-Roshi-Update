@@ -1,6 +1,7 @@
 package ui.modal.panel;
 
 import misc.AssetLibrary.AssetLibraryPack;
+import misc.AssetLibraryState;
 
 class EditTilesetDefs extends ui.modal.Panel {
 	var jList : js.jquery.JQuery;
@@ -413,6 +414,8 @@ class EditTilesetDefs extends ui.modal.Panel {
 					cb: ()->{
 						dn.js.ElectronDialogs.openFile([".png", ".gif", ".jpg", ".jpeg", ".aseprite", ".ase"], folder, function(absPath) {
 							App.ME.settings.storeUiDir(project, "PickImage", dn.FilePath.extractDirectoryWithoutSlash(absPath,true));
+							AssetLibraryState.rememberPack(pack.path);
+							AssetLibraryState.rememberFile(absPath);
 							onPick(project.makeRelativeFilePath(absPath));
 						});
 					},
