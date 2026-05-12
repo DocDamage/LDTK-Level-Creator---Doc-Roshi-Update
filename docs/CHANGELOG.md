@@ -1,5 +1,6 @@
 # 1.5.4
 
+- Doc Roshi update: added a bundled asset library, 151 generated asset-pack starter templates, 78 CuteSCKR starter templates, richer Home sample filters, asset-pack browsing, and direct starter links from matching asset packs.
 - Multi-levels selection in world view (a big thank you to JeremyFa / https://github.com/jeremyfa)
 - In Auto-Layers, you can now pick any number of other layers to prevent local rules to apply at particular coordinates.
 - Added a new Project setting to customize the JSON indentation (Full, Compact or Minified)
