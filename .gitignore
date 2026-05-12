@@ -13,7 +13,6 @@ res/.tmp
 .vscode/settings.json
 
 app/*.log
-app/package-lock.json
 app/settings
 app/redist
 app/node_modules
@@ -43,3 +42,19 @@ app/extraFiles/samples/atlas/**/*.msi
 app/extraFiles/samples/atlas/**/*.bat
 app/extraFiles/samples/atlas/**/*.cmd
 app/extraFiles/samples/atlas/**/*.sh
+
+# Raw source-drop/editor sidecars are not app-known distributable assets.
+app/extraFiles/samples/atlas/**/*.import
+app/extraFiles/samples/atlas/**/*.md5
+app/extraFiles/samples/atlas/**/*.stex
+app/extraFiles/samples/atlas/**/*.DS_Store
+app/extraFiles/samples/atlas/**/*.ds_store
+app/extraFiles/samples/atlas/**/*.psd
+app/extraFiles/samples/atlas/**/*.pck
+app/extraFiles/samples/atlas/**/*.tscn
+app/extraFiles/samples/atlas/**/*.gd
+app/extraFiles/samples/atlas/**/*.cfg
+app/extraFiles/samples/atlas/**/*.meta
+app/extraFiles/samples/atlas/**/*.ctex
+app/extraFiles/samples/atlas/**/*.sample
+app/extraFiles/samples/atlas/**/*.cs

@@ -12,7 +12,14 @@ const manifestPath = path.join(atlasDir, "assetLibrary.json");
 const EXPECTED_ASSET_STARTERS = 151;
 const EXPECTED_CUTESCKR_STARTERS = 78;
 const EXPECTED_DOC_ROSHI_STARTERS = 233;
-const BLOCKED_TRACKED_ATLAS_EXTENSIONS = new Set([".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh"]);
+const BLOCKED_TRACKED_ATLAS_EXTENSIONS = new Set([
+	".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh",
+	".import", ".md5", ".stex", ".ds_store", ".psd", ".pck", ".tscn", ".gd",
+	".cfg", ".meta", ".ctex", ".sample", ".cs",
+]);
+const BLOCKED_TRACKED_ATLAS_PATHS = new Set([
+	"app/extraFiles/samples/atlas/sound effects/Horror SFX Free/Ambient/Suburban Neighborhood_morning.wav",
+]);
 
 const errors = [];
 
@@ -147,7 +154,9 @@ function validateTrackedAtlasFiles() {
 	for (const fileName of listTrackedAtlasFiles()) {
 		const ext = path.extname(fileName).toLowerCase();
 		if (BLOCKED_TRACKED_ATLAS_EXTENSIONS.has(ext))
-			fail(`Tracked atlas file should stay ignored as raw runtime output: ${fileName}`);
+			fail(`Tracked atlas file should stay ignored as raw source-drop output: ${fileName}`);
+		if (BLOCKED_TRACKED_ATLAS_PATHS.has(fileName))
+			fail(`Tracked atlas file should stay ignored after MP3 conversion: ${fileName}`);
 	}
 }
 

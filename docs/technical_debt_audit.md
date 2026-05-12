@@ -6,16 +6,15 @@ Scope: whole app, with extra attention to the Doc Roshi bundled asset update, re
 
 ## Executive Summary
 
-The app is currently buildable and the recent release hardening is working: `node tools\validate-doc-roshi-assets.js`, `node tools\validate-release-config.js`, and `npm audit --audit-level=low` all pass. The largest debt is not the Haxe app logic itself; it is the newly bundled asset payload and the lack of a formal asset-normalization pipeline. The repository now tracks roughly `96k` sample files and about `3.65 GB` under `app/extraFiles/samples/atlas`, including many source-drop sidecar files that are not app-native art/audio.
+The app is currently buildable and the recent release hardening is working: `node tools\validate-doc-roshi-assets.js`, `node tools\validate-release-config.js`, and `npm audit --audit-level=low` all pass. The largest remaining debt is not the Haxe app logic itself; it is the newly bundled asset payload and the lack of a formal asset-normalization pipeline. Follow-up cleanup removed tracked source-drop sidecars, deleted the local ignored raw WAV copy, committed `app/package-lock.json`, and added release validation for the license manifest and blocked asset extensions.
 
 The main engineering risks are:
 
 1. Huge bundled asset footprint makes clone, CI, packaging, and review slow and fragile.
-2. Asset source drops include non-user-facing sidecar formats and large source files.
-3. License/attribution is documented at pack level, but not yet verified per file or per license text.
+2. Asset source drops still need a formal import/normalization pipeline even though known sidecars are now blocked.
+3. License/attribution has a strict pack manifest, but entries marked `requires-pack-level-review` still need legal/source verification.
 4. Core renderer files remain large and tightly coupled.
-5. Several silent catch blocks and TODOs hide recoverable failures.
-6. The app has no lockfile committed, so reproducibility relies on pinned versions but not full transitive dependency locking.
+5. Several old TODOs hide correctness risks outside the asset-library path.
 
 ## Current Health Checks
 
@@ -58,7 +57,9 @@ Recommendation:
 - Convert large WAV loops to compressed preview formats when the app only needs prototype playback.
 - Consider Git LFS or release assets if full-resolution originals must remain available.
 
-### 2. Raw Source-Drop Sidecar Files Are Still Tracked
+### 2. Raw Source-Drop Sidecar Files Needed Cleanup
+
+Status: handled for known sidecar extensions in the follow-up cleanup. `.gitignore`, `app/electron-builder.json`, and `tools/validate-doc-roshi-assets.js` now block these classes from returning.
 
 Evidence:
 
@@ -97,7 +98,9 @@ Recommendation:
 - Decide which source formats are intentionally shipped. If PSD/Aseprite files are wanted, document that explicitly. Otherwise strip them.
 - Recompute `assetLibrary.json` counts after cleanup.
 
-### 3. Oversized Audio Still Needs Cleanup
+### 3. Oversized Audio Needed Cleanup
+
+Status: handled for the known raw WAV path in the working tree. `tools/validate-doc-roshi-assets.js` now rejects the converted-away WAV if it is ever tracked again.
 
 Evidence:
 
@@ -173,6 +176,8 @@ Recommendation:
 
 ### 6. Silent Catch Blocks Hide Failure Modes
 
+Status: partially handled. Asset-library scan/manifest catches now log context; older non-asset-library catches remain debt.
+
 Evidence:
 
 - `src/electron.renderer/misc/AssetLibrary.hx:120`, `179`, `245`, `306` swallow failures.
@@ -215,42 +220,31 @@ Recommendation:
 - Prioritize exporter correctness and file watcher rename support.
 - Add regression samples for multi-world export, entity references, and layer offset calculations.
 
-### 8. Dependency Reproducibility Is Better But Still Not Locked
+### 8. Dependency Reproducibility Is Now Lockfile-Based
+
+Status: handled for the Electron app. `app/package-lock.json` is now committed and CI/release docs use `npm ci`.
 
 Evidence:
 
 - `app/package.json` versions are now pinned.
 - `app/package-lock.json` is ignored in `.gitignore`.
 
-Impact:
+Residual recommendation:
 
-- Direct dependencies are stable, but transitive dependency resolution can still change between installs.
-- CI and local builds can diverge if registry metadata changes.
+- Keep `app/package-lock.json` updated whenever `app/package.json` changes.
+- Use `npm ci` in CI and release verification.
 
-Recommendation:
+### 9. CI Modernization Is Mostly Handled
 
-- Reconsider ignoring `app/package-lock.json`.
-- If lockfile remains ignored, document that this project intentionally relies on exact direct versions and audit validation instead.
-- Prefer committing the lockfile for release branches.
-
-### 9. CI Modernization Is Partial
+Status: handled for Node/action versions and deprecated `set-output` usage.
 
 Evidence:
 
 - Workflows now use Node 20 and modern GitHub Actions.
 - Haxe setup still uses `krdlab/setup-haxe@v1`.
-- GitHub Actions branch discovery still uses deprecated `set-output` in workflows.
+Residual recommendation:
 
-Impact:
-
-- Future GitHub runner changes may break CI.
-- Deprecated syntax can become a hard failure later.
-
-Recommendation:
-
-- Replace `echo "::set-output name=v::..."` with `$GITHUB_OUTPUT`.
 - Review whether a newer Haxe setup action is available and stable.
-- Add `node tools/validate-release-config.js` coverage for deprecated `set-output`.
 
 ## Lower Severity Debt
 
@@ -297,7 +291,7 @@ Impact:
 
 - Good guardrails exist, but they do not yet cover:
   - max file size,
-  - source-drop sidecar extensions,
+  - max file size,
   - per-pack license completeness,
   - manifest file-count accuracy for every pack,
   - broken thumbnail dimensions/corrupt images.
@@ -305,8 +299,8 @@ Impact:
 Recommendation:
 
 - Extend validation in small steps.
-- First add blocked sidecar and max-size checks.
-- Then add per-pack license manifest checks.
+- First add max-size checks.
+- Then tighten per-pack license manifest statuses from `requires-pack-level-review` to verified release statuses.
 
 ## Recommended Remediation Order
 
@@ -314,12 +308,9 @@ Recommendation:
 2. Remove the tracked `Suburban Neighborhood_morning.wav` if it is still in Git, and keep only the MP3 for app-known use.
 3. Add max-size and sidecar-extension validation to `tools/validate-doc-roshi-assets.js`.
 4. Create a strict `docs/asset_license_manifest.json` and validate every `assetLibrary.json` pack against it.
-5. Replace GitHub Actions `set-output` usage with `$GITHUB_OUTPUT`.
-6. Decide whether to commit `app/package-lock.json` for release reproducibility.
-7. Extract the Home asset-library browser into a focused Haxe module.
-8. Add logging or user-visible diagnostics for asset manifest parse/read failures.
-9. Add lazy preview paging/search inside the asset browser.
-10. Triage old TODOs, starting with exporter correctness and file watcher rename behavior.
+5. Extract the Home asset-library browser into a focused Haxe module.
+6. Add lazy preview paging/search inside the asset browser.
+7. Triage old TODOs, starting with exporter correctness and file watcher rename behavior.
 
 ## Suggested Next Implementation Slice
 
@@ -335,6 +326,7 @@ The highest-value next slice is asset payload cleanup:
 node tools\validate-doc-roshi-assets.js
 node tools\validate-release-config.js
 cd app
+npm ci
 npm audit --audit-level=low
 npm run compile
 npm run pack-test

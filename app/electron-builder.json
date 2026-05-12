@@ -23,7 +23,21 @@
 				"!atlas/**/*.msi",
 				"!atlas/**/*.bat",
 				"!atlas/**/*.cmd",
-				"!atlas/**/*.sh"
+				"!atlas/**/*.sh",
+				"!atlas/**/*.import",
+				"!atlas/**/*.md5",
+				"!atlas/**/*.stex",
+				"!atlas/**/*.DS_Store",
+				"!atlas/**/*.ds_store",
+				"!atlas/**/*.psd",
+				"!atlas/**/*.pck",
+				"!atlas/**/*.tscn",
+				"!atlas/**/*.gd",
+				"!atlas/**/*.cfg",
+				"!atlas/**/*.meta",
+				"!atlas/**/*.ctex",
+				"!atlas/**/*.sample",
+				"!atlas/**/*.cs"
 			]
 		},
 		{

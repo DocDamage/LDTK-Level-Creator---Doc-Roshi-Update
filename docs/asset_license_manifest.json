@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "packs": [
+    {
+      "path": ".",
+      "name": "Classic sample tilesets",
+      "author": "LDtk sample artists",
+      "source": "Original LDtk bundled samples",
+      "licenseSummary": "See app/extraFiles/samples/README.md for the original sample asset credits.",
+      "redistributionStatus": "included-with-upstream-samples",
+      "attribution": "Cavernas by Adam Saltsman, SunnyLand by Ansimuz, Inca by Kronbits, Nuclear Blaze by Sebastien Benard, plus original LDtk sample artists."
+    },
+    {
+      "path": "stages",
+      "name": "Magic and fantasy stages",
+      "author": "Mixed artists",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/stages",
+      "licenseSummary": "Mixed third-party asset packs. Verify each original pack license before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "See the original files and folder names retained under the stages pack."
+    },
+    {
+      "path": "ansimuz assets",
+      "name": "Ansimuz environment collection",
+      "author": "Ansimuz and bundled pack credits",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/ansimuz assets",
+      "licenseSummary": "Ansimuz packs and included license/readme files. Verify every retained pack license before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "Ansimuz environment packs and credits included in retained pack folders."
+    },
+    {
+      "path": "20000 Icons RPG + Recolors - Full version",
+      "name": "HoriHori icon library",
+      "author": "HoriHori",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/20000 Icons RPG + Recolors - Full version",
+      "licenseSummary": "HoriHori pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "HoriHori RPG icon library."
+    },
+    {
+      "path": "HoriHori Assets/cards",
+      "name": "HoriHori card art",
+      "author": "HoriHori",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/cards",
+      "licenseSummary": "HoriHori pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "HoriHori card art."
+    },
+    {
+      "path": "HoriHori Assets/spells",
+      "name": "HoriHori spell effects",
+      "author": "HoriHori",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets/spells",
+      "licenseSummary": "HoriHori pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "HoriHori spell effects."
+    },
+    {
+      "path": "Spells",
+      "name": "Elemental spell library",
+      "author": "Mixed artists",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Spells",
+      "licenseSummary": "Mixed spell-art pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "Elemental spell art from retained pack folders."
+    },
+    {
+      "path": "HoriHori Assets",
+      "name": "HoriHori characters and backgrounds",
+      "author": "HoriHori",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/HoriHori Assets",
+      "licenseSummary": "HoriHori pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "HoriHori characters, backgrounds, portraits, and items."
+    },
+    {
+      "path": "CuteSCKR_uncut",
+      "name": "CuteSCKR tilesets",
+      "author": "CuteSCKR",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/CuteSCKR_uncut",
+      "licenseSummary": "CuteSCKR pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "CuteSCKR tileset collection."
+    },
+    {
+      "path": "Monster Mega Pack",
+      "name": "Monster Mega Pack",
+      "author": "BattleInkMaps",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/Monster Mega Pack",
+      "licenseSummary": "BattleInkMaps pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "Monster Mega Pack by BattleInkMaps."
+    },
+    {
+      "path": "portraits",
+      "name": "Fantasy portraits",
+      "author": "Mixed artists",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/portraits",
+      "licenseSummary": "Mixed portrait/avatar pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "Fantasy portrait and avatar packs from retained folders."
+    },
+    {
+      "path": "sound effects",
+      "name": "Sound effects",
+      "author": "Mixed artists",
+      "source": "Imported source pack folder: app/extraFiles/samples/atlas/sound effects",
+      "licenseSummary": "Mixed audio pack terms must be verified before public release.",
+      "redistributionStatus": "requires-pack-level-review",
+      "attribution": "Horror, fantasy, dialogue, and prototype sound-effect packs from retained folders."
+    }
+  ]
+}

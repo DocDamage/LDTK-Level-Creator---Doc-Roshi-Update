@@ -1,6 +1,6 @@
 # Doc Roshi bundled asset credits
 
-This document tracks the imported, app-known assets used by the Doc Roshi update. These files live under `app/extraFiles/samples/atlas/` and are referenced by `assetLibrary.json`, starter templates, thumbnails, or sample fields so a fresh checkout can try the update immediately.
+This document summarizes the imported, app-known assets used by the Doc Roshi update. The strict per-pack release manifest lives in `docs/asset_license_manifest.json` and is validated by `node tools/validate-release-config.js`.
 
 Raw source drops and large library folders may remain ignored, but any file referenced by the app manifest or a starter project must stay available in the repository.
 
@@ -21,6 +21,8 @@ Raw source drops and large library folders may remain ignored, but any file refe
 | Fantasy portraits | `app/extraFiles/samples/atlas/portraits/` | Mixed artists | See original files in pack folders | Dialog, NPC, and party UI starter material |
 | Sound effects | `app/extraFiles/samples/atlas/sound effects/` | Mixed artists | See original files in pack folders | Audio file fields and the horror/audio demo |
 
+Before public release, entries marked `requires-pack-level-review` in `docs/asset_license_manifest.json` must be checked against the original pack terms and updated with the exact redistribution status required by that pack.
+
 ## Release checks
 
 Before publishing a release from this branch, run:
@@ -29,7 +31,7 @@ Before publishing a release from this branch, run:
 node tools\validate-doc-roshi-assets.js
 node tools\validate-release-config.js
 cd app
-npm install
+npm ci
 npm run compile
 npm run pack-test
 ```

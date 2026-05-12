@@ -23,7 +23,7 @@ jobs:
       # Get branch name
       - name: getBranch
         shell: bash
-        run: echo "::set-output name=v::${GITHUB_REF#refs/heads/}"
+        run: echo "v=${GITHUB_REF#refs/heads/}" >> "$GITHUB_OUTPUT"
         id: branch
 
       # Checkout, install haxe and libs
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: cd app && npm install
+      - run: cd app && npm ci
       - run: cd app && npm run pack-linux-x86
 
       # Upload

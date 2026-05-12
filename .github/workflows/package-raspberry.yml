@@ -37,7 +37,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: cd app && npm install
+      - run: cd app && npm ci
       - run: cd app && npm run pack-linux-arm64
 
       # Upload

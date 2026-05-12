@@ -43,7 +43,7 @@ Visit [LDtk.io](https://ldtk.io) to get latest version.
  - Install Electron locally and other dependencies through NPM (**IMPORTANT**: you need to be in the `app` dir):
  ```
  cd app
- npm i
+ npm ci
  ```
 
 ## Compiling *master* branch

@@ -43,6 +43,19 @@ class AssetLibrary {
 		".bat" => true,
 		".cmd" => true,
 		".sh" => true,
+		".import" => true,
+		".md5" => true,
+		".stex" => true,
+		".ds_store" => true,
+		".psd" => true,
+		".pck" => true,
+		".tscn" => true,
+		".gd" => true,
+		".cfg" => true,
+		".meta" => true,
+		".ctex" => true,
+		".sample" => true,
+		".cs" => true,
 	];
 
 	public static function getDir() {
@@ -96,6 +109,10 @@ class AssetLibrary {
 		return "file:///"+parts.join("/");
 	}
 
+	static function warn(context:String, e:Dynamic) {
+		trace("[AssetLibrary] "+context+": "+Std.string(e));
+	}
+
 	public static function getPackExtensions(pack:AssetLibraryPack) {
 		var folder = getPackAbsPath(pack);
 		if( packExtCache.exists(folder) )
@@ -117,7 +134,7 @@ class AssetLibrary {
 					}
 				}
 			}
-			catch(_) {}
+			catch(e:Dynamic) warn("Failed to scan extensions for "+folder, e);
 		}
 		out.sort(Reflect.compare);
 		packExtCache.set(folder, out);
@@ -176,7 +193,7 @@ class AssetLibrary {
 				});
 			}
 		}
-		catch(_) {}
+		catch(e:Dynamic) warn("Failed to scan previews for "+folder, e);
 
 		out.sort((a,b)->{
 			if( a.kind!=b.kind )
@@ -242,7 +259,7 @@ class AssetLibrary {
 				});
 			}
 		}
-		catch(_) {}
+		catch(e:Dynamic) warn("Failed to scan starter samples for "+pack.path, e);
 
 		out.sort((a,b)->Reflect.compare(a.name, b.name));
 		packStarterCache.set(cacheKey, out);
@@ -303,7 +320,10 @@ class AssetLibrary {
 
 		var manifest : AssetLibraryManifest = try {
 			haxe.Json.parse( NT.readFileString(manifestPath) );
-		} catch(_) null;
+		} catch(e:Dynamic) {
+			warn("Failed to parse asset manifest "+manifestPath, e);
+			null;
+		}
 
 		return manifest==null || manifest.packs==null ? [] : manifest.packs;
 	}
