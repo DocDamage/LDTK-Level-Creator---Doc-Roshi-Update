@@ -16,6 +16,14 @@ typedef AssetLibraryPack = {
 	var ?suggestedUse : String;
 }
 
+typedef AssetLibraryPreviewFile = {
+	var name : String;
+	var relPath : String;
+	var absPath : String;
+	var extension : String;
+	var kind : String;
+}
+
 class AssetLibrary {
 	static var packExtCache = new Map<String,Array<String>>();
 
@@ -85,6 +93,54 @@ class AssetLibrary {
 			if( ext==".wav" || ext==".ogg" || ext==".mp3" )
 				return true;
 		return false;
+	}
+
+	public static function isImageExtension(ext:String) {
+		return ext==".png" || ext==".jpg" || ext==".jpeg" || ext==".gif" || ext==".webp";
+	}
+
+	public static function isAudioExtension(ext:String) {
+		return ext==".wav" || ext==".ogg" || ext==".mp3";
+	}
+
+	public static function getPreviewFiles(pack:AssetLibraryPack, limit=120) : Array<AssetLibraryPreviewFile> {
+		var folder = getPackAbsPath(pack);
+		if( !NT.fileExists(folder) )
+			return [];
+
+		var atlasDir = getDir();
+		var out : Array<AssetLibraryPreviewFile> = [];
+		try {
+			for(fp in JsTools.findFilesRec(folder)) {
+				var ext = fp.extension.toLowerCase();
+				if( ext.length>0 && ext.charAt(0)!="." )
+					ext = "."+ext;
+				var kind = isImageExtension(ext) ? "image" : isAudioExtension(ext) ? "audio" : null;
+				if( kind==null )
+					continue;
+
+				var rel = StringTools.replace(fp.full, "\\", "/");
+				var atlas = StringTools.replace(atlasDir, "\\", "/");
+				if( StringTools.startsWith(rel, atlas+"/") )
+					rel = rel.substr(atlas.length+1);
+
+				out.push({
+					name: fp.fileWithExt,
+					relPath: rel,
+					absPath: fp.full,
+					extension: ext,
+					kind: kind,
+				});
+			}
+		}
+		catch(_) {}
+
+		out.sort((a,b)->{
+			if( a.kind!=b.kind )
+				return a.kind=="image" ? -1 : 1;
+			return Reflect.compare(a.relPath, b.relPath);
+		});
+		return out.length>limit ? out.slice(0, limit) : out;
 	}
 
 	public static function getExtensionLabel(pack:AssetLibraryPack, limit=5) {

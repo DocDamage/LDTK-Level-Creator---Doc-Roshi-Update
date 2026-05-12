@@ -2,6 +2,7 @@ package page;
 
 import hxd.Key;
 import misc.AssetLibrary.AssetLibraryPack;
+import misc.AssetLibrary.AssetLibraryPreviewFile;
 
 class Home extends Page {
 	public static var ME : Home;
@@ -286,7 +287,7 @@ class Home extends Page {
 			if( pack.license!=null && pack.license.length>0 )
 				jName.append('<small class="license">${pack.license}</small>');
 			jPack.attr("title", pack.summary);
-			jPack.click((ev)->openAssetPackMenu(ev, pack, folder, thumb));
+			jPack.click((ev)->openAssetPackBrowser(pack));
 			jPack.on("contextmenu", (ev:js.jquery.Event)->{
 				ev.preventDefault();
 				openAssetPackMenu(ev, pack, folder, thumb);
@@ -374,6 +375,11 @@ class Home extends Page {
 			subText: pack.summary==null ? null : L.untranslated(pack.summary),
 		});
 		ctx.addAction({
+			label: L.t._("Browse pack contents"),
+			iconId: "search",
+			cb: ()->openAssetPackBrowser(pack),
+		});
+		ctx.addAction({
 			label: L.t._("Open asset folder"),
 			iconId: "open",
 			cb: ()->JsTools.locateFile(folder, false),
@@ -417,6 +423,65 @@ class Home extends Page {
 				label: L.untranslated(pack.suggestedUse),
 				subText: L.untranslated(pack.summary),
 			});
+	}
+
+	function openAssetPackBrowser(pack:AssetLibraryPack) {
+		var files = AssetLibrary.getPreviewFiles(pack);
+		var folder = AssetLibrary.getPackAbsPath(pack);
+		var w = new ui.modal.Dialog(null, "assetBrowser");
+		w.addTitle(L.untranslated(pack.name), true);
+
+		var jSummary = new J('<div class="summary"/>');
+		jSummary.appendTo(w.jContent);
+		var jMeta = new J('<div class="meta"/>');
+		jMeta.appendTo(jSummary);
+		jMeta.append('<span>${AssetLibrary.getPackSubtitle(pack)}</span>');
+		if( pack.suggestedUse!=null && pack.suggestedUse.length>0 )
+			jMeta.append('<span>${pack.suggestedUse}</span>');
+		if( pack.summary!=null && pack.summary.length>0 )
+			jSummary.append('<p>${pack.summary}</p>');
+
+		var jActions = new J('<div class="assetBrowserActions"/>');
+		jActions.appendTo(w.jContent);
+		var jOpen = new J('<button type="button"><span class="icon open"></span>Open folder</button>');
+		jOpen.appendTo(jActions);
+		jOpen.click((ev)->JsTools.locateFile(folder, false));
+		var jCopy = new J('<button type="button" class="gray"><span class="icon copy"></span>Copy path</button>');
+		jCopy.appendTo(jActions);
+		jCopy.click((ev)->{
+			App.ME.clipboard.copyStr(folder);
+			N.copied("folder path");
+		});
+
+		if( files.length==0 ) {
+			w.jContent.append('<div class="empty">No previewable images or audio files in this pack.</div>');
+			w.addClose();
+			return;
+		}
+
+		var jGrid = new J('<div class="assetBrowserGrid"/>');
+		jGrid.appendTo(w.jContent);
+		for(file in files)
+			appendAssetPreview(jGrid, file);
+
+		if( pack.files>files.length )
+			w.jContent.append('<div class="more">Showing ${files.length} previewable files from this pack.</div>');
+
+		w.addClose();
+	}
+
+	function appendAssetPreview(jGrid:js.jquery.JQuery, file:AssetLibraryPreviewFile) {
+		var abs = StringTools.replace(file.absPath, "\\", "/");
+		var jItem = new J('<div class="assetPreview ${file.kind}"/>');
+		jItem.appendTo(jGrid);
+		if( file.kind=="image" )
+			jItem.append('<div class="preview" style="background-image:url(\'$abs\')"></div>');
+		else
+			jItem.append('<div class="preview audio"><span class="icon doc"></span><audio controls src="file:///$abs"></audio></div>');
+		jItem.append('<div class="name">${file.name}</div>');
+		jItem.append('<small>${file.relPath}</small>');
+		jItem.click((ev)->JsTools.locateFile(file.absPath, true));
+		jItem.find("audio").click((ev:js.jquery.Event)->ev.stopPropagation());
 	}
 
 

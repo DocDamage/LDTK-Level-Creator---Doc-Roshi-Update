@@ -3978,6 +3978,136 @@ textarea {
 	}
 }
 
+.window.dialog.assetBrowser {
+	>.wrapper {
+		width: min(960px, 92vw);
+		max-width: none;
+		max-height: 86vh;
+	}
+
+	.content {
+		display: grid;
+		gap: 10px;
+	}
+
+	.summary {
+		display: grid;
+		gap: 6px;
+
+		.meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 4px;
+
+			span {
+				padding: 3px 6px;
+				border-radius: 2px;
+				font-family: Roboto;
+				font-size: 8pt;
+				color: $help;
+				background-color: $helpDarker;
+			}
+		}
+
+		p {
+			margin: 0;
+			color: $almostWhite;
+			font-size: 10pt;
+		}
+	}
+
+	.assetBrowserActions {
+		display: flex;
+		gap: 4px;
+
+		button {
+			width: auto;
+			padding: 7px 10px;
+		}
+	}
+
+	.assetBrowserGrid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+		gap: 6px;
+		max-height: 52vh;
+		overflow: auto;
+		padding: 4px;
+		background-color: $bgDark;
+	}
+
+	.assetPreview {
+		display: grid;
+		grid-template-rows: 104px min-content min-content;
+		gap: 4px;
+		overflow: hidden;
+		padding: 4px;
+		border-radius: 3px;
+		background-color: black;
+		cursor: pointer;
+
+		&:hover {
+			outline: 1px solid white;
+		}
+
+		.preview {
+			display: grid;
+			align-items: center;
+			justify-items: center;
+			min-width: 0;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: contain;
+			image-rendering: pixelated;
+			background-color: black;
+
+			&.audio {
+				grid-template-rows: 32px min-content;
+				gap: 6px;
+				padding: 8px;
+
+				.icon {
+					width: 24px;
+					height: 24px;
+					opacity: 0.65;
+				}
+
+				audio {
+					width: 100%;
+					max-width: 100%;
+					height: 28px;
+				}
+			}
+		}
+
+		.name {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			font-family: Roboto;
+			font-size: 9pt;
+			color: white;
+		}
+
+		small {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			color: $almostWhite;
+			opacity: 0.65;
+		}
+	}
+
+	.empty,
+	.more {
+		padding: 10px;
+		text-align: center;
+		font-family: Roboto;
+		color: $help;
+		background-color: $helpDark;
+	}
+}
+
 .window.sync {
 	.wrapper .content {
 		max-width: none;
