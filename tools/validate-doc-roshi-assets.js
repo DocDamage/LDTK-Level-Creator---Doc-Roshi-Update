@@ -16,11 +16,23 @@ const MAX_TRACKED_ATLAS_FILE_BYTES = 16 * 1024 * 1024;
 const BLOCKED_TRACKED_ATLAS_EXTENSIONS = new Set([
 	".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh",
 	".import", ".md5", ".stex", ".ds_store", ".psd", ".pck", ".tscn", ".gd",
-	".cfg", ".meta", ".ctex", ".sample", ".cs",
+	".cfg", ".meta", ".ctex", ".sample", ".cs", ".cache", ".scn", ".js",
+	".prefab", ".anim", ".controller", ".xml", ".node", ".godot", ".bin",
+	".gdshader", ".tres", ".unity", ".assets", ".config", ".fontdata",
+	".oggvorbisstr", ".oggstr", ".ico", ".ress", ".res", ".uid", ".html",
+	".iml", ".info", ".mdb", ".browser", ".ini", ".aspx",
 ]);
+const BLOCKED_TRACKED_ATLAS_BASENAMES = new Set([
+	".DS_Store", ".gitattributes", ".gitignore", ".gdignore", ".editorconfig", ".name",
+]);
+const BLOCKED_TRACKED_ATLAS_PATH_SEGMENTS = [
+	"/.godot/", "/.idea/", "_Data/",
+];
 const BLOCKED_TRACKED_ATLAS_PATHS = new Set([
 	"app/extraFiles/samples/atlas/sound effects/Horror SFX Free/Ambient/Suburban Neighborhood_morning.wav",
 ]);
+const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"]);
+const AUDIO_EXTENSIONS = new Set([".wav", ".ogg", ".mp3"]);
 
 const errors = [];
 
@@ -48,6 +60,110 @@ function exists(filePath) {
 
 function resolveFrom(baseDir, relPath) {
 	return path.join(baseDir, relPath.replace(/\//g, path.sep));
+}
+
+function normalizeRelPath(fileName) {
+	return fileName.replace(/\\/g, "/");
+}
+
+function shouldIgnoreAtlasFile(relPath) {
+	const normalized = normalizeRelPath(relPath);
+	const ext = path.posix.extname(normalized).toLowerCase();
+	const basename = path.posix.basename(normalized);
+
+	if (BLOCKED_TRACKED_ATLAS_EXTENSIONS.has(ext))
+		return true;
+	if (BLOCKED_TRACKED_ATLAS_BASENAMES.has(basename))
+		return true;
+
+	return BLOCKED_TRACKED_ATLAS_PATH_SEGMENTS.some((segment) => normalized.includes(segment));
+}
+
+function isPreviewableAsset(relPath) {
+	const ext = path.posix.extname(normalizeRelPath(relPath)).toLowerCase();
+	return IMAGE_EXTENSIONS.has(ext) || AUDIO_EXTENSIONS.has(ext);
+}
+
+function listPackFiles(pack) {
+	const packPath = resolveFrom(atlasDir, pack.path);
+	if (!exists(packPath))
+		return [];
+
+	if (pack.path === ".") {
+		return fs.readdirSync(packPath)
+			.filter((name) => name !== "assetLibrary.json")
+			.map((name) => path.join(packPath, name))
+			.filter((filePath) => fs.statSync(filePath).isFile())
+			.map(rel)
+			.filter((fileName) => !shouldIgnoreAtlasFile(fileName));
+	}
+
+	const out = [];
+	const walk = (dir) => {
+		for (const name of fs.readdirSync(dir)) {
+			const filePath = path.join(dir, name);
+			const fileRel = rel(filePath);
+			if (shouldIgnoreAtlasFile(fileRel))
+				continue;
+
+			const stat = fs.statSync(filePath);
+			if (stat.isDirectory())
+				walk(filePath);
+			else if (stat.isFile())
+				out.push(fileRel);
+		}
+	};
+	walk(packPath);
+	return out;
+}
+
+function readImageDimensions(filePath) {
+	const buffer = fs.readFileSync(filePath);
+	if (buffer.length >= 24 && buffer.toString("ascii", 1, 4) === "PNG")
+		return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+
+	if (buffer.length >= 10 && buffer.toString("ascii", 0, 3) === "GIF")
+		return { width: buffer.readUInt16LE(6), height: buffer.readUInt16LE(8) };
+
+	if (buffer.length >= 12 && buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP") {
+		const type = buffer.toString("ascii", 12, 16);
+		if (type === "VP8X" && buffer.length >= 30)
+			return {
+				width: 1 + buffer.readUIntLE(24, 3),
+				height: 1 + buffer.readUIntLE(27, 3),
+			};
+		if (type === "VP8 " && buffer.length >= 30)
+			return {
+				width: buffer.readUInt16LE(26) & 0x3fff,
+				height: buffer.readUInt16LE(28) & 0x3fff,
+			};
+		if (type === "VP8L" && buffer.length >= 25) {
+			const bits = buffer.readUInt32LE(21);
+			return {
+				width: (bits & 0x3fff) + 1,
+				height: ((bits >> 14) & 0x3fff) + 1,
+			};
+		}
+	}
+
+	if (buffer.length >= 4 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+		let offset = 2;
+		while (offset + 9 < buffer.length) {
+			if (buffer[offset] !== 0xff) {
+				offset++;
+				continue;
+			}
+			const marker = buffer[offset + 1];
+			const length = buffer.readUInt16BE(offset + 2);
+			if (length < 2)
+				return null;
+			if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker))
+				return { width: buffer.readUInt16BE(offset + 7), height: buffer.readUInt16BE(offset + 5) };
+			offset += 2 + length;
+		}
+	}
+
+	return null;
 }
 
 function listSamples(prefix) {
@@ -147,7 +263,22 @@ function validateManifest() {
 			const thumbPath = resolveFrom(atlasDir, pack.thumb);
 			if (!exists(thumbPath))
 				fail(`${rel(manifestPath)}: thumbnail does not exist: ${pack.thumb}`);
+			else {
+				const size = readImageDimensions(thumbPath);
+				if (!size || size.width <= 0 || size.height <= 0)
+					fail(`${rel(manifestPath)}: thumbnail is not a readable image: ${pack.thumb}`);
+			}
 		}
+
+		if (typeof pack.files === "number") {
+			const files = listPackFiles(pack);
+			if (files.length !== pack.files)
+				fail(`${rel(manifestPath)}: pack "${pack.name}" file count is ${pack.files}, expected ${files.length}`);
+			if (pack.path !== "." && !files.some(isPreviewableAsset))
+				fail(`${rel(manifestPath)}: pack "${pack.name}" has no previewable image or audio assets`);
+		}
+		else
+			fail(`${rel(manifestPath)}: pack "${pack.name || pack.path}" is missing numeric files count`);
 	}
 
 	return manifest;
@@ -155,8 +286,7 @@ function validateManifest() {
 
 function validateTrackedAtlasFiles() {
 	for (const fileName of listTrackedAtlasFiles()) {
-		const ext = path.extname(fileName).toLowerCase();
-		if (BLOCKED_TRACKED_ATLAS_EXTENSIONS.has(ext))
+		if (shouldIgnoreAtlasFile(fileName))
 			fail(`Tracked atlas file should stay ignored as raw source-drop output: ${fileName}`);
 		if (BLOCKED_TRACKED_ATLAS_PATHS.has(fileName))
 			fail(`Tracked atlas file should stay ignored after MP3 conversion: ${fileName}`);

@@ -9,7 +9,17 @@ const errors = [];
 const blockedAtlasExtensions = [
 	".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh",
 	".import", ".md5", ".stex", ".DS_Store", ".ds_store", ".psd", ".pck", ".tscn",
-	".gd", ".cfg", ".meta", ".ctex", ".sample", ".cs",
+	".gd", ".cfg", ".meta", ".ctex", ".sample", ".cs", ".cache", ".scn", ".js",
+	".prefab", ".anim", ".controller", ".xml", ".node", ".godot", ".bin",
+	".gdshader", ".tres", ".unity", ".assets", ".config", ".fontdata",
+	".oggvorbisstr", ".oggstr", ".ico", ".ress", ".res", ".uid", ".html",
+	".iml", ".info", ".mdb", ".browser", ".ini", ".aspx",
+];
+const blockedAtlasBasenameFilters = [
+	".gitattributes", ".gitignore", ".gdignore", ".editorconfig", ".name",
+];
+const blockedAtlasPathFilters = [
+	".godot/**", ".idea/**", "*_Data/**",
 ];
 const licenseManifestPath = path.join(root, "docs", "asset_license_manifest.json");
 
@@ -85,6 +95,18 @@ function validateElectronBuilderFilters() {
 	const filters = samplesEntry.filter || [];
 	for (const ext of blockedAtlasExtensions) {
 		const pattern = `!atlas/**/*${ext}`;
+		if (!filters.includes(pattern))
+			fail(`${rel(configPath)}: missing samples filter ${pattern}`);
+	}
+
+	for (const basename of blockedAtlasBasenameFilters) {
+		const pattern = `!atlas/**/${basename}`;
+		if (!filters.includes(pattern))
+			fail(`${rel(configPath)}: missing samples filter ${pattern}`);
+	}
+
+	for (const pathFilter of blockedAtlasPathFilters) {
+		const pattern = `!atlas/**/${pathFilter}`;
 		if (!filters.includes(pattern))
 			fail(`${rel(configPath)}: missing samples filter ${pattern}`);
 	}
