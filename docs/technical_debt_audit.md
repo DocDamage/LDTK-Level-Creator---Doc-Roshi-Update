@@ -6,7 +6,7 @@ Scope: whole app, with extra attention to the Doc Roshi bundled asset update, re
 
 ## Executive Summary
 
-The app is currently buildable and the recent release hardening is working: `node tools\validate-doc-roshi-assets.js`, `node tools\validate-release-config.js`, and `npm audit --audit-level=low` all pass. The largest remaining debt is not the Haxe app logic itself; it is the newly bundled asset payload and the lack of a formal asset-normalization pipeline. Follow-up cleanup removed tracked source-drop sidecars, deleted the local ignored raw WAV copy, committed `app/package-lock.json`, and added release validation for the license manifest and blocked asset extensions.
+The app is currently buildable and the recent release hardening is working: `node tools\validate-doc-roshi-assets.js`, `node tools\validate-release-config.js`, `npm audit --audit-level=low`, and `npm run compile` all pass. The largest remaining debt is not the Haxe app logic itself; it is the newly bundled asset payload and the lack of a formal asset-normalization pipeline. Follow-up cleanup removed tracked source-drop sidecars, deleted the local ignored raw WAV copy, committed `app/package-lock.json`, added release validation for the license manifest and blocked asset extensions, and added a tracked atlas max-size guard.
 
 The main engineering risks are:
 
@@ -39,9 +39,10 @@ Results:
 
 Evidence:
 
-- `app/extraFiles/samples`: `96,381` tracked files, about `3,675.0 MB`.
-- `app/extraFiles/samples/atlas`: `95,882` tracked files, about `3,648.9 MB`.
-- Top tracked asset extensions include about `91,673 .png`, `1,427 .wav`, `341 .gif`, `78 .psd`, plus many engine/editor sidecars.
+- `app/extraFiles/samples`: `95,148` tracked files, about `3,424.2 MiB`.
+- `app/extraFiles/samples/atlas`: `94,649` tracked files, about `3,398.1 MiB`.
+- Top tracked atlas extensions include about `92,453 .png`, `1,427 .wav`, `341 .gif`, and `218 .ogg`.
+- `tools/validate-doc-roshi-assets.js` now rejects tracked atlas files larger than `16 MiB`.
 
 Impact:
 
@@ -176,14 +177,14 @@ Recommendation:
 
 ### 6. Silent Catch Blocks Hide Failure Modes
 
-Status: partially handled. Asset-library scan/manifest catches now log context; older non-asset-library catches remain debt.
+Status: mostly handled for known empty catch blocks. Asset-library scan/manifest catches now log context; crash auto-reload cleanup, editor input blur, and queued file reload catches now log failure details.
 
 Evidence:
 
-- `src/electron.renderer/misc/AssetLibrary.hx:120`, `179`, `245`, `306` swallow failures.
-- `src/electron.renderer/page/CrashReport.hx:128` swallows a catch.
-- `src/electron.renderer/page/Editor.hx:617` catches and ignores `Dynamic`.
-- `src/electron.renderer/misc/FileWatcher.hx:66` catches and returns false.
+- `src/electron.renderer/misc/AssetLibrary.hx` previously swallowed asset scan/manifest failures.
+- `src/electron.renderer/page/CrashReport.hx` previously swallowed settings-save failures after a crash.
+- `src/electron.renderer/page/Editor.hx` previously swallowed jQuery blur failures for the Back command.
+- `src/electron.renderer/misc/FileWatcher.hx` previously caught queued reload errors and only returned `false`.
 
 Impact:
 
@@ -192,7 +193,7 @@ Impact:
 
 Recommendation:
 
-- Add lightweight debug logging in asset-library catch blocks.
+- Keep lightweight diagnostic logging in targeted catch blocks.
 - Surface manifest parse errors on Home instead of returning an empty pack list.
 - Add validator tests for malformed manifest behavior.
 - Keep user-facing messages concise, but log technical detail for diagnostics.
@@ -280,27 +281,26 @@ Recommendation:
 - Add paging or search inside the pack browser.
 - Load previews incrementally to avoid scanning and rendering too much at once.
 
-### 12. Validation Is Useful But Narrow
+### 12. Validation Is Useful But Still Growing
 
 Evidence:
 
 - `tools/validate-doc-roshi-assets.js` validates starter counts, paths, preview tiles, and blocked executable/runtime files.
 - `tools/validate-release-config.js` validates pinned direct dependencies, packager filters, and stale workflow versions.
+- The asset validator now also validates tracked atlas file existence, blocked source-drop extensions, explicitly forbidden raw audio paths, and max tracked atlas file size.
 
 Impact:
 
 - Good guardrails exist, but they do not yet cover:
-  - max file size,
-  - max file size,
-  - per-pack license completeness,
   - manifest file-count accuracy for every pack,
   - broken thumbnail dimensions/corrupt images.
 
 Recommendation:
 
 - Extend validation in small steps.
-- First add max-size checks.
-- Then tighten per-pack license manifest statuses from `requires-pack-level-review` to verified release statuses.
+- Tighten per-pack license manifest statuses from `requires-pack-level-review` to verified release statuses.
+- Add manifest file-count accuracy checks for every pack.
+- Add corrupt-image/thumbnail dimension checks.
 
 ## Recommended Remediation Order
 
@@ -314,12 +314,11 @@ Recommendation:
 
 ## Suggested Next Implementation Slice
 
-The highest-value next slice is asset payload cleanup:
+The highest-value next slice is asset library UX/performance cleanup:
 
-- Update ignore rules for sidecar/source-drop formats.
-- Remove sidecar/source files from Git where they are not app-known assets.
-- Extend `validate-doc-roshi-assets.js` to reject them.
-- Recompute `assetLibrary.json` pack counts.
+- Extract the Home asset-library browser into a focused module.
+- Add search or paged/lazy previews so large packs do not scan/render too much at once.
+- Keep Home responsible for page composition, not asset-browser internals.
 - Run:
 
 ```powershell

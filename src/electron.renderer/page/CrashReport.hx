@@ -125,7 +125,9 @@ class CrashReport extends Page {
 				settings.v.lastProject = null;
 				settings.save();
 			}
-			catch(_) {}
+			catch(e:Dynamic) {
+				App.LOG.error("Failed to disable last project auto-reload after crash: "+Std.string(e));
+			}
 		}
 		catch(e:Dynamic) {
 			jError.html( "Double error: "+Std.string(e) + "\n" + error.stack  );

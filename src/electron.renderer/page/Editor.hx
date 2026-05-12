@@ -614,7 +614,9 @@ class Editor extends Page {
 					// BUG jquery crashes on "Blur" if element is removed in the process
 					// see: https://github.com/jquery/jquery/issues/4417
 					try App.ME.jBody.find("input:focus, textarea:focus").blur()
-					catch(e:Dynamic) {}
+					catch(e:Dynamic) {
+						App.LOG.warning("Failed to blur focused input before handling Back command: "+Std.string(e));
+					}
 				}
 				else if( Std.is(curTool, tool.lt.EntityTool) && Std.downcast(curTool,tool.lt.EntityTool).isChainingRef() )
 					tool.lt.EntityTool.cancelRefChaining();

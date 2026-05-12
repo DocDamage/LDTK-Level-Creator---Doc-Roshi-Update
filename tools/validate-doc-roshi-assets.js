@@ -12,6 +12,7 @@ const manifestPath = path.join(atlasDir, "assetLibrary.json");
 const EXPECTED_ASSET_STARTERS = 151;
 const EXPECTED_CUTESCKR_STARTERS = 78;
 const EXPECTED_DOC_ROSHI_STARTERS = 233;
+const MAX_TRACKED_ATLAS_FILE_BYTES = 16 * 1024 * 1024;
 const BLOCKED_TRACKED_ATLAS_EXTENSIONS = new Set([
 	".exe", ".dll", ".pdb", ".so", ".dylib", ".msi", ".bat", ".cmd", ".sh",
 	".import", ".md5", ".stex", ".ds_store", ".psd", ".pck", ".tscn", ".gd",
@@ -57,14 +58,16 @@ function listSamples(prefix) {
 
 function listTrackedAtlasFiles() {
 	try {
-		const output = childProcess.execFileSync("git", ["ls-files", "app/extraFiles/samples/atlas"], {
+		const output = childProcess.execFileSync("git", ["-c", "core.quotePath=false", "ls-files", "app/extraFiles/samples/atlas"], {
 			cwd: root,
 			encoding: "utf8",
+			maxBuffer: 64 * 1024 * 1024,
 			stdio: ["ignore", "pipe", "ignore"],
 		});
 		return output.split(/\r?\n/).filter(Boolean);
 	}
 	catch (_) {
+		fail("Could not list tracked atlas files with git; asset payload validation was skipped.");
 		return [];
 	}
 }
@@ -157,6 +160,16 @@ function validateTrackedAtlasFiles() {
 			fail(`Tracked atlas file should stay ignored as raw source-drop output: ${fileName}`);
 		if (BLOCKED_TRACKED_ATLAS_PATHS.has(fileName))
 			fail(`Tracked atlas file should stay ignored after MP3 conversion: ${fileName}`);
+
+		const filePath = path.join(root, fileName);
+		if (!fs.existsSync(filePath)) {
+			fail(`Tracked atlas file is missing from the working tree: ${fileName}`);
+			continue;
+		}
+
+		const size = fs.statSync(filePath).size;
+		if (size > MAX_TRACKED_ATLAS_FILE_BYTES)
+			fail(`Tracked atlas file is too large (${(size / 1024 / 1024).toFixed(2)} MiB, max 16 MiB): ${fileName}`);
 	}
 }
 

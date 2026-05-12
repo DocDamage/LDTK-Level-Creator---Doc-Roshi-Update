@@ -63,7 +63,11 @@ class FileWatcher extends dn.Process {
 		queuedChanges.set( absPath, {
 			absPath: absPath,
 			cb: ()->{
-				try onChange() catch(_) return false;
+				try onChange()
+				catch(e:Dynamic) {
+					App.LOG.error("Queued file reload failed for "+absPath+": "+Std.string(e));
+					return false;
+				}
 				return true;
 			},
 			retry: 0,
