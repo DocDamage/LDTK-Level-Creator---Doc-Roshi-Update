@@ -153,12 +153,15 @@ Recommendation:
 
 ### 5. Core Renderer Files Are Large And Highly Coupled
 
+Status: partially handled. The asset pack modal was extracted from `Home.hx` into `src/electron.renderer/ui/AssetPackBrowser.hx`, keeping Home responsible for page-level coordination while the browser owns preview rendering, search, and paging.
+
 Evidence from line counts:
 
 - `src/electron.renderer/page/Editor.hx`: `2458` lines.
 - `src/electron.renderer/misc/JsTools.hx`: `1346` lines.
 - `src/electron.renderer/data/Project.hx`: `1134` lines.
-- `src/electron.renderer/page/Home.hx`: `948` lines.
+- `src/electron.renderer/page/Home.hx`: `991` lines.
+- `src/electron.renderer/ui/AssetPackBrowser.hx`: `139` lines.
 - `src/electron.renderer/ui/FieldInstancesForm.hx`: `870` lines.
 - `src/electron.renderer/ui/modal/panel/EditLayerDefs.hx`: `902` lines.
 
@@ -170,8 +173,8 @@ Impact:
 
 Recommendation:
 
-- Extract Home asset-library UI into a dedicated module, e.g. `ui/AssetLibraryBrowser.hx`.
-- Move asset-library rendering details out of `Home.hx`; keep Home responsible for page composition.
+- Continue extracting Home asset-library list/filter rendering into dedicated helpers.
+- Keep asset-browser modal behavior in `ui.AssetPackBrowser`; keep Home responsible for page composition.
 - Split `JsTools.hx` by domain over time: file/path helpers, DOM helpers, image helpers, Electron helpers.
 - Avoid large refactors in one commit; carve out one stable helper at a time with compile checks.
 
@@ -314,11 +317,11 @@ Recommendation:
 
 ## Suggested Next Implementation Slice
 
-The highest-value next slice is asset library UX/performance cleanup:
+The highest-value next slice is asset library list extraction:
 
-- Extract the Home asset-library browser into a focused module.
-- Add search or paged/lazy previews so large packs do not scan/render too much at once.
-- Keep Home responsible for page composition, not asset-browser internals.
+- Move Home's asset library pack list/filter rendering into a focused helper.
+- Keep the existing search/filter behavior and pack context menu callbacks stable.
+- Leave broader `Editor.hx`/`JsTools.hx` decomposition for separate, testable slices.
 - Run:
 
 ```powershell
